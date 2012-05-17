@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
+import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
@@ -13,11 +14,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
@@ -39,17 +43,21 @@ public class MenuEditResep extends Activity {
 	/** controller daftar resep untuk membantu akses ke database resep */
 	private ControllerDaftarResep cdr = new ControllerDaftarResep(this);
 	
+	/** controller untuk membantu akses ke database isi kulkas */
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	
 	/** list semua bahan yang terdapat di database resep, untuk membantu auto suggestion */
 	private final ArrayList<Bahan> listAllBahan = cdr.getAllBahan();
 	
 	/** dari list all bahan, diambil namanya saja */
 	private final ArrayList<String> listAllNamaBahan = new ArrayList<String>();
 	
-	/** dari list all bahan, diambil satuannya saja */
-	private final ArrayList<String> listAllSatuanBahan = new ArrayList<String>();
-	
 	/** resep yang sedang diedit */
 	private Resep resep;
+	
+	private String tempSatuan;
+	
+	private ArrayAdapter<String> adapterSatuan;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -72,7 +80,6 @@ public class MenuEditResep extends Activity {
         // mengisi list nama bahan dan satuan, akan digunakan untuk auto suggestion
         for(Bahan bahan: listAllBahan){
         	listAllNamaBahan.add(bahan.getNama());
-        	listAllSatuanBahan.add(bahan.getSatuan());
         }
         
         // inisialisasi tampilan tab (deskripsi, bahan, langkah)
@@ -165,9 +172,13 @@ public class MenuEditResep extends Activity {
         banyakBahan.setText(""+bahan.getJumlah());
         banyakBahan.setEnabled(false);
         
-        final TextView satuan = new TextView(this);
-        satuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
-        satuan.setText(bahan.getSatuan());
+        final Spinner spinnerSatuan = new Spinner(this);
+        ArrayList<String> listSatuan = new ArrayList<String>(1);
+        listSatuan.add(bahan.getSatuan());
+        adapterSatuan = new ArrayAdapter<String>(MenuEditResep.this, android.R.layout.simple_spinner_item, listSatuan);
+		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerSatuan.setAdapter(adapterSatuan);
+		spinnerSatuan.setEnabled(false);
         
         final ImageButton tambahHapus = new ImageButton(this);
         tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
@@ -183,7 +194,7 @@ public class MenuEditResep extends Activity {
         
         tr.addView(namaBahan);
         tr.addView(banyakBahan);
-        tr.addView(satuan);
+        tr.addView(spinnerSatuan);
         tr.addView(tambahHapus);
         
         tabelBahan.addView(tr);
@@ -214,9 +225,7 @@ public class MenuEditResep extends Activity {
         // banyak bahan hanya menerima inputan angka desimal
         banyakBahan.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         
-        final TextView satuan = new TextView(this);
-        satuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
-        satuan.setText("satuan");
+        final Spinner spinnerSatuan = new Spinner(this);
         
         // pengecekan setiap user memasukkan informasi nama bahan
         namaBahan.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -231,10 +240,21 @@ public class MenuEditResep extends Activity {
 						namaBahan.setText("");
 					// jika bahan ada di database, update field satuan
 					} else if(!(namaBahan.getText()+"").equals("")){
-						satuan.setText(listAllSatuanBahan.get(listAllNamaBahan.indexOf(""+namaBahan.getText())));
+						adapterSatuan = new ArrayAdapter<String>(MenuEditResep.this, android.R.layout.simple_spinner_item, cik.getSatuan(namaBahan.getText().toString()));
+			    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			    		spinnerSatuan.setAdapter(adapterSatuan);
 					}
 				}
 			}
+		});
+        
+        spinnerSatuan.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long duration) {
+				// TODO Auto-generated method stub
+				tempSatuan = adapterSatuan.getItem(position);
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
         
         final ImageButton tambahHapus = new ImageButton(this);
@@ -259,15 +279,14 @@ public class MenuEditResep extends Activity {
 				if(temp.equals("")) temp = "0";
 				jumlahBahan = Float.parseFloat(temp);
 
-				String sat = satuan.getText()+"";
-
-				final Bahan bahan = new Bahan(nama,jumlahBahan,sat);
+				final Bahan bahan = new Bahan(nama,jumlahBahan,tempSatuan);
 
 				// tambahkan objek bahan baru ke list bahan
 				listBahanBaru.add(bahan);
 				tambahHapus.setImageResource(R.drawable.ic_hapus);
 				namaBahan.setEnabled(false);
 				banyakBahan.setEnabled(false);
+				spinnerSatuan.setEnabled(false);
 				tambahRowBahan();
 				
 				// ubah listener untuk tombol tambah row menjadi hapus row
@@ -284,7 +303,7 @@ public class MenuEditResep extends Activity {
         
         tr.addView(namaBahan);
         tr.addView(banyakBahan);
-        tr.addView(satuan);
+        tr.addView(spinnerSatuan);
         tr.addView(tambahHapus);
         
         tabelBahan.addView(tr);

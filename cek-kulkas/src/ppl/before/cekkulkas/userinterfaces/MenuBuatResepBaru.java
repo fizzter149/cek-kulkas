@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
+import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,11 +13,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
@@ -40,14 +44,18 @@ public class MenuBuatResepBaru extends Activity {
 	/** controller daftar resep untuk membantu akses database resep */
 	private ControllerDaftarResep cdr = new ControllerDaftarResep(this);
 	
+	/** controller untuk membantu akses ke database isi kulkas */
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	
 	/** list semua bahan yang terdapat di database resep */
 	private final ArrayList<Bahan> listAllBahan = cdr.getAllBahan();
 	
 	/** dari list all bahan, diambil namanya saja */
 	private final ArrayList<String> listAllNamaBahan = new ArrayList<String>();
 	
-	/** dari list all bahan, diambil satuannya saja */
-	private final ArrayList<String> listAllSatuanBahan = new ArrayList<String>();
+	private String tempSatuan;
+	
+	private ArrayAdapter<String> adapterSatuan;
 
 	
 	/** Called when the activity is first created. */
@@ -59,15 +67,12 @@ public class MenuBuatResepBaru extends Activity {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.tambahresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-
 		
 		// mengisi list nama bahan dan satuan, akan digunakan untuk auto suggestion
 		for(Bahan bahan: listAllBahan){
 			listAllNamaBahan.add(bahan.getNama());
-			listAllSatuanBahan.add(bahan.getSatuan());
 		}
 
-		
 		// insialisasi tampilan tab (deskripsi, bahan, langkah)
 		final TabHost tabHost = (TabHost)findViewById(R.id.tabHost_tambah);
 		tabHost.setup();
@@ -173,11 +178,8 @@ public class MenuBuatResepBaru extends Activity {
 		// banyak bahan yang valid hanya angka desimal
 		banyakBahan.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-		final TextView satuan = new TextView(this);
-		satuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
-		satuan.setText("satuan");
+		final Spinner spinnerSatuan = new Spinner(this);
 
-		
 		// listener untuk event ganti fokus pada field nama bahan
 		// setelah user memasukkan nama bahan, informasi satuan diupdate sesuai nama bahan tersebut
 		// jika nama bahan yang dimasukkan tidak ada di database, field direset dan tampilkan notifikasi
@@ -194,10 +196,21 @@ public class MenuBuatResepBaru extends Activity {
 						namaBahan.setText("");
 					// jika nama bahan ada di database
 					} else if(!(namaBahan.getText()+"").equals("")){
-						satuan.setText(listAllSatuanBahan.get(listAllNamaBahan.indexOf(""+namaBahan.getText())));
+						adapterSatuan = new ArrayAdapter<String>(MenuBuatResepBaru.this, android.R.layout.simple_spinner_item, cik.getSatuan(namaBahan.getText().toString()));
+			    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			    		spinnerSatuan.setAdapter(adapterSatuan);
 					}
 				}
 			}
+		});
+		
+		spinnerSatuan.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long duration) {
+				// TODO Auto-generated method stub
+				tempSatuan = adapterSatuan.getItem(position);
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
 		});
 
 		final ImageButton tambahHapus = new ImageButton(this);
@@ -221,10 +234,8 @@ public class MenuBuatResepBaru extends Activity {
 				
 				if(temp.equals("")) temp = "0";
 				jumlahBahan = Float.parseFloat(temp);
-
-				String sat = satuan.getText()+"";
-
-				final Bahan bahan = new Bahan(nama,jumlahBahan,sat);
+				
+				final Bahan bahan = new Bahan(nama, jumlahBahan, tempSatuan);
 
 				// informasi bahan ditambahkan ke list bahan
 				listBahan.add(bahan);
@@ -233,6 +244,7 @@ public class MenuBuatResepBaru extends Activity {
 				tambahHapus.setImageResource(R.drawable.ic_hapus);
 				namaBahan.setEnabled(false);
 				banyakBahan.setEnabled(false);
+				spinnerSatuan.setEnabled(false);
 				tambahRowBahan();
 				tambahHapus.setOnClickListener(new OnClickListener() {
 
@@ -247,7 +259,7 @@ public class MenuBuatResepBaru extends Activity {
 
 		tr.addView(namaBahan);
 		tr.addView(banyakBahan);
-		tr.addView(satuan);
+		tr.addView(spinnerSatuan);
 		tr.addView(tambahHapus);
 
 		tabelBahan.addView(tr);
