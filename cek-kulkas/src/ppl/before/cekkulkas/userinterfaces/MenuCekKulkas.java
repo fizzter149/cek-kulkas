@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +64,8 @@ public class MenuCekKulkas extends Activity {
 	private final ArrayList<String> listAllSatuanBahan = new ArrayList<String>();
 	
 	private String tempSatuan;
+	
+	private ArrayAdapter<String> adapterSatuan;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -133,8 +134,7 @@ public class MenuCekKulkas extends Activity {
         		    		inputJumlah.setHint(jmlStr);
         		    		
         		    		final Spinner spinnerSatuan = new Spinner(MenuCekKulkas.this);
-        		    		List<String> listSatuan = cik.getSatuan(bahan.getNama());
-        		    		final ArrayAdapter<String> adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, listSatuan);
+        		    		adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, cik.getSatuan(bahan.getNama()));
         		    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         		    		spinnerSatuan.setAdapter(adapterSatuan);
         		    		spinnerSatuan.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -220,12 +220,9 @@ public class MenuCekKulkas extends Activity {
 				jumlahBahan.setHint("jml");
 				// banyak bahan yang valid hanya angka desimal
 				jumlahBahan.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
-				final TextView labelSatuan = new TextView(MenuCekKulkas.this);
-				labelSatuan.setText("satuan");
-				labelSatuan.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-				labelSatuan.setPadding(4, 0, 0, 0);
-						
+				
+				final Spinner spinnerSatuan = new Spinner(MenuCekKulkas.this);
+				
 				// listener untuk event ganti fokus pada field nama bahan
 				// setelah user memasukkan nama bahan, informasi satuan diupdate sesuai nama bahan tersebut
 				// jika nama bahan yang dimasukkan tidak ada di database, field direset dan tampilkan notifikasi
@@ -234,24 +231,35 @@ public class MenuCekKulkas extends Activity {
 					public void onFocusChange(View v, boolean hasFocus) {
 
 						// hanya handle event dari fokus aktif ke tidak aktif 
-						if(!hasFocus){
+						if (!hasFocus) {
 							
 							// jika nama bahan tidak ada di database
-							if(!(namaBahan.getText()+"").equals("") && !listAllNamaBahan.contains(""+namaBahan.getText())){
+							if (!(namaBahan.getText() + "").equals("") && !listAllNamaBahan.contains("" + namaBahan.getText())) {
 								Toast.makeText(MenuCekKulkas.this, "maaf, "+namaBahan.getText()+" tidak ada di database bahan kami", Toast.LENGTH_LONG).show();
 								namaBahan.setText("");
 							// jika nama bahan ada di database
-							} else if(!(namaBahan.getText()+"").equals("")){
-								labelSatuan.setText(listAllSatuanBahan.get(listAllNamaBahan.indexOf(""+namaBahan.getText())));
+							} else if (!(namaBahan.getText()+"").equals("")) {
+								adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, cik.getSatuan(namaBahan.getText().toString()));
+					    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					    		spinnerSatuan.setAdapter(adapterSatuan);
 							}
 						}
 					}
 				});
 				
+	    		spinnerSatuan.setOnItemSelectedListener(new OnItemSelectedListener() {
+	    			public void onItemSelected(AdapterView<?> parent, View view,
+	    					int position, long duration) {
+	    				// TODO Auto-generated method stub
+	    				tempSatuan = adapterSatuan.getItem(position);
+	    			}
+	    			public void onNothingSelected(AdapterView<?> arg0) {}
+	    		});
+	    		
 				final LinearLayout layoutJmlSatuan = new LinearLayout(MenuCekKulkas.this);
 				layoutJmlSatuan.setOrientation(LinearLayout.HORIZONTAL);
 				layoutJmlSatuan.addView(jumlahBahan);
-				layoutJmlSatuan.addView(labelSatuan);
+				layoutJmlSatuan.addView(spinnerSatuan);
 				
 				final LinearLayout layoutTambahBahan = new LinearLayout(MenuCekKulkas.this);
 				layoutTambahBahan.setOrientation(LinearLayout.VERTICAL);
@@ -265,13 +273,13 @@ public class MenuCekKulkas extends Activity {
 					public void onClick(DialogInterface dialog, int id) {
 						boolean status = false;
 						if (jumlahBahan.getText().toString().length() > 0) {
-							status = cik.add(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), labelSatuan.getText().toString());
+							status = cik.add(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), tempSatuan);
 						}
 						if (status) {
-							isiKulkasAdapter.add(new Bahan(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), labelSatuan.getText().toString()));
-							Toast.makeText(MenuCekKulkas.this, "Bahan berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+							isiKulkasAdapter.add(new Bahan(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), tempSatuan));
+							Toast.makeText(MenuCekKulkas.this, "bahan berhasil ditambahkan", Toast.LENGTH_SHORT).show();
 						} else {
-							Toast.makeText(MenuCekKulkas.this, "Nama bahan sudah ada", Toast.LENGTH_SHORT).show();
+							Toast.makeText(MenuCekKulkas.this, "nama bahan sudah ada", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
