@@ -47,10 +47,7 @@ public class MenuEditResep extends Activity {
 	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
 	
 	/** list semua bahan yang terdapat di database resep, untuk membantu auto suggestion */
-	private final ArrayList<Bahan> listAllBahan = cdr.getAllBahan();
-	
-	/** dari list all bahan, diambil namanya saja */
-	private final ArrayList<String> listAllNamaBahan = new ArrayList<String>();
+	private final ArrayList<String> listAllNamaBahan = cdr.getAllNamaBahan();
 	
 	/** resep yang sedang diedit */
 	private Resep resep;
@@ -75,11 +72,6 @@ public class MenuEditResep extends Activity {
         // pada awalnya, bahan dari resep yang diedit adalah bahan yang lama
         for(Bahan bahan: resep.getListBahan()){
         	listBahanBaru.add(bahan);
-        }
-        
-        // mengisi list nama bahan dan satuan, akan digunakan untuk auto suggestion
-        for(Bahan bahan: listAllBahan){
-        	listAllNamaBahan.add(bahan.getNama());
         }
         
         // inisialisasi tampilan tab (deskripsi, bahan, langkah)

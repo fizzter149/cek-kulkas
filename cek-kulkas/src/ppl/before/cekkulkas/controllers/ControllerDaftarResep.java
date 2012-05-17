@@ -60,7 +60,7 @@ public class ControllerDaftarResep extends SQLiteOpenHelper {
 		Cursor cursorCekNamaSudahAda = db.rawQuery("SELECT nama FROM resep WHERE nama='"+nama+"'", null);
 		cursorCekNamaSudahAda.moveToFirst();
 		
-		if(!cursorCekNamaSudahAda.isBeforeFirst()) {
+		if(cursorCekNamaSudahAda.getCount() > 0) {
 			cursorCekNamaSudahAda.close();
 			db.close(); 
 			return false;
@@ -334,16 +334,16 @@ public class ControllerDaftarResep extends SQLiteOpenHelper {
 	 * Mengambil semua bahan (data diambil dari resep, buat iterasi 1)
 	 * @return Daftar bahan
 	 */
-	public ArrayList<Bahan> getAllBahan(){
+	public ArrayList<String> getAllNamaBahan(){
 		openDatabase(true);
-		ArrayList<Bahan> listBahan = new ArrayList<Bahan>();
+		ArrayList<String> listBahan = new ArrayList<String>();
 		
-		Cursor cursor = db.rawQuery("SELECT DISTINCT nama,satuan FROM bahan", null);
+		Cursor cursor = db.rawQuery("SELECT DISTINCT nama FROM bahan", null);
 		
 		cursor.moveToFirst();
 		
 		while(!cursor.isAfterLast()){
-			listBahan.add(new Bahan(cursor.getString(0),0,cursor.getString(1)));
+			listBahan.add(cursor.getString(0));
 			cursor.moveToNext();
 		}
 		cursor.close();

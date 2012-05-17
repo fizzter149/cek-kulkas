@@ -55,13 +55,7 @@ public class MenuCekKulkas extends Activity {
 	private ControllerDaftarResep cdr = new ControllerDaftarResep(this);
 	
 	/** list semua bahan yang terdapat di database resep */
-	private final ArrayList<Bahan> listAllBahan = cdr.getAllBahan();
-	
-	/** dari list all bahan, diambil namanya saja */
-	private final ArrayList<String> listAllNamaBahan = new ArrayList<String>();
-	
-	/** dari list all bahan, diambil satuannya saja */
-	private final ArrayList<String> listAllSatuanBahan = new ArrayList<String>();
+	private final ArrayList<String> listAllNamaBahan = cdr.getAllNamaBahan();
 	
 	private String tempSatuan;
 	
@@ -78,11 +72,6 @@ public class MenuCekKulkas extends Activity {
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
         initView();
         
-		// mengisi list nama bahan dan satuan, akan digunakan untuk auto suggestion
-		for(Bahan bahan: listAllBahan){
-			listAllNamaBahan.add(bahan.getNama());
-			listAllSatuanBahan.add(bahan.getSatuan());
-		}
     }
     
 	@Override

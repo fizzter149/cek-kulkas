@@ -48,10 +48,7 @@ public class MenuBuatResepBaru extends Activity {
 	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
 	
 	/** list semua bahan yang terdapat di database resep */
-	private final ArrayList<Bahan> listAllBahan = cdr.getAllBahan();
-	
-	/** dari list all bahan, diambil namanya saja */
-	private final ArrayList<String> listAllNamaBahan = new ArrayList<String>();
+	private final ArrayList<String> listAllNamaBahan = cdr.getAllNamaBahan();
 	
 	private String tempSatuan;
 	
@@ -67,11 +64,6 @@ public class MenuBuatResepBaru extends Activity {
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.tambahresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-		
-		// mengisi list nama bahan dan satuan, akan digunakan untuk auto suggestion
-		for(Bahan bahan: listAllBahan){
-			listAllNamaBahan.add(bahan.getNama());
-		}
 
 		// insialisasi tampilan tab (deskripsi, bahan, langkah)
 		final TabHost tabHost = (TabHost)findViewById(R.id.tabHost_tambah);
