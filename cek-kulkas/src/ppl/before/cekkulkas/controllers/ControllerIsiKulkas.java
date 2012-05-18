@@ -116,11 +116,22 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 		return ada;
 	}
 	
+	public Bahan get(String nama) {
+		openDatabase(true);
+		Bahan bahan;
+		Cursor cursorBahan = db.rawQuery("SELECT * FROM isikulkas WHERE nama='" + nama + "'", null);
+		cursorBahan.moveToFirst();
+		bahan = new Bahan(nama, cursorBahan.getFloat(2), cursorBahan.getString(3));
+		cursorBahan.close();
+		db.close();
+		return bahan;
+	}
+	
 	/**
 	 * Menggambil semua bahan yang ada di kulkas
 	 * @return Daftar bahan
 	 */
-	public List<Bahan> get(){
+	public List<Bahan> getAll(){
 		openDatabase(true);
 		List<Bahan> listBahan = new ArrayList<Bahan>();
 		Cursor cursorBahan = db.rawQuery("SELECT * FROM isikulkas", null);
@@ -135,19 +146,8 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 		
 		return listBahan;
 	}
-	
-	public float getJumlah(String nama) {
-		float jumlah;
-		openDatabase(true);
-		Cursor cursorBahan = db.rawQuery("SELECT jumlah FROM isikulkas WHERE nama='" + nama + "'", null);
-		cursorBahan.moveToFirst();
-		jumlah = cursorBahan.getFloat(0);
-		cursorBahan.close();
-		db.close();
-		return jumlah;
-	}
-	
-	public List<String> getSatuan(String nama) {
+		
+	public List<String> getMultiSatuan(String nama) {
 		openDatabase(true);
 		List<String> listSatuan = new ArrayList<String>();
 		Cursor cekMultiSatuan = db.rawQuery("SELECT * FROM konversi WHERE nama='" + nama + "'", null);

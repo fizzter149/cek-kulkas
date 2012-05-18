@@ -86,7 +86,7 @@ public class MenuCekKulkas extends Activity {
 	 */
 	private void initView() {
 		// ambil bahan dari database isi kulkas
-		listBahan = cik.get();
+		listBahan = cik.getAll();
 		tempList = listBahan;
         ListView lv = (ListView) findViewById(R.id.listbahan);
         final IsiKulkasAdapter isiKulkasAdapter = new IsiKulkasAdapter(this, tempList);
@@ -123,7 +123,7 @@ public class MenuCekKulkas extends Activity {
         		    		inputJumlah.setHint(jmlStr);
         		    		
         		    		final Spinner spinnerSatuan = new Spinner(MenuCekKulkas.this);
-        		    		adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, cik.getSatuan(bahan.getNama()));
+        		    		adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, cik.getMultiSatuan(bahan.getNama()));
         		    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         		    		spinnerSatuan.setAdapter(adapterSatuan);
         		    		spinnerSatuan.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -228,7 +228,7 @@ public class MenuCekKulkas extends Activity {
 								namaBahan.setText("");
 							// jika nama bahan ada di database
 							} else if (!(namaBahan.getText()+"").equals("")) {
-								adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, cik.getSatuan(namaBahan.getText().toString()));
+								adapterSatuan = new ArrayAdapter<String>(MenuCekKulkas.this, android.R.layout.simple_spinner_item, cik.getMultiSatuan(namaBahan.getText().toString()));
 					    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					    		spinnerSatuan.setAdapter(adapterSatuan);
 							}

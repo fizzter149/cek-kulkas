@@ -39,7 +39,7 @@ public class MenuPilihBahan extends Activity {
 	private ControllerIsiKulkas cik = new ControllerIsiKulkas(MenuPilihBahan.this);
 	
 	/** list bahan dari database isi kulkas */
-	private List<Bahan> listBahan = cik.get();
+	private List<Bahan> listBahan = cik.getAll();
 	
 	/** list bahan setelah difilter */
 	private List<Bahan> tempList = listBahan;

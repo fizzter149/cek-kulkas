@@ -232,7 +232,7 @@ public class MenuEditResep extends Activity {
 						namaBahan.setText("");
 					// jika bahan ada di database, update field satuan
 					} else if(!(namaBahan.getText()+"").equals("")){
-						adapterSatuan = new ArrayAdapter<String>(MenuEditResep.this, android.R.layout.simple_spinner_item, cik.getSatuan(namaBahan.getText().toString()));
+						adapterSatuan = new ArrayAdapter<String>(MenuEditResep.this, android.R.layout.simple_spinner_item, cik.getMultiSatuan(namaBahan.getText().toString()));
 			    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			    		spinnerSatuan.setAdapter(adapterSatuan);
 					}

@@ -188,7 +188,7 @@ public class MenuBuatResepBaru extends Activity {
 						namaBahan.setText("");
 					// jika nama bahan ada di database
 					} else if(!(namaBahan.getText()+"").equals("")){
-						adapterSatuan = new ArrayAdapter<String>(MenuBuatResepBaru.this, android.R.layout.simple_spinner_item, cik.getSatuan(namaBahan.getText().toString()));
+						adapterSatuan = new ArrayAdapter<String>(MenuBuatResepBaru.this, android.R.layout.simple_spinner_item, cik.getMultiSatuan(namaBahan.getText().toString()));
 			    		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			    		spinnerSatuan.setAdapter(adapterSatuan);
 					}

@@ -214,16 +214,18 @@ public class MenuDetailResep extends Activity {
 			    public void onClick(DialogInterface dialog, int which) {
 			        switch (which) {
 			        case DialogInterface.BUTTON_POSITIVE:
-			        	List<Bahan> listIsiKulkas = cik.get();
 			        	Log.i("masak", "listBahan.size() = "+listBahan.size());
 			        	for (int i = 0; i < listBahan.size(); i++) {
 			        		Bahan bahan = listBahan.get(i);
-			        		Log.i("masak", "isiKulkas.size() = "+listIsiKulkas.size());
 			        		Log.i("masak", "cik.contains("+bahan.getNama()+") = "+cik.contains(bahan.getNama()));
 			        		if (cik.contains(bahan.getNama())) {
+			        			Bahan bahanDiKulkas = cik.get(bahan.getNama());
+			        			// konversi jumlah bahan
+			        			float jumlahDiKulkas = bahanDiKulkas.getJumlah();
+			        			float jumlahDiResep = bahan.getJumlah();
 			        			// pengurangan jumlah bahan
-			        			float hasilKurang = cik.getJumlah(bahan.getNama()) - bahan.getJumlah();
-			        			Log.i("masak", cik.getJumlah(bahan.getNama()) + "-" +bahan.getJumlah());
+			        			float hasilKurang = jumlahDiKulkas - jumlahDiResep;
+			        			Log.i("masak", bahanDiKulkas.getJumlah() + "-" +bahan.getJumlah());
 			        			if (hasilKurang < 0) {
 			        				// bahan dihilangkan dari kulkas
 			        				cik.delete(bahan.getNama());
