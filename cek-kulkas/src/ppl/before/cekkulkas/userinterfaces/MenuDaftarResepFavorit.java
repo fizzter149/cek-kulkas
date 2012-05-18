@@ -1,9 +1,11 @@
 package ppl.before.cekkulkas.userinterfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
+import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
 import android.content.Context;
@@ -34,7 +36,6 @@ public class MenuDaftarResepFavorit extends Activity {
 	/** daftar resep favorit */
 	private List<Resep> listResep;
 	
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,7 @@ public class MenuDaftarResepFavorit extends Activity {
 	private void initView(){
 		// ambil resep favorit dari database
 		listResep = cdf.getFavorite(1);
+		final ArrayList<Bahan> listBahanKosong = new ArrayList<Bahan>(0);
         ListView lv = (ListView) findViewById(R.id.listresepfavorit);
         lv.setAdapter(new DaftarResepFavoritAdapter(this, listResep));
         
@@ -73,6 +75,7 @@ public class MenuDaftarResepFavorit extends Activity {
         			// sertakan objek resep yang dipilih sebagai extra
         			Bundle b = new Bundle();
         			b.putSerializable("resep", listResep.get(position));
+        			b.putSerializable("listBahan", listBahanKosong);
         			intentDetailResep.putExtras(b);
         			startActivity(intentDetailResep);
         		}
