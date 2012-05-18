@@ -4,6 +4,7 @@ import java.util.List;
 
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
+import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
@@ -11,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,8 +37,14 @@ public class MenuDetailResep extends Activity {
 	/** controller daftar resep untuk membantu akses ke database daftar resep */
 	private final ControllerDaftarResep cdr = new ControllerDaftarResep(this);
 	
+	/** controller untuk membantu akses ke database isi kulkas */
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	
 	/** resep yang akan ditampilkan detailnya */
 	private Resep resep;
+	
+	/** bahan-bahan dari resep */
+	private List<Bahan> listBahan;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -85,13 +93,13 @@ public class MenuDetailResep extends Activity {
 		
 		((TextView)findViewById(R.id.deskripsi_resep)).setText(resep.getDeskripsi());
 		
-		List<Bahan> listBahan = resep.getListBahan();
+		listBahan = resep.getListBahan();
 		String bahanStr = "";
 		
-		for(int i=0; i<listBahan.size(); i++){
+		for (int i = 0; i < listBahan.size(); i++) {
 			Bahan bahan = listBahan.get(i);
 			float jumlah = bahan.getJumlah();
-			if(jumlah%1.0 == 0.0){
+			if (jumlah % 1.0 == 0.0) {
 				bahanStr += (int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
 			} else {
 				bahanStr += bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
@@ -204,9 +212,28 @@ public class MenuDetailResep extends Activity {
 		case R.id.menumasak:
 			DialogInterface.OnClickListener konfirmasiMasak = new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int which) {
-			        switch (which){
+			        switch (which) {
 			        case DialogInterface.BUTTON_POSITIVE:
-			        	Toast.makeText(MenuDetailResep.this, "not implemented yet, will be available in 2nd iteration", Toast.LENGTH_SHORT).show();
+			        	List<Bahan> listIsiKulkas = cik.get();
+			        	Log.i("masak", "listBahan.size() = "+listBahan.size());
+			        	for (int i = 0; i < listBahan.size(); i++) {
+			        		Bahan bahan = listBahan.get(i);
+			        		Log.i("masak", "isiKulkas.size() = "+listIsiKulkas.size());
+			        		Log.i("masak", "cik.contains("+bahan.getNama()+") = "+cik.contains(bahan.getNama()));
+			        		if (cik.contains(bahan.getNama())) {
+			        			// pengurangan jumlah bahan
+			        			float hasilKurang = cik.getJumlah(bahan.getNama()) - bahan.getJumlah();
+			        			Log.i("masak", cik.getJumlah(bahan.getNama()) + "-" +bahan.getJumlah());
+			        			if (hasilKurang < 0) {
+			        				// bahan dihilangkan dari kulkas
+			        				cik.delete(bahan.getNama());
+			        			} else {
+			        				// ubah jumlah bahan
+			        				cik.setJumlah(bahan.getNama(), hasilKurang);
+			        			}
+			        		}
+			        	}
+			        	Toast.makeText(MenuDetailResep.this, "berhasil memasak", Toast.LENGTH_SHORT).show();
 			            break;
 
 			        case DialogInterface.BUTTON_NEGATIVE:
@@ -239,6 +266,7 @@ public class MenuDetailResep extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		Log.i("masak",resep.getNama());
 		resep = cdr.getResep(resep.getNama());
 		
 		((TextView)findViewById(R.id.kategori_resep)).setText(resep.getKategori());
@@ -247,10 +275,10 @@ public class MenuDetailResep extends Activity {
 		List<Bahan> listBahan = resep.getListBahan();
 		String bahanStr = "";
 		
-		for(int i=0; i<listBahan.size(); i++){
+		for(int i = 0; i < listBahan.size(); i++) {
 			Bahan bahan = listBahan.get(i);
 			float jumlah = bahan.getJumlah();
-			if(jumlah%1.0 == 0.0){
+			if (jumlah % 1.0 == 0.0) {
 				bahanStr += (int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
 			} else {
 				bahanStr += bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
@@ -261,6 +289,4 @@ public class MenuDetailResep extends Activity {
 		((TextView)findViewById(R.id.langkah_resep)).setText(resep.getLangkah());
 	}
 
-	
-	
 }

@@ -102,6 +102,20 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 		return true;
 	}
 	
+	public boolean contains(String nama) {
+		openDatabase(true);
+		boolean ada;
+		Cursor cek = db.rawQuery("SELECT * FROM isikulkas WHERE nama='" + nama + "'", null);
+		if (cek.getCount() > 0) {
+			ada = true;
+		} else {
+			ada = false;
+		}
+		cek.close();
+		db.close();
+		return ada;
+	}
+	
 	/**
 	 * Menggambil semua bahan yang ada di kulkas
 	 * @return Daftar bahan
@@ -120,6 +134,17 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 		db.close();
 		
 		return listBahan;
+	}
+	
+	public float getJumlah(String nama) {
+		float jumlah;
+		openDatabase(true);
+		Cursor cursorBahan = db.rawQuery("SELECT jumlah FROM isikulkas WHERE nama='" + nama + "'", null);
+		cursorBahan.moveToFirst();
+		jumlah = cursorBahan.getFloat(0);
+		cursorBahan.close();
+		db.close();
+		return jumlah;
 	}
 	
 	public List<String> getSatuan(String nama) {
@@ -148,6 +173,13 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 		cekMultiSatuan.close();
 		db.close();
 		return listSatuan;
+	}
+	
+	public float convertSatuan(String nama, String satuanTujuan) {
+		openDatabase(true);
+		
+		return 0;
+		
 	}
 
 	@Override
