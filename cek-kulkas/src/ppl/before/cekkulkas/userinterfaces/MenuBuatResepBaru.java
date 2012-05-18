@@ -8,6 +8,7 @@ import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -165,6 +166,11 @@ public class MenuBuatResepBaru extends Activity {
 		namaBahan.setAdapter(adapter);
 
 		final EditText banyakBahan = new EditText(this);
+		int maxLength = 9;
+		InputFilter[] FilterArray = new InputFilter[1];
+		FilterArray[0] = new InputFilter.LengthFilter(maxLength);
+		// jumlah digit dibatasi hanya 9
+		banyakBahan.setFilters(FilterArray);
 		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
 		banyakBahan.setHint("jml");
 		// banyak bahan yang valid hanya angka desimal

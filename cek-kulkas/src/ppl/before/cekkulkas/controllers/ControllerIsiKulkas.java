@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ppl.before.cekkulkas.models.Bahan;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * <p>Controller untuk daftar isi kulkas yang berurusan dengan database dan menghubungkan
@@ -202,7 +200,6 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 				faktor = 1;
 			} else {
 				Cursor cursorKonversi = db.rawQuery("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanTo + "' AND satuan1='" + satuanDefault + "'", null);
-				Log.i("masak", "Query: "+ nama +";"+satuanFrom+";"+satuanTo);
 				cursorKonversi.moveToFirst();
 				faktor = cursorKonversi.getFloat(0);
 				cursorKonversi.close();
@@ -210,7 +207,6 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 			hasil = hasil / faktor;
 		}
 		db.close();
-		Log.i("masak", nama +": "+hasil);
 		return hasil;
 		
 	}

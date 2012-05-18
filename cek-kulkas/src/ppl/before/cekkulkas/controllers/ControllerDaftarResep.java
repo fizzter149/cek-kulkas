@@ -57,7 +57,7 @@ public class ControllerDaftarResep extends SQLiteOpenHelper {
 	public boolean addResep(String nama, String deskripsi, List<Bahan> listBahan, String langkah, String kategori, String foto){
 		openDatabase(false);
 		
-		Cursor cursorCekNamaSudahAda = db.rawQuery("SELECT nama FROM resep WHERE nama='"+nama+"'", null);
+		Cursor cursorCekNamaSudahAda = db.rawQuery("SELECT nama FROM resep WHERE LOWER(nama)='"+nama.toLowerCase()+"'", null);
 		cursorCekNamaSudahAda.moveToFirst();
 		
 		if(cursorCekNamaSudahAda.getCount() > 0) {
