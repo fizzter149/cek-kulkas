@@ -1,5 +1,6 @@
 package ppl.before.cekkulkas.userinterfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ppl.before.cekkulkas.R;
@@ -47,6 +48,9 @@ public class MenuDetailResep extends Activity {
 	/** bahan-bahan dari resep */
 	private List<Bahan> listBahan;
 	
+	private ArrayList<Bahan> listBahanSelected;
+	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -58,6 +62,9 @@ public class MenuDetailResep extends Activity {
 		
 		// mengambil objek resep yang akan ditampilkan detailnya dari extra
 		resep = (Resep)getIntent().getSerializableExtra("resep");
+		
+		listBahanSelected = (ArrayList<Bahan>) getIntent().getSerializableExtra("listBahan");
+		Log.i("detailResep", "listBahanSelected: "+listBahanSelected.size());
 		
 		// inisialisasi tampilan tab
 		final TabHost tabHost=(TabHost)findViewById(R.id.tabHost);
@@ -102,13 +109,37 @@ public class MenuDetailResep extends Activity {
 			float jumlah = bahan.getJumlah();
 			if (jumlah % 1.0 == 0.0) {
 				if (cik.contains(bahan.getNama())) {
-					bahanStr += "<font color='#A4C639'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					boolean isSelected = false;
+					for (int j = 0; j < listBahanSelected.size(); j++) {
+						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
+							isSelected = true;
+							break;
+						}
+					}
+					Log.i("detailResep", "listBahanSelected.contains("+bahan.getNama()+"): "+isSelected);
+					if (isSelected) {
+						bahanStr += "<font color='#A4C639'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					} else {
+						bahanStr += (int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"<br />";
+					}
 				} else {
 					bahanStr += "<font color='#FF6A6A'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
 				}
 			} else {
 				if (cik.contains(bahan.getNama())) {
-					bahanStr += "<font color='#A4C639'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					boolean isSelected = false;
+					for (int j = 0; j < listBahanSelected.size(); j++) {
+						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
+							isSelected = true;
+							break;
+						}
+					}
+					Log.i("detailResep", "listBahanSelected.contains("+bahan.getNama()+"): "+isSelected);
+					if (isSelected) {
+						bahanStr += "<font color='#A4C639'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					} else {
+						bahanStr += bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"<br />";
+					}
 				} else {
 					bahanStr += "<font color='#FF6A6A'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
 				}
@@ -223,10 +254,8 @@ public class MenuDetailResep extends Activity {
 			    public void onClick(DialogInterface dialog, int which) {
 			        switch (which) {
 			        case DialogInterface.BUTTON_POSITIVE:
-			        	Log.i("masak", "listBahan.size() = "+listBahan.size());
 			        	for (int i = 0; i < listBahan.size(); i++) {
 			        		Bahan bahan = listBahan.get(i);
-			        		Log.i("masak", "cik.contains("+bahan.getNama()+") = "+cik.contains(bahan.getNama()));
 			        		if (cik.contains(bahan.getNama())) {
 			        			Bahan bahanDiKulkas = cik.get(bahan.getNama());
 			        			// konversi jumlah bahan
@@ -237,7 +266,6 @@ public class MenuDetailResep extends Activity {
 			        			
 			        			// pengurangan jumlah bahan
 			        			float hasilKurang = jumlahDiKulkas - jumlahDiResep;
-			        			Log.i("masak", bahanDiKulkas.getJumlah() + "-" +bahan.getJumlah());
 			        			if (hasilKurang < 0) {
 			        				// bahan dihilangkan dari kulkas
 			        				cik.delete(bahan.getNama());
@@ -280,7 +308,6 @@ public class MenuDetailResep extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Log.i("masak",resep.getNama());
 		resep = cdr.getResep(resep.getNama());
 		
 		((TextView)findViewById(R.id.kategori_resep)).setText(resep.getKategori());
@@ -294,13 +321,37 @@ public class MenuDetailResep extends Activity {
 			float jumlah = bahan.getJumlah();
 			if (jumlah % 1.0 == 0.0) {
 				if (cik.contains(bahan.getNama())) {
-					bahanStr += "<font color='#A4C639'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					boolean isSelected = false;
+					for (int j = 0; j < listBahanSelected.size(); j++) {
+						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
+							isSelected = true;
+							break;
+						}
+					}
+					Log.i("detailResep", "listBahanSelected.contains("+bahan.getNama()+"): "+isSelected);
+					if (isSelected) {
+						bahanStr += "<font color='#A4C639'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					} else {
+						bahanStr += (int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"<br />";
+					}
 				} else {
 					bahanStr += "<font color='#FF6A6A'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
 				}
 			} else {
 				if (cik.contains(bahan.getNama())) {
-					bahanStr += "<font color='#A4C639'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					boolean isSelected = false;
+					for (int j = 0; j < listBahanSelected.size(); j++) {
+						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
+							isSelected = true;
+							break;
+						}
+					}
+					Log.i("detailResep", "listBahanSelected.contains("+bahan.getNama()+"): "+isSelected);
+					if (isSelected) {
+						bahanStr += "<font color='#A4C639'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+					} else {
+						bahanStr += bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"<br />";
+					}
 				} else {
 					bahanStr += "<font color='#FF6A6A'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
 				}

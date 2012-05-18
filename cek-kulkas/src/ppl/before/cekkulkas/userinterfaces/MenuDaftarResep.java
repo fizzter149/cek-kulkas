@@ -93,6 +93,7 @@ public class MenuDaftarResep extends Activity {
         			// sertakan resep yang dipilih sebagai extra
         			Bundle b = new Bundle();
         			b.putSerializable("resep", tempList.get(position));
+        			b.putSerializable("listBahan", listBahan);
         			intentDetailResep.putExtras(b);
         			startActivity(intentDetailResep);
         		}
