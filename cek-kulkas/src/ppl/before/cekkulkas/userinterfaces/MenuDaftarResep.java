@@ -5,6 +5,7 @@ import java.util.List;
 
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
+import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Resep;
 import ppl.before.cekkulkas.models.Bahan;
 
@@ -37,6 +38,9 @@ public class MenuDaftarResep extends Activity {
 	/** controller daftar resep untuk membantu akses database */
 	private ControllerDaftarResep cdf = new ControllerDaftarResep(MenuDaftarResep.this);
 	
+	/** controller untuk membantu akses ke database isi kulkas */
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	
 	/** list resep hasil pencarian */
 	private ArrayList<Resep> listResep;
 	
@@ -67,8 +71,8 @@ public class MenuDaftarResep extends Activity {
 	/**
 	 * mengassign isi setiap elemen dari view
 	 */
-	private void initView(){
-		
+	private void initView() {
+
 		// jika list bahannya kosong, tampilkan semua resep
 		if(listBahan.size() == 0){
 			listResep = (ArrayList<Resep>)cdf.getFavorite(0);
@@ -170,7 +174,19 @@ public class MenuDaftarResep extends Activity {
 			}
 			holder.teksNama.setText(rList.get(position).getNama());
 			holder.teksKategori.setText(rList.get(position).getKategori());
-			holder.teksKeterangan.setText(Html.fromHtml("<font color='#FF6A6A'>kurang xx bahan</font>"));
+			// hitung jumlah bahan yang belum ada di kulkas
+			int jumlahBahanKurang = 0;
+			List<Bahan> listBahanDiResep = rList.get(position).getListBahan();
+			for (int i = 0; i < listBahanDiResep.size(); i++) {
+	        	if (!cik.contains(listBahanDiResep.get(i).getNama())) {
+	        		jumlahBahanKurang++;
+	        	}
+			}
+			if (jumlahBahanKurang > 0) {
+				holder.teksKeterangan.setText(Html.fromHtml("<font color='#FF6A6A'>kurang " + jumlahBahanKurang +" bahan</font>"));
+			} else {
+				holder.teksKeterangan.setText(Html.fromHtml("<font color='#A4C639'>bahan lengkap</font>"));
+			}
 			return view;
 		}
 		
