@@ -221,8 +221,11 @@ public class MenuDetailResep extends Activity {
 			        		if (cik.contains(bahan.getNama())) {
 			        			Bahan bahanDiKulkas = cik.get(bahan.getNama());
 			        			// konversi jumlah bahan
+			        			String satuanDiKulkas = bahanDiKulkas.getSatuan();
+			        			String satuanDiResep = bahan.getSatuan();
 			        			float jumlahDiKulkas = bahanDiKulkas.getJumlah();
-			        			float jumlahDiResep = bahan.getJumlah();
+			        			float jumlahDiResep = cik.convertSatuan(bahanDiKulkas.getNama(), satuanDiResep, satuanDiKulkas, bahan.getJumlah());
+			        			
 			        			// pengurangan jumlah bahan
 			        			float hasilKurang = jumlahDiKulkas - jumlahDiResep;
 			        			Log.i("masak", bahanDiKulkas.getJumlah() + "-" +bahan.getJumlah());

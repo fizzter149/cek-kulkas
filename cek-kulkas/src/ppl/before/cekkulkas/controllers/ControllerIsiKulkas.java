@@ -10,9 +10,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
- * CAUTION: NOT IMPLEMENTED YET
  * <p>Controller untuk daftar isi kulkas yang berurusan dengan database dan menghubungkan
  * antara View dan Model.</p>
  * @author Team Before
@@ -175,10 +175,43 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 		return listSatuan;
 	}
 	
-	public float convertSatuan(String nama, String satuanTujuan) {
+	public float convertSatuan(String nama, String satuanFrom, String satuanTo, float jumlahFrom) {
 		openDatabase(true);
-		
-		return 0;
+		float hasil = 0;
+		if (satuanFrom.equalsIgnoreCase(satuanTo)) {
+			hasil = jumlahFrom;
+		} else {
+			Cursor cursorSatuanDefault = db.rawQuery("SELECT DISTINCT satuan1 FROM konversi WHERE nama='" + nama + "'", null);
+			cursorSatuanDefault.moveToFirst();
+			String satuanDefault = cursorSatuanDefault.getString(0);
+			cursorSatuanDefault.close();
+			
+			float faktorDefault = 1;
+			if (satuanFrom.equalsIgnoreCase(satuanDefault)) {
+				faktorDefault = 1;
+			} else {
+				Cursor cursorKonversiDefault = db.rawQuery("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanFrom + "' AND satuan1='" + satuanDefault + "'", null);
+				cursorKonversiDefault.moveToFirst();
+				faktorDefault = cursorKonversiDefault.getFloat(0);
+				cursorKonversiDefault.close();
+			}
+			hasil = faktorDefault * jumlahFrom;
+			
+			float faktor = 1;
+			if (satuanTo.equalsIgnoreCase(satuanDefault)) {
+				faktor = 1;
+			} else {
+				Cursor cursorKonversi = db.rawQuery("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanTo + "' AND satuan1='" + satuanDefault + "'", null);
+				Log.i("masak", "Query: "+ nama +";"+satuanFrom+";"+satuanTo);
+				cursorKonversi.moveToFirst();
+				faktor = cursorKonversi.getFloat(0);
+				cursorKonversi.close();
+			}
+			hasil = hasil / faktor;
+		}
+		db.close();
+		Log.i("masak", nama +": "+hasil);
+		return hasil;
 		
 	}
 
