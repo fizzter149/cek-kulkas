@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,6 +162,7 @@ public class MenuDaftarResep extends Activity {
 				holder = new ViewHolderDaftarResep();
 				holder.teksNama = (TextView) view.findViewById(R.id.namaresep);
 				holder.teksKategori = (TextView) view.findViewById(R.id.kategoriresep);
+				holder.teksKeterangan = (TextView) view.findViewById(R.id.keteranganresep);
 				view.setTag(holder);
 			} else {
 				view = convertView;
@@ -168,6 +170,7 @@ public class MenuDaftarResep extends Activity {
 			}
 			holder.teksNama.setText(rList.get(position).getNama());
 			holder.teksKategori.setText(rList.get(position).getKategori());
+			holder.teksKeterangan.setText(Html.fromHtml("<font color='#FF6A6A'>kurang xx bahan</font>"));
 			return view;
 		}
 		
@@ -235,6 +238,7 @@ public class MenuDaftarResep extends Activity {
 	static class ViewHolderDaftarResep {
 		TextView teksNama;
 		TextView teksKategori;
+		TextView teksKeterangan;
 	}
 	
 	

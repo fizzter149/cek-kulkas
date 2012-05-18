@@ -91,7 +91,7 @@ public class MenuDaftarResepFavorit extends Activity {
 	private class DaftarResepFavoritAdapter extends ArrayAdapter<Resep> {
 		List<Resep> listResep;
 		public DaftarResepFavoritAdapter(Context context, List<Resep> listResep) {
-			super(context, R.layout.resep, listResep);
+			super(context, R.layout.resepfavorit, listResep);
 			this.listResep = listResep;
 			// TODO Auto-generated constructor stub
 		}
@@ -101,10 +101,10 @@ public class MenuDaftarResepFavorit extends Activity {
 			View view = null;
 			ViewHolderDaftarFavorit holder;
 			if (convertView == null) {
-				view = LayoutInflater.from(getContext()).inflate(R.layout.resep, parent, false);
+				view = LayoutInflater.from(getContext()).inflate(R.layout.resepfavorit, parent, false);
 				holder = new ViewHolderDaftarFavorit();
-				holder.teksNama = (TextView) view.findViewById(R.id.namaresep);
-				holder.teksKategori = (TextView) view.findViewById(R.id.kategoriresep);
+				holder.teksNama = (TextView) view.findViewById(R.id.namaresepfavorit);
+				holder.teksKategori = (TextView) view.findViewById(R.id.kategoriresepfavorit);
 				view.setTag(holder);
 			} else {
 				view = convertView;
