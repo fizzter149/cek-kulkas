@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -96,17 +97,25 @@ public class MenuDetailResep extends Activity {
 		listBahan = resep.getListBahan();
 		String bahanStr = "";
 		
-		for (int i = 0; i < listBahan.size(); i++) {
+		for(int i = 0; i < listBahan.size(); i++) {
 			Bahan bahan = listBahan.get(i);
 			float jumlah = bahan.getJumlah();
 			if (jumlah % 1.0 == 0.0) {
-				bahanStr += (int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
+				if (cik.contains(bahan.getNama())) {
+					bahanStr += "<font color='#A4C639'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				} else {
+					bahanStr += "<font color='#FF6A6A'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				}
 			} else {
-				bahanStr += bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
+				if (cik.contains(bahan.getNama())) {
+					bahanStr += "<font color='#A4C639'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				} else {
+					bahanStr += "<font color='#FF6A6A'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				}
 			}
 		}
 		
-		((TextView)findViewById(R.id.bahan_resep)).setText(bahanStr);
+		((TextView)findViewById(R.id.bahan_resep)).setText(Html.fromHtml(bahanStr));
 		
 		((TextView)findViewById(R.id.langkah_resep)).setText(resep.getLangkah());
 	}
@@ -284,13 +293,21 @@ public class MenuDetailResep extends Activity {
 			Bahan bahan = listBahan.get(i);
 			float jumlah = bahan.getJumlah();
 			if (jumlah % 1.0 == 0.0) {
-				bahanStr += (int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
+				if (cik.contains(bahan.getNama())) {
+					bahanStr += "<font color='#A4C639'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				} else {
+					bahanStr += "<font color='#FF6A6A'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				}
 			} else {
-				bahanStr += bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"\n";
+				if (cik.contains(bahan.getNama())) {
+					bahanStr += "<font color='#A4C639'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				} else {
+					bahanStr += "<font color='#FF6A6A'>"+bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
+				}
 			}
 		}
 		
-		((TextView)findViewById(R.id.bahan_resep)).setText(bahanStr);
+		((TextView)findViewById(R.id.bahan_resep)).setText(Html.fromHtml(bahanStr));
 		((TextView)findViewById(R.id.langkah_resep)).setText(resep.getLangkah());
 	}
 
