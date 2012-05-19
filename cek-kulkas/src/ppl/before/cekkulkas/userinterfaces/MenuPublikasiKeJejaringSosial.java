@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
@@ -39,10 +42,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.BaseRequestListener;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 
 public class MenuPublikasiKeJejaringSosial extends Activity{
 
@@ -75,7 +81,6 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
     private static final String KEY = "facebook-credentials";
 
 	private Facebook facebook;
-	private String messageToPost;
     
 
     /** Twitter4j object */
@@ -228,7 +233,7 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 				status.setMedia(f);
 				
 				twitter.updateStatus(status);
-				Toast.makeText(this, "resep berhasil dibagikan", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "resep berhasil dibagikan ke twitter", Toast.LENGTH_SHORT).show();
 			} catch (TwitterException e){
 				Log.i("gagal tweet",e.getMessage());
 				Toast.makeText(this, "gagal tweet ke twitter", Toast.LENGTH_SHORT).show();
@@ -238,39 +243,35 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 		}
 		
 		if(checkBoxFb.getVisibility() == View.VISIBLE && checkBoxFb.isChecked() == true){
-			Bundle parameters = new Bundle();
+			String deskripsi = ((EditText)findViewById(R.id.komentarresep)).getText()+"";
 			
 			String bahan = "";
 			List<Bahan> listBahan = resep.getListBahan();
 			for(int i=0; i<listBahan.size(); i++){
 				Bahan temp = listBahan.get(i);
-				bahan += (i+1)+". "+temp.getJumlah()+" "+temp.getSatuan()+" "+temp.getNama()+"\n"; 
+				float jumlah = temp.getJumlah();
+				if(jumlah%1.0 == 0.0){
+					bahan += (i+1)+". "+(int)jumlah+" "+temp.getSatuan()+" "+temp.getNama()+"\n";
+				}else {
+					bahan += (i+1)+". "+jumlah+" "+temp.getSatuan()+" "+temp.getNama()+"\n";
+				}
 			}
 			
-			String deskripsi=resep.getDeskripsi()+"\n\n\n"+bahan+"\n\n\n"+resep.getLangkah();
-						
-	        parameters.putString("message", ((EditText)findViewById(R.id.komentarresep)).getText()+"");
-//	        parameters.putString("name", resep.getNama());
-//	        parameters.putString("caption", resep.getKategori());
-//	        parameters.putString("description", deskripsi);
-//	        parameters.putString("method", "photos.upload");
-//	        parameters.putString("picture", "https://si0.twimg.com/profile_images/2226016013/ic_launcher_cekkulkas_reasonably_small.png");
-	        try {
-		        facebook.request("me");
-				String response = facebook.request("me/feed", parameters, "POST");
-				Log.d("Tests", "got response: " + response);
-				if (response == null || response.equals("") ||
-				        response.equals("false")) {
-					showToast("Tidak ada respon");
-				}
-				else {
-					showToast("resep berhasil dibagikan");
-				}
-			} catch (Exception e) {
-				showToast("Failed to post to wall!");
-				e.printStackTrace();
-				finish();
-			}
+			deskripsi+="\n\n\n"+resep.getNama().toUpperCase()+"\n\n"+resep.getDeskripsi()+"\n\nBahan-bahan:\n"+bahan+"\n\nCara Pembuatan:\n"+resep.getLangkah();
+			byte[] data = null;
+			Bitmap bi = BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/foto.jpg");
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bi.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+			data = baos.toByteArray();
+			
+			Bundle parameters = new Bundle();
+	        parameters.putString("caption", deskripsi);
+	        parameters.putString("method", "photos.upload");
+			parameters.putByteArray("picture", data);
+        	
+			AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
+            mAsyncRunner.request(null, parameters, "POST", new SimpleUploadListener(), null);
+	        	
 		} else {
 			Toast.makeText(this, "Tidak ada yang dishare ke facebook", Toast.LENGTH_SHORT).show();
 		}
@@ -308,9 +309,20 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 	    	showToast("autentikasi facebook gagal!");
 	    }
 	}
+	
+	private class SimpleUploadListener extends BaseRequestListener {
+	    public void onComplete(final String response, final Object state) {
+	        try {
+	            Log.d("Facebook-Example", "Response: " + response.toString());
+	            Toast.makeText(MenuPublikasiKeJejaringSosial.this, "resep berhasil dibagikan ke facebook", Toast.LENGTH_SHORT).show();
+	        } catch (FacebookError e) {
+	            Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
+	        }
+	    }
+	}
 
 
 	private void showToast(String message){
-		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+		Toast.makeText(MenuPublikasiKeJejaringSosial.this, message, Toast.LENGTH_SHORT).show();
 	}
 }
