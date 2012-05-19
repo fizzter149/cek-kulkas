@@ -10,16 +10,24 @@ import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -163,6 +171,17 @@ public class MenuDetailResep extends Activity {
 	    inflater.inflate(R.menu.menudetailresep, menu);
 	    return true;
 
+	}
+	
+	public void fullScreen(View v){
+		Intent i = new Intent(MenuDetailResep.this, MenuFotoFullScreen.class);
+		String foto = resep.getFoto();
+		if(foto == null || foto.equals("")){
+			foto = "r0";
+		}
+		i.putExtra("foto", foto);
+		startActivity(i);
+		return;
 	}
 
 	@Override

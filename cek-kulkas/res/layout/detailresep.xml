@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/containerdetailresep" >
 
     <TextView
         style="@style/MenuTitle"
@@ -68,6 +69,7 @@
         android:background="#C9C9C9"
         android:padding="4dp"
         android:layout_gravity="center_horizontal"
+        android:onClick="fullScreen"
         />
     
     

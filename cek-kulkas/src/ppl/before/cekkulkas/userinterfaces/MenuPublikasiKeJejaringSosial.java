@@ -8,9 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
@@ -20,8 +17,6 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +34,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +44,6 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
-import com.facebook.android.Util;
 
 public class MenuPublikasiKeJejaringSosial extends Activity{
 
@@ -68,11 +63,12 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
     /** The url that Twitter will redirect to after a user log's in - this will be picked up by your app manifest and redirected into this activity */
     private static final String CALLBACK_URL = "cekkulkas:///";
     
-    private final String TWITPIC_API_KEY = "80407a1e15f66487c3bab442a70b25c1";
+    /** Twitter4j object */
+    private Twitter twitter;
+    /** The request token signifies the unique ID of the request you are sending to twitter  */
+    private RequestToken reqToken;
     
-    private Configuration twitterConf;
-    
-    
+
     // FACEBOOK
     private static final String[] PERMISSIONS = new String[] {"publish_stream"};
     private static final String APP_ID = "127129437422417";
@@ -82,11 +78,8 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 
 	private Facebook facebook;
     
-
-    /** Twitter4j object */
-    private Twitter twitter;
-    /** The request token signifies the unique ID of the request you are sending to twitter  */
-    private RequestToken reqToken;
+    private final int CAMERA_PIC_REQUEST = 149;
+    private Bitmap fotoResep;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -100,8 +93,15 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 		// mengambil objek resep yang akan ditampilkan detailnya dari extra
 		resep = (Resep)getIntent().getSerializableExtra("resep");
 		
+		String temp = resep.getFoto();
+		if(temp == null || temp.equals("")){
+			temp = "r0";
+		}
+		fotoResep = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(temp, "drawable", getPackageName()));
+		
 		((TextView)findViewById(R.id.namaresepshare)).setText(resep.getNama());
         ((EditText)findViewById(R.id.komentarresep)).setText("Saya baru saja memasak "+resep.getNama());
+        ((ImageView)findViewById(R.id.fotoresepshare)).setImageBitmap(fotoResep);
 		
 		sharedPref = getSharedPreferences("twitterPref", MODE_PRIVATE);
 		
@@ -111,14 +111,8 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			((Button)findViewById(R.id.checkboxtwitter)).setVisibility(View.GONE);
 		}
 		
-		twitterConf = new ConfigurationBuilder()
-	    .setMediaProviderAPIKey( TWITPIC_API_KEY )
-	    .setOAuthConsumerKey( CONSUMER_KEY_TWITTER )
-	    .setOAuthConsumerSecret( CONSUMER_SECRET_TWITTER )
-	    .build();
-		
-		twitter = new TwitterFactory(twitterConf).getInstance();
-		
+		twitter = new TwitterFactory().getInstance();
+		twitter.setOAuthConsumer(CONSUMER_KEY_TWITTER, CONSUMER_SECRET_TWITTER);
 		
 		facebook = new Facebook(APP_ID);
 		
@@ -126,6 +120,28 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			((Button)findViewById(R.id.loginfacebook)).setVisibility(View.GONE);
 		} else {
 			((Button)findViewById(R.id.checkboxfacebook)).setVisibility(View.GONE);
+		}
+	}
+	
+	public void ambilGambar(View v){
+		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent,CAMERA_PIC_REQUEST);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode == CAMERA_PIC_REQUEST){
+			if(resultCode == Activity.RESULT_OK){
+				Bitmap temp = (Bitmap) data.getExtras().get("data");
+				Log.i("asdf","tes");
+				
+				if(temp != null){
+					fotoResep = temp;
+					((ImageView)findViewById(R.id.fotoresepshare)).setImageBitmap(temp);
+				}
+			} else if(resultCode == Activity.RESULT_CANCELED){
+    			Log.i("asdf","cancel");
+    		}
 		}
 	}
 	
@@ -183,6 +199,7 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
                 
                 ((TextView)findViewById(R.id.namaresepshare)).setText(resep.getNama());
                 ((EditText)findViewById(R.id.komentarresep)).setText("Saya baru saja memasak "+resep.getNama());
+                ((ImageView)findViewById(R.id.fotoresepshare)).setImageBitmap(fotoResep);
                 
                 ((Button)findViewById(R.id.logintwitter)).setVisibility(View.GONE);
                 ((CheckBox)findViewById(R.id.checkboxtwitter)).setVisibility(View.VISIBLE);
