@@ -33,6 +33,9 @@ public class Resep implements Serializable {
 	/** Status kefavoritan resep */
 	private int flagFavorit;
 	
+	/** Jumlah bahan yang kurang */
+	private int jumlahKurangBahan;
+	
 	/** Foto masakan hasil resep */
 	private String foto;
 	
@@ -61,6 +64,7 @@ public class Resep implements Serializable {
 		this.kategori = kategori;
 		this.flagFavorit = flagFavorit;
 		this.foto = foto;
+		this.jumlahKurangBahan = 0;
 	}
 
 	/**
@@ -173,5 +177,21 @@ public class Resep implements Serializable {
 	 */
 	public void setFlagFavorit(int flagFavorit) {
 		this.flagFavorit = flagFavorit;
+	}
+	
+	/**
+	 * Mendapatkan jumlah kekurangan bahan
+	 * @return Jumlah kekurangan bahan
+	 */
+	public int getJumlahKurangBahan() {
+		return jumlahKurangBahan;
+	}
+
+	/**
+	 * Mengganti jumlah kekurangan bahan
+	 * @param jumlahKurangBahan umlah kekurangan bahan
+	 */
+	public void setJumlahKurangBahan(int jumlahKurangBahan) {
+		this.jumlahKurangBahan = jumlahKurangBahan;
 	}
 }

@@ -1,13 +1,10 @@
 package ppl.before.cekkulkas.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -142,7 +139,7 @@ public class ControllerDaftarResep extends SQLiteOpenHelper {
 	 * @param listBahan Bahan-bahan
 	 * @return Daftar resep
 	 */
-	public ArrayList<Resep> findResep(final List<Bahan> listBahan) {
+	public ArrayList<Resep> findResep(List<Bahan> listBahan) {
 		
 		String query = "SELECT r._id FROM resep r, bahan b WHERE b.koderesep=r._id and (b.nama in (";
 		
@@ -199,30 +196,7 @@ public class ControllerDaftarResep extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		db.close();
-		
-		// Sorting berdasarkan jumlah bahan yang sesuai
-		Collections.sort(listResep, new Comparator<Resep>() {			
-			public int compare(Resep r1, Resep r2) {
-				int b1 = 0, b2 = 0;
-				List<String> lb = new ArrayList<String>();
-				
-				for (Bahan b: listBahan){
-					lb.add(b.getNama());
-				}
-				
-				for(Bahan b: r1.getListBahan()){
-					if (lb.contains(b.getNama())) b1++;
-				}
-				
-				for(Bahan b: r2.getListBahan()){
-					if (lb.contains(b.getNama())) b2++;
-				}
-				
-				return b2 - b1;
-			}
-			
-		});
-		
+						
 		return listResep;
 	}
 	
