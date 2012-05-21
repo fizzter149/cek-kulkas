@@ -1,120 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/containerdetailresep"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical"
-    android:id="@+id/containerdetailresep" >
+    android:orientation="vertical" >
 
     <TextView
         style="@style/MenuTitle"
         android:text="@string/menu_detail_resep" />
-    
-    <TextView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+
+    <TextView
         android:id="@+id/nama_resep"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Nama Resep"
-        android:textSize="22sp"
         android:paddingTop="10dp"
-        />
-    <TextView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:text="Nama Resep"
+        android:textSize="22sp" />
+
+    <TextView
         android:id="@+id/kategori_resep"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="kategori"
         android:paddingBottom="10dp"
-        />
-    
-    
-    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-    <TabHost android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/tabHost"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <TabWidget
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@android:id/tabs"
-    />
-     <FrameLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@android:id/tabcontent"
-     >
-     
-         
-     <LinearLayout
-     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="70dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:id="@+id/tabdeskripsi"
-     >
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/deskripsi_resep"
-        />
-     <ImageView 
-        android:id="@+id/fotoResep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="#C9C9C9"
-        android:padding="4dp"
-        android:layout_gravity="center_horizontal"
-        android:onClick="fullScreen"
-        />
-    
-    
-     </LinearLayout>
-     
-     
-     <LinearLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingTop="70dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:id="@+id/tabbahan"
-     >
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bahan_resep"
-        android:gravity="center_horizontal"
-        />
-   
-     </LinearLayout>
+        android:text="kategori" />
 
-     
-      <LinearLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingTop="70dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:id="@+id/tablangkah"
-     >
-    <TextView
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/langkah_resep"
-        android:gravity="fill_horizontal"
-        />
-   
-     </LinearLayout>
+        android:layout_height="fill_parent" >
 
-     </FrameLayout>
-    
-    </TabHost>
+        <TabHost
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tabHost"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <LinearLayout
+                    android:id="@+id/tabdeskripsi"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="70dp" >
+
+                    <TextView
+                        android:id="@+id/deskripsi_resep"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/fotoResep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:background="#C9C9C9"
+                        android:onClick="fullScreen"
+                        android:padding="4dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tabbahan"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="70dp" >
+
+                    <TextView
+                        android:id="@+id/bahan_resep"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tablangkah"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="70dp" >
+
+                    <TextView
+                        android:id="@+id/langkah_resep"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="fill_horizontal" />
+                </LinearLayout>
+            </FrameLayout>
+        </TabHost>
     </ScrollView>
+
 </LinearLayout>

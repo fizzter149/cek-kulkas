@@ -26,8 +26,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -224,7 +222,6 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			twitter.setOAuthAccessToken(at);
 			
 			try{
-				
 				StatusUpdate status = new StatusUpdate(((EditText)findViewById(R.id.komentarresep)).getText()+" via @cekkulkas");
 				status.setMedia(f);
 				

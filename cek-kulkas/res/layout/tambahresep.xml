@@ -4,143 +4,139 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="vertical" >
-    
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:orientation="vertical"
-    android:baselineAligned="false"
-    android:layout_weight="0.9">
 
-    <TextView
-        style="@style/MenuTitle"
-        android:text="@string/menu_tambah_resep" />
-    
-    <EditText 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/nama_resep_tambah"
-        android:gravity="center_vertical"
-        android:hint="nama"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-    	android:layout_marginBottom="10dp"
-    	android:singleLine="true"
-        />
-    
-    
-    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
-    <TabHost android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/tabHost_tambah"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <TabWidget
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@android:id/tabs"
-    />
-     <FrameLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@android:id/tabcontent"
-     >
-     
-     <LinearLayout
-         android:id="@+id/tabdeskripsi_tambah"
-         android:layout_width="fill_parent"
-         android:layout_height="match_parent"
-         android:orientation="vertical"
-         android:paddingLeft="10dp"
-         android:paddingRight="10dp"
-         android:paddingTop="70dp" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
 
-	    <EditText 
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:id="@+id/kategori_resep_tambah"
-	        android:hint="kategori"
-	        android:singleLine="true"
-	        />
-         <EditText
-             android:id="@+id/deskripsi_resep_tambah"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:inputType="textMultiLine"
-             android:minLines="4"
-             android:gravity="top"
-             android:hint="deskripsi" />
-     </LinearLayout>
-     
-     <LinearLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="70dp"
-    android:id="@+id/tabbahan_tambah"
-     >
-    <TableLayout
-        android:id="@+id/tabelbahan"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        >
-        <TableRow 
+        <TextView
+            style="@style/MenuTitle"
+            android:text="@string/menu_tambah_resep" />
+
+        <EditText
+            android:id="@+id/nama_resep_tambah"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            
-        </TableRow>
-        
-    </TableLayout>
-   
-     </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:hint="nama"
+            android:singleLine="true" />
 
-     
-      <LinearLayout
-     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingTop="70dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:id="@+id/tablangkah_tambah"
-     >
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/langkah_resep_tambah"
-        android:inputType="textMultiLine"
-        android:minLines="4"
-        android:gravity="top"
-        android:hint="cara pembuatan"
-        />
-   
-     </LinearLayout>
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-     </FrameLayout>
-    
-    </TabHost>
-    </ScrollView>
-</LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.1"
-    android:orientation="horizontal">
-    <Button 
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:text="Simpan"
-        android:id="@+id/tombolsimpan_tambah"
-        android:enabled="false"/>
-    <Button 
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:text="Batal"
-        android:id="@+id/tombolbatal_tambah"/>
-    
-</LinearLayout>
+            <TabHost
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/tabHost_tambah"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <LinearLayout
+                        android:id="@+id/tabdeskripsi_tambah"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="70dp" >
+
+                        <EditText
+                            android:id="@+id/kategori_resep_tambah"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="kategori"
+                            android:singleLine="true" />
+
+                        <EditText
+                            android:id="@+id/deskripsi_resep_tambah"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:gravity="top"
+                            android:hint="deskripsi"
+                            android:inputType="textMultiLine"
+                            android:minLines="4" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tabbahan_tambah"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="70dp" >
+
+                        <TableLayout
+                            android:id="@+id/tabelbahan"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent" >
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content" >
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tablangkah_tambah"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="70dp" >
+
+                        <EditText
+                            android:id="@+id/langkah_resep_tambah"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:hint="cara pembuatan"
+                            android:inputType="textMultiLine"
+                            android:minLines="4" />
+                    </LinearLayout>
+                </FrameLayout>
+            </TabHost>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/tombolsimpan_tambah"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:enabled="false"
+            android:text="Simpan" />
+
+        <Button
+            android:id="@+id/tombolbatal_tambah"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Batal" />
+    </LinearLayout>
+
 </LinearLayout>
