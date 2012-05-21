@@ -1,5 +1,6 @@
 package ppl.before.cekkulkas.userinterfaces;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,24 +11,18 @@ import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -57,6 +52,8 @@ public class MenuDetailResep extends Activity {
 	private List<Bahan> listBahan;
 	
 	private ArrayList<Bahan> listBahanSelected;
+    
+    private final int CAMERA_PIC_REQUEST = 149;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -309,11 +306,7 @@ public class MenuDetailResep extends Activity {
 			    .setNegativeButton("Batal", konfirmasiMasak).show();
 			return true;
 		case R.id.menushare:
-			Intent i2 = new Intent(MenuDetailResep.this, MenuPublikasiKeJejaringSosial.class);
-			Bundle b2 = new Bundle();
-			b2.putSerializable("resep", resep);
-			i2.putExtras(b2);
-			startActivity(i2);
+			ambilGambar();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -380,5 +373,37 @@ public class MenuDetailResep extends Activity {
 		((TextView)findViewById(R.id.bahan_resep)).setText(Html.fromHtml(bahanStr));
 		((TextView)findViewById(R.id.langkah_resep)).setText(resep.getLangkah());
 	}
+	
+	public void ambilGambar(){
+		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent,CAMERA_PIC_REQUEST);
+	}
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    	if(requestCode == CAMERA_PIC_REQUEST){
+    		if(resultCode == Activity.RESULT_OK){
+    			Log.i("asdf",data.toURI());
+    			Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+    		
+	    		if(thumbnail != null){
+	    			Intent i2 = new Intent(MenuDetailResep.this, MenuPublikasiKeJejaringSosial.class);
+	    			Bundle b2 = new Bundle();
+	    			b2.putSerializable("resep", resep);
+	    			
+	    			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    			thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+	    			byte[] foto = baos.toByteArray();
+	    			b2.putByteArray("foto", foto);
+	    			
+	    			i2.putExtras(b2);
+	    			startActivity(i2);
+	    		}
+    		} else if(resultCode == Activity.RESULT_CANCELED){
+    			Log.i("asdf","cancel");
+    		}
+    		
+    	}
+    }
 
 }
