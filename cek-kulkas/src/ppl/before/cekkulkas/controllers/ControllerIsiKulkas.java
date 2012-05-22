@@ -221,7 +221,7 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 	 * Membuka database
 	 * @param isReadOnly Kalau buat get: true, kalau buat add/remove/modify: readwrite
 	 */
-	private void openDatabase(boolean isReadOnly) {
+	public void openDatabase(boolean isReadOnly) {
     	String myPath = DATABASE_PATH + DATABASE_NAME;
     	
     	if(isReadOnly){
