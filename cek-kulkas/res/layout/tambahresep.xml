@@ -18,7 +18,7 @@
 
         <EditText
             android:id="@+id/nama_resep_tambah"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
@@ -54,7 +54,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="70dp" >
+                        android:paddingTop="40dp" >
 
                         <EditText
                             android:id="@+id/kategori_resep_tambah"
@@ -66,11 +66,24 @@
                         <EditText
                             android:id="@+id/deskripsi_resep_tambah"
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="top"
                             android:hint="deskripsi"
                             android:inputType="textMultiLine"
-                            android:minLines="4" />
+                            android:lines="4" />
+                        
+                        <ImageView 
+                            android:id="@+id/fotoreseptambah"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"/>
+                        
+                        <ImageButton 
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_menu_camera"
+                            android:onClick="ambilGambar"
+                            />
                     </LinearLayout>
 
                     <LinearLayout
@@ -80,7 +93,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="70dp" >
+                        android:paddingTop="40dp" >
 
                         <TableLayout
                             android:id="@+id/tabelbahan"
@@ -101,7 +114,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="70dp" >
+                        android:paddingTop="40dp" >
 
                         <EditText
                             android:id="@+id/langkah_resep_tambah"

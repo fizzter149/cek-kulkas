@@ -93,6 +93,10 @@ public class MenuEditResep extends Activity {
 		spec.setContent(R.id.tablangkah_edit);
 		spec.setIndicator("Langkah");
 		tabHost.addTab(spec);
+		
+		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 30;
+		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 30;
+		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 30;
 
 		((TextView)findViewById(R.id.nama_resep_edit)).setText(resep.getNama());
 		((EditText)findViewById(R.id.kategori_resep_edit)).setText(resep.getKategori());

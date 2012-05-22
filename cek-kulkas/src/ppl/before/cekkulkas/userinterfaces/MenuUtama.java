@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -37,6 +36,7 @@ public class MenuUtama extends Activity {
         // membuat database saat aplikasi pertama kali dijalankan (baru install)
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         dbHelper.createDatabase();
+        dbHelper.close();
         
         copyPhoto();
         
@@ -74,19 +74,17 @@ public class MenuUtama extends Activity {
         });
     }
     
-    private void copyPhoto(){
+    private void copyPhoto() {
     	String path = "/data/data/ppl.before.cekkulkas/";
-    	if(!(new File(path+"r0.jpg")).exists()){
+    	if (!(new File(path+"r0.jpg")).exists()) {
     		InputStream is = null;
     		OutputStream os = null;
-    		try{
+    		try {
     			AssetManager am = getAssets();
     			String[] listFoto = am.list("fotoresep");
-    			Log.i("tes",listFoto.length+"");
     			for(String nama: listFoto){
-    				is = am.open("fotoresep/"+nama);
-    				(new File(path+nama)).createNewFile();
-    				os = new FileOutputStream(path+nama);
+    				is = am.open("fotoresep/" + nama);
+    				os = new FileOutputStream(path + nama);
     				byte[] buffer = new byte[1024];
     	    		int length;
     	    		while ((length = is.read(buffer)) > 0) {
@@ -96,8 +94,7 @@ public class MenuUtama extends Activity {
     	    		os.close();
     	    		is.close();
     			}
-    		} catch (IOException e){
-    			Log.i("error",e.getMessage());
+    		} catch (IOException e) {
     		}
     	}
     }

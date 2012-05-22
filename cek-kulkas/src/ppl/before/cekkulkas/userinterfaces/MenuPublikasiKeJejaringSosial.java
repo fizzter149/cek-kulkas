@@ -2,6 +2,7 @@ package ppl.before.cekkulkas.userinterfaces;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,13 +95,13 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 		byte[] temp = (byte[])getIntent().getByteArrayExtra("foto");
 		if (temp != null) {
 			fotoResep = BitmapFactory.decodeByteArray(temp, 0, temp.length);
+	        ((ImageView)findViewById(R.id.fotoresepshare)).setImageBitmap(fotoResep);
 		} else {
 			((ImageView)findViewById(R.id.fotoresepshare)).setVisibility(View.GONE);
 		}
 		
 		((TextView)findViewById(R.id.namaresepshare)).setText(resep.getNama());
         ((EditText)findViewById(R.id.komentarresep)).setText("Saya baru saja memasak "+resep.getNama());
-        ((ImageView)findViewById(R.id.fotoresepshare)).setImageBitmap(fotoResep);
 		
 		sharedPref = getSharedPreferences("twitterPref", MODE_PRIVATE);
 		
@@ -180,6 +181,12 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
                 ((Button)findViewById(R.id.logintwitter)).setVisibility(View.GONE);
                 ((CheckBox)findViewById(R.id.checkboxtwitter)).setVisibility(View.VISIBLE);
                 
+                if (fotoResep != null) {
+                    ((ImageView)findViewById(R.id.fotoresepshare)).setImageBitmap(fotoResep);
+        		} else {
+        			((ImageView)findViewById(R.id.fotoresepshare)).setVisibility(View.GONE);
+        		}
+                
                 if(restoreCredentials(facebook)){
         			((Button)findViewById(R.id.loginfacebook)).setVisibility(View.GONE);
         		} else {
@@ -208,39 +215,29 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			try{
 				StatusUpdate status = new StatusUpdate(((EditText)findViewById(R.id.komentarresep)).getText()+" via @cekkulkas");
 
-				File f = new File("/data/data/ppl.before.cekkulkas/foto.jpg");
-				if(fotoResep != null){
-					try{
+				if (fotoResep != null) {
+					File f = new File("/data/data/ppl.before.cekkulkas/foto.jpg");
+					try {
 					    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					    fotoResep.compress(CompressFormat.JPEG, 100, baos);
 					    byte[] bitmapData = baos.toByteArray();
 					    
 					    FileOutputStream fos = new FileOutputStream(f);
 					    fos.write(bitmapData);
-				    } catch (IOException e){
-				    	Log.i("asdf",e.getMessage());
+				    } catch (IOException e) {
 				    }
-				} else {
-					try{
-						String temp = resep.getFoto();
-						if(temp == null || temp.equals("")){
-							temp = "r0";
-						}
-						InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(temp, "drawable", getPackageName()));
-						OutputStream out = new FileOutputStream(f);
-						byte buf[]=new byte[1024];
-					    int len;
-					    while((len=inputStream.read(buf))>0)
-					    out.write(buf,0,len);
-					    out.close();
-					    inputStream.close();
-					} catch (IOException e){
-						Log.i("asdf",e.getMessage());
-					}
+					status.setMedia(f);
 					
+				} else {
+					String temp = resep.getFoto();
+					if (temp == null || temp.equals("")) {
+						temp = "r0";
+					}
+					File f = new File("/data/data/ppl.before.cekkulkas/" + temp + ".jpg");
+					status.setMedia(f);
 				}
 
-				status.setMedia(f);
+				
 				
 				twitter.updateStatus(status);
 				Toast.makeText(this, "resep berhasil dibagikan ke twitter", Toast.LENGTH_SHORT).show();
@@ -268,10 +265,23 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			}
 			
 			deskripsi+="\n\n\n"+resep.getNama().toUpperCase()+"\n\n"+resep.getDeskripsi()+"\n\nBahan-bahan:\n"+bahan+"\n\nCara Pembuatan:\n"+resep.getLangkah();
+
 			byte[] data = null;
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			fotoResep.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-			data = baos.toByteArray();
+			if(fotoResep != null){
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				fotoResep.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+				data = baos.toByteArray();
+			} else {
+				String temp = resep.getFoto();
+				if (temp == null || temp.equals("")) {
+					temp = "r0";
+				}
+				Bitmap bmp = BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/" + temp + ".jpg");
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				if(bmp == null) Log.i("cek","null");
+				bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+				data = baos.toByteArray();
+			}
 			
 			Bundle parameters = new Bundle();
 	        parameters.putString("caption", deskripsi);

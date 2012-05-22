@@ -1,5 +1,9 @@
 package ppl.before.cekkulkas.userinterfaces;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ppl.before.cekkulkas.R;
@@ -7,6 +11,10 @@ import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
 import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -21,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -54,6 +63,10 @@ public class MenuBuatResepBaru extends Activity {
 	private String tempSatuan;
 	
 	private ArrayAdapter<String> adapterSatuan;
+	
+	private final int CAMERA_PIC_REQUEST = 149;
+	
+	private Bitmap fotoCamera;
 
 	
 	/** Called when the activity is first created. */
@@ -66,6 +79,8 @@ public class MenuBuatResepBaru extends Activity {
 		setContentView(R.layout.tambahresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
+		((ImageView)findViewById(R.id.fotoreseptambah)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/r0.jpg"));
+		
 		// insialisasi tampilan tab (deskripsi, bahan, langkah)
 		final TabHost tabHost = (TabHost)findViewById(R.id.tabHost_tambah);
 		tabHost.setup();
@@ -84,6 +99,10 @@ public class MenuBuatResepBaru extends Activity {
 		spec.setContent(R.id.tablangkah_tambah);
 		spec.setIndicator("Langkah");
 		tabHost.addTab(spec);
+		
+		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 30;
+		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 30;
+		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 30;
 
 		// listener untuk event ganti fokus pada text field nama resep
 		((EditText)findViewById(R.id.nama_resep_tambah)).setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -122,9 +141,24 @@ public class MenuBuatResepBaru extends Activity {
 				String kategori = ((TextView)findViewById(R.id.kategori_resep_tambah)).getText()+"";
 				String deskripsi = ((TextView)findViewById(R.id.deskripsi_resep_tambah)).getText()+"";
 				String langkah = ((TextView)findViewById(R.id.langkah_resep_tambah)).getText()+"";
+				String foto = "";
+				
+				if(fotoCamera != null){
+					File f = new File("/data/data/ppl.before.cekkulkas/"+nama+".jpg");
+					try {
+					    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					    fotoCamera.compress(CompressFormat.JPEG, 100, baos);
+					    byte[] bitmapData = baos.toByteArray();
+					    
+					    FileOutputStream fos = new FileOutputStream(f);
+					    fos.write(bitmapData);
+				    } catch (IOException e) {
+				    }
+					foto = nama;
+				}
 
 				// tambahkan resep ke database, beri notifikasi
-				if(cdr.addResep(nama, deskripsi, listBahan, langkah, kategori, "")){
+				if(cdr.addResep(nama, deskripsi, listBahan, langkah, kategori, foto)){
 					Toast.makeText(MenuBuatResepBaru.this, "resep berhasil dibuat", Toast.LENGTH_SHORT).show();
 					listBahan.clear();
 					MenuBuatResepBaru.this.finish();
@@ -144,6 +178,21 @@ public class MenuBuatResepBaru extends Activity {
 				MenuBuatResepBaru.this.finish();
 			}
 		});
+	}
+	
+	public void ambilGambar(View v){
+		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAMERA_PIC_REQUEST) {
+			if (resultCode == Activity.RESULT_OK) {
+				fotoCamera = (Bitmap) data.getExtras().get("data");
+				((ImageView)findViewById(R.id.fotoreseptambah)).setImageBitmap(fotoCamera);
+			}
+		}
 	}
 
 	
