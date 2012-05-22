@@ -8,10 +8,10 @@ import java.util.List;
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.ControllerDaftarResep;
 import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
-import ppl.before.cekkulkas.models.Resep;
 import ppl.before.cekkulkas.models.Bahan;
-
+import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,7 +41,7 @@ public class MenuDaftarResep extends Activity {
 	private ControllerDaftarResep cdr = new ControllerDaftarResep(MenuDaftarResep.this);
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas(MenuDaftarResep.this);
 	
 	/** list resep hasil pencarian */
 	private ArrayList<Resep> listResep;
@@ -66,7 +66,11 @@ public class MenuDaftarResep extends Activity {
         listBahan = (ArrayList<Bahan>) getIntent().getSerializableExtra("listBahan");
         
         // inisialisasi isi setiap elemen dari view
-        initView();
+
+        
+				initView();
+			
+			
     }
 	
 	
@@ -74,7 +78,6 @@ public class MenuDaftarResep extends Activity {
 	 * mengassign isi setiap elemen dari view
 	 */
 	private void initView() {
-
 		// jika list bahannya kosong, tampilkan semua resep
 		if (listBahan.size() == 0) {
 			listResep = (ArrayList<Resep>)cdr.getFavorite(0);
@@ -82,7 +85,18 @@ public class MenuDaftarResep extends Activity {
 		} else {
 			listResep = cdr.findResep(listBahan);
 		}
+
 		
+		List<Bahan> temp = cik.getAll();
+		final List<String> namaBahan = new ArrayList();
+		for(Bahan b:temp){
+			namaBahan.add(b.getNama());
+		}
+		
+//		final ProgressDialog pg;
+//		pg = ProgressDialog.show(MenuDaftarResep.this, "", "mencari resep...",true,false);
+//		new Thread(){
+//			public void run(){
 		// list nama bahan yang dipilih
 		List<String> listBahanCocok = new ArrayList<String>();
 		for (Bahan b: listBahan) {
@@ -98,14 +112,13 @@ public class MenuDaftarResep extends Activity {
 				}
 				
 				// hitung kurang bahan tiap resep
-				if (!cik.contains(b.getNama())) {
+				if (!namaBahan.contains(b.getNama())) {
 					jumlahKurangBahan++;
 				}
 			}
 			listResep.get(i).setJumlahBahanCocok(jumlahBahanCocok);
 			listResep.get(i).setJumlahKurangBahan(jumlahKurangBahan);
 		}
-		
 		// Sorting berdasarkan jumlah bahan yang sesuai
 		Collections.sort(listResep, new Comparator<Resep>() {			
 			public int compare(Resep r1, Resep r2) {
@@ -127,12 +140,15 @@ public class MenuDaftarResep extends Activity {
 			}
 			
 		});
+//		pg.dismiss();
+//			}
+//		}.start();
 		// awalnya, list resep hasil filter adalah list resep itu sendiri
 		tempList = listResep;
 		
 		// assign isi view daftar resep 
 		ListView lv = (ListView) findViewById(R.id.daftarResep);
-        final DaftarResepAdapter daftarResepAdapter = new DaftarResepAdapter(this, tempList);
+        final DaftarResepAdapter daftarResepAdapter = new DaftarResepAdapter(MenuDaftarResep.this, tempList);
         lv.setAdapter(daftarResepAdapter);
         
         // listener untuk item di daftar resep
@@ -159,7 +175,7 @@ public class MenuDaftarResep extends Activity {
         		listKategori.add(resep.getKategori().trim());
         	}
         }
-        ArrayAdapter<String> adapterKategori = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listKategori);
+        ArrayAdapter<String> adapterKategori = new ArrayAdapter<String>(MenuDaftarResep.this, android.R.layout.simple_spinner_item, listKategori);
         adapterKategori.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerKategori.setAdapter(adapterKategori);
         
@@ -189,7 +205,7 @@ public class MenuDaftarResep extends Activity {
 		
 		public DaftarResepAdapter(Context context, List<Resep> rList) {
 			super(context, R.layout.resep, rList);
-			this.rList = rList;
+			DaftarResepAdapter.this.rList = rList;
 			// TODO Auto-generated constructor stub
 		}
 		
@@ -312,6 +328,7 @@ public class MenuDaftarResep extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		initView();
+		
+				initView();
 	}
 }

@@ -91,9 +91,9 @@ public class MenuDetailResep extends Activity {
 		tabHost.addTab(spec1);
 		tabHost.addTab(spec2);
 		tabHost.addTab(spec3);
-		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 30;
-		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 30;
-		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 30;
+		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 40;
+		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 40;
+		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 40;
 
 
 		// mengisi setiap elemen pada view

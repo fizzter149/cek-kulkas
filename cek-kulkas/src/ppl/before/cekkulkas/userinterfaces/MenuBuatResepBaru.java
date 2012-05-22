@@ -100,9 +100,9 @@ public class MenuBuatResepBaru extends Activity {
 		spec.setIndicator("Langkah");
 		tabHost.addTab(spec);
 		
-		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 30;
-		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 30;
-		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 30;
+		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 40;
+		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 40;
+		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 40;
 
 		// listener untuk event ganti fokus pada text field nama resep
 		((EditText)findViewById(R.id.nama_resep_tambah)).setOnFocusChangeListener(new OnFocusChangeListener() {

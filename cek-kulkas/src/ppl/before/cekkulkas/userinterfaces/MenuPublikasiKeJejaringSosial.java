@@ -28,7 +28,11 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -123,6 +127,33 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 		}
 	}
 	
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// TODO Auto-generated method stub
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.menuhapusloginan, menu);
+//		
+//		return super.onCreateOptionsMenu(menu);
+//	}
+//	
+//	
+//	
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		// TODO Auto-generated method stub
+//		switch(item.getItemId()){
+//		case R.id.menuhapusloginan:
+//			PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().clear().commit();
+//			((Button)findViewById(R.id.logintwitter)).setVisibility(View.VISIBLE);
+//			((Button)findViewById(R.id.loginfacebook)).setVisibility(View.VISIBLE);
+//			((CheckBox)findViewById(R.id.checkboxtwitter)).setVisibility(View.GONE);
+//			((CheckBox)findViewById(R.id.checkboxfacebook)).setVisibility(View.GONE);
+//			break;
+//		}
+//		
+//		return super.onOptionsItemSelected(item);
+//	}
+
 	public void loginTwitter(View v){
 		try{
 			reqToken = twitter.getOAuthRequestToken(CALLBACK_URL);
