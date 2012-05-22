@@ -306,7 +306,27 @@ public class MenuDetailResep extends Activity {
 			.setNegativeButton("Batal", konfirmasiMasak).show();
 			return true;
 		case R.id.menushare:
-			ambilGambar();
+			DialogInterface.OnClickListener konfirmasiFoto = new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which) {
+					case DialogInterface.BUTTON_POSITIVE:
+						ambilGambar();
+						break;
+					case DialogInterface.BUTTON_NEGATIVE:
+						Intent i2 = new Intent(MenuDetailResep.this, MenuPublikasiKeJejaringSosial.class);
+						Bundle b2 = new Bundle();
+						b2.putSerializable("resep", resep);
+						i2.putExtras(b2);
+						startActivity(i2);
+						break;
+					}
+					
+				}
+				
+			};
+			AlertDialog.Builder alertFoto = new AlertDialog.Builder(this);
+			alertFoto.setMessage("Anda ingin mengambil foto masakan Anda?").setPositiveButton("Ya", konfirmasiFoto)
+			.setNegativeButton("Tidak", konfirmasiFoto).show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -374,19 +394,17 @@ public class MenuDetailResep extends Activity {
 		((TextView)findViewById(R.id.langkah_resep)).setText(resep.getLangkah());
 	}
 
-	public void ambilGambar(){
+	public void ambilGambar() {
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		startActivityForResult(cameraIntent,CAMERA_PIC_REQUEST);
+		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		if(requestCode == CAMERA_PIC_REQUEST){
-			if(resultCode == Activity.RESULT_OK){
-				Log.i("asdf",data.toURI());
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAMERA_PIC_REQUEST) {
+			if (resultCode == Activity.RESULT_OK) {
 				Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-
-				if(thumbnail != null){
+				if (thumbnail != null) {
 					Intent i2 = new Intent(MenuDetailResep.this, MenuPublikasiKeJejaringSosial.class);
 					Bundle b2 = new Bundle();
 					b2.putSerializable("resep", resep);
@@ -399,8 +417,6 @@ public class MenuDetailResep extends Activity {
 					i2.putExtras(b2);
 					startActivity(i2);
 				}
-			} else if(resultCode == Activity.RESULT_CANCELED){
-				Log.i("asdf","cancel");
 			}
 
 		}

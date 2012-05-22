@@ -91,7 +91,11 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 		// mengambil objek resep yang akan ditampilkan detailnya dari extra
 		resep = (Resep)getIntent().getSerializableExtra("resep");
 		byte[] temp = (byte[])getIntent().getByteArrayExtra("foto");
-		fotoResep = BitmapFactory.decodeByteArray(temp, 0, temp.length); 
+		if (temp != null) {
+			fotoResep = BitmapFactory.decodeByteArray(temp, 0, temp.length);
+		} else {
+			((ImageView)findViewById(R.id.fotoresepshare)).setVisibility(View.GONE);
+		}
 		
 		((TextView)findViewById(R.id.namaresepshare)).setText(resep.getNama());
         ((EditText)findViewById(R.id.komentarresep)).setText("Saya baru saja memasak "+resep.getNama());
