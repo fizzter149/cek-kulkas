@@ -39,6 +39,7 @@ public class MenuUtama extends Activity {
         // membuat database saat aplikasi pertama kali dijalankan (baru install)
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         dbHelper.createDatabase();
+        dbHelper.close();
         
         // listener untuk tombol cek kulkas
         ((Button) findViewById(R.id.tombolCekKulkas)).setOnClickListener(new OnClickListener() {

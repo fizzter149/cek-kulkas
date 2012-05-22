@@ -38,7 +38,7 @@ import android.widget.TextView;
 public class MenuDaftarResep extends Activity {
 	
 	/** controller daftar resep untuk membantu akses database */
-	private ControllerDaftarResep cdf = new ControllerDaftarResep(MenuDaftarResep.this);
+	private ControllerDaftarResep cdr = new ControllerDaftarResep(MenuDaftarResep.this);
 	
 	/** controller untuk membantu akses ke database isi kulkas */
 	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
@@ -76,48 +76,52 @@ public class MenuDaftarResep extends Activity {
 	private void initView() {
 
 		// jika list bahannya kosong, tampilkan semua resep
-		if(listBahan.size() == 0){
-			listResep = (ArrayList<Resep>)cdf.getFavorite(0);
+		if (listBahan.size() == 0) {
+			listResep = (ArrayList<Resep>)cdr.getFavorite(0);
 		// jika tidak kosong, cari resep berdasarkan bahan yang diberikan
 		} else {
-			listResep = cdf.findResep(listBahan);
+			listResep = cdr.findResep(listBahan);
 		}
-		// hitung kurang bahan tiap resep
+		
+		// list nama bahan yang dipilih
+		List<String> listBahanCocok = new ArrayList<String>();
+		for (Bahan b: listBahan) {
+			listBahanCocok.add(b.getNama());
+		}
 		for (int i = 0; i < listResep.size(); i++) {
+			int jumlahBahanCocok = 0;
 			int jumlahKurangBahan = 0;
-			List<Bahan> listBahanDiResep = listResep.get(i).getListBahan(); 
-			for (int j = 0; j < listBahanDiResep.size(); j++) {
-				if (!cik.contains(listBahanDiResep.get(j).getNama())) {
+			for (Bahan b: listResep.get(i).getListBahan()) {
+				// hitung kecocokan bahan tiap resep
+				if (listBahanCocok.contains(b.getNama())) {
+					jumlahBahanCocok++;
+				}
+				listResep.get(i).setJumlahBahanCocok(jumlahBahanCocok);
+				
+				// hitung kurang bahan tiap resep
+				if (!cik.contains(b.getNama())) {
 					jumlahKurangBahan++;
 				}
 				listResep.get(i).setJumlahKurangBahan(jumlahKurangBahan);
 			}
 		}
+		
 		// Sorting berdasarkan jumlah bahan yang sesuai
 		Collections.sort(listResep, new Comparator<Resep>() {			
 			public int compare(Resep r1, Resep r2) {
 				int comparison = 0;
-				int k1 = r1.getJumlahKurangBahan();
-				int k2 = r2.getJumlahKurangBahan();
-				if (k1 == k2) {
-					int b1 = 0, b2 = 0;
-					List<String> lb = new ArrayList<String>();
-					for (Bahan b: listBahan) {
-						lb.add(b.getNama());
-					}
-					for (Bahan b: r1.getListBahan()) {
-						if (lb.contains(b.getNama())) b1++;
-					}
-					for (Bahan b: r2.getListBahan()) {
-						if (lb.contains(b.getNama())) b2++;
-					}
-					if (b2 == b1) {
+				int b1 = r1.getJumlahBahanCocok();
+				int b2 = r2.getJumlahBahanCocok();
+				if (b2 == b1) {
+					int k1 = r1.getJumlahKurangBahan();
+					int k2 = r2.getJumlahKurangBahan();
+					if (k1 == k2) {
 						comparison = r1.getNama().compareToIgnoreCase(r2.getNama());
 					} else {
-						comparison = b2 - b1;
+						comparison = k1 - k2;
 					}
 				} else {
-					comparison = k1 - k2;
+					comparison = b2 - b1;
 				}
 				return comparison;
 			}
@@ -216,13 +220,20 @@ public class MenuDaftarResep extends Activity {
 			}
 			holder.teksNama.setText(rList.get(position).getNama());
 			holder.teksKategori.setText(rList.get(position).getKategori());
-			// hitung jumlah bahan yang belum ada di kulkas
-			int jumlahBahanKurang = rList.get(position).getJumlahKurangBahan();
-			if (jumlahBahanKurang > 0) {
-				holder.teksKeterangan.setText(Html.fromHtml("<font color='#FF6A6A'>kurang " + jumlahBahanKurang +" bahan</font>"));
-			} else {
-				holder.teksKeterangan.setText(Html.fromHtml("<font color='#A4C639'>bahan lengkap</font>"));
+			// jumlah kecocokan bahan
+			int jumlahCocok = rList.get(position).getJumlahBahanCocok();
+			// jumlah bahan yang belum ada di kulkas
+			int jumlahKurang = rList.get(position).getJumlahKurangBahan();
+			String keterangan = "";
+			if (jumlahCocok > 0) {
+				keterangan = "<font color='#A4C639'>" + jumlahCocok + "</font> bahan cocok\t|";
 			}
+			if (jumlahKurang > 0) {
+				keterangan += "\t<font color='#FF6A6A'>kurang " + jumlahKurang +" bahan</font>";
+			} else {
+				keterangan += "\t<font color='#A4C639'>semua bahan lengkap</font>";
+			}
+			holder.teksKeterangan.setText(Html.fromHtml(keterangan));
 			return view;
 		}
 		

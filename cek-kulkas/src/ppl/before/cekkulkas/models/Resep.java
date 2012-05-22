@@ -33,11 +33,14 @@ public class Resep implements Serializable {
 	/** Status kefavoritan resep */
 	private int flagFavorit;
 	
+	/** Foto masakan hasil resep */
+	private String foto;
+	
 	/** Jumlah bahan yang kurang */
 	private int jumlahKurangBahan;
 	
-	/** Foto masakan hasil resep */
-	private String foto;
+	/** Jumlah kecocokan bahan */
+	private int jumlahBahanCocok;
 	
 	/**
 	 * Constructor Resep default
@@ -65,6 +68,7 @@ public class Resep implements Serializable {
 		this.flagFavorit = flagFavorit;
 		this.foto = foto;
 		this.jumlahKurangBahan = 0;
+		this.jumlahBahanCocok = 0;
 	}
 
 	/**
@@ -193,5 +197,21 @@ public class Resep implements Serializable {
 	 */
 	public void setJumlahKurangBahan(int jumlahKurangBahan) {
 		this.jumlahKurangBahan = jumlahKurangBahan;
+	}
+	
+	/**
+	 * Mendapatkan jumlah kecocokan bahan
+	 * @return Jumlah kecocokan bahan
+	 */
+	public int getJumlahBahanCocok() {
+		return jumlahBahanCocok;
+	}
+
+	/**
+	 * Mengganti jumlah kecocokan bahan
+	 * @param jumlahBahanCocok Jumlah kecocokan bahan
+	 */
+	public void setJumlahBahanCocok(int jumlahBahanCocok) {
+		this.jumlahBahanCocok = jumlahBahanCocok;
 	}
 }
