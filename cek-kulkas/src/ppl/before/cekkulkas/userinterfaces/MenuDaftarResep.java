@@ -88,6 +88,7 @@ public class MenuDaftarResep extends Activity {
 		for (Bahan b: listBahan) {
 			listBahanCocok.add(b.getNama());
 		}
+		cik.openDatabase(true);
 		for (int i = 0; i < listResep.size(); i++) {
 			int jumlahBahanCocok = 0;
 			int jumlahKurangBahan = 0;
@@ -96,15 +97,16 @@ public class MenuDaftarResep extends Activity {
 				if (listBahanCocok.contains(b.getNama())) {
 					jumlahBahanCocok++;
 				}
-				listResep.get(i).setJumlahBahanCocok(jumlahBahanCocok);
 				
 				// hitung kurang bahan tiap resep
 				if (!cik.contains(b.getNama())) {
 					jumlahKurangBahan++;
 				}
-				listResep.get(i).setJumlahKurangBahan(jumlahKurangBahan);
 			}
+			listResep.get(i).setJumlahBahanCocok(jumlahBahanCocok);
+			listResep.get(i).setJumlahKurangBahan(jumlahKurangBahan);
 		}
+		cik.db.close();
 		
 		// Sorting berdasarkan jumlah bahan yang sesuai
 		Collections.sort(listResep, new Comparator<Resep>() {			
