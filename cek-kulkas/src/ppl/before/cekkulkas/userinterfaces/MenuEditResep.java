@@ -170,6 +170,7 @@ public class MenuEditResep extends Activity {
 		listSatuan.add(bahan.getSatuan());
 		adapterSatuan = new ArrayAdapter<String>(MenuEditResep.this, android.R.layout.simple_spinner_item, listSatuan);
 		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerSatuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
 		spinnerSatuan.setAdapter(adapterSatuan);
 		spinnerSatuan.setEnabled(false);
 

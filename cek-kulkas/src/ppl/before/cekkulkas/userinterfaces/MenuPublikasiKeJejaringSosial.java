@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -195,27 +196,6 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 		CheckBox checkBoxTwitter = (CheckBox)findViewById(R.id.checkboxtwitter);
 		CheckBox checkBoxFb = (CheckBox)findViewById(R.id.checkboxfacebook);
 		
-		File f = new File("/data/data/ppl.before.cekkulkas/foto.jpg");
-		try{
-		    String foto = resep.getFoto();
-			if(foto == null || foto.equals("")){
-				foto = "r0";
-			}
-		    
-		    InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(foto, "drawable", getPackageName()));
-		    OutputStream out=new FileOutputStream(f);
-		    byte buf[]=new byte[1024];
-		    int len;
-		    while((len=inputStream.read(buf))>0){
-		    	out.write(buf,0,len);
-		    }
-		    out.flush();
-		    out.close();
-		    inputStream.close();
-	    }
-	    catch (IOException e){
-	    	Log.i("asdf",e.getMessage());
-	    }
 		
 		if(checkBoxTwitter.getVisibility() == View.VISIBLE && checkBoxTwitter.isChecked()){
 			String token = sharedPref.getString(prefAccessTokenTwitter, null);
@@ -227,6 +207,39 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			
 			try{
 				StatusUpdate status = new StatusUpdate(((EditText)findViewById(R.id.komentarresep)).getText()+" via @cekkulkas");
+
+				File f = new File("/data/data/ppl.before.cekkulkas/foto.jpg");
+				if(fotoResep != null){
+					try{
+					    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					    fotoResep.compress(CompressFormat.JPEG, 100, baos);
+					    byte[] bitmapData = baos.toByteArray();
+					    
+					    FileOutputStream fos = new FileOutputStream(f);
+					    fos.write(bitmapData);
+				    } catch (IOException e){
+				    	Log.i("asdf",e.getMessage());
+				    }
+				} else {
+					try{
+						String temp = resep.getFoto();
+						if(temp == null || temp.equals("")){
+							temp = "r0";
+						}
+						InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(temp, "drawable", getPackageName()));
+						OutputStream out = new FileOutputStream(f);
+						byte buf[]=new byte[1024];
+					    int len;
+					    while((len=inputStream.read(buf))>0)
+					    out.write(buf,0,len);
+					    out.close();
+					    inputStream.close();
+					} catch (IOException e){
+						Log.i("asdf",e.getMessage());
+					}
+					
+				}
+
 				status.setMedia(f);
 				
 				twitter.updateStatus(status);
@@ -268,7 +281,6 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
 			AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
             mAsyncRunner.request(null, parameters, "POST", new SimpleUploadListener(), null);
 	        
-
             Toast.makeText(MenuPublikasiKeJejaringSosial.this, "resep berhasil dibagikan ke facebook", Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(this, "Tidak ada yang dishare ke facebook", Toast.LENGTH_SHORT).show();

@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -102,7 +103,8 @@ public class MenuDetailResep extends Activity {
 			foto = "r0";
 		}
 
-		((ImageView)findViewById(R.id.fotoResep)).setImageResource(getResources().getIdentifier(foto, "drawable", getPackageName()));
+		
+		((ImageView)findViewById(R.id.fotoResep)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/"+foto+".jpg"));
 
 		((TextView)findViewById(R.id.deskripsi_resep)).setText(resep.getDeskripsi());
 
