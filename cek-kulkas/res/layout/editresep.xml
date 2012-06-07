@@ -51,7 +51,9 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="40dp" >
+                        android:paddingTop="45dp"
+					    android:descendantFocusability="beforeDescendants"
+						android:focusableInTouchMode="true" >
 
                         <EditText
                             android:id="@+id/kategori_resep_edit"
@@ -68,6 +70,19 @@
                             android:hint="deskripsi"
                             android:inputType="textMultiLine"
                             android:minLines="4" />
+                        
+                        <ImageView 
+                            android:id="@+id/fotoresepedit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"/>
+                        
+                        <ImageButton 
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_menu_camera"
+                            android:onClick="ambilGambar"
+                            />
                     </LinearLayout>
 
                     <LinearLayout
@@ -77,7 +92,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="40dp" >
+                        android:paddingTop="45dp" >
 
                         <TableLayout
                             android:id="@+id/tabelbahan_edit"
@@ -98,7 +113,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="40dp" >
+                        android:paddingTop="45dp" >
 
                         <EditText
                             android:id="@+id/langkah_resep_edit"

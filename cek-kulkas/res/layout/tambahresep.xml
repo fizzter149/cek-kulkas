@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+	android:id="@+id/lltr" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +55,9 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="40dp" >
+                        android:paddingTop="45dp"
+    android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true" >
 
                         <EditText
                             android:id="@+id/kategori_resep_tambah"
@@ -93,7 +96,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="40dp" >
+                        android:paddingTop="45dp" >
 
                         <TableLayout
                             android:id="@+id/tabelbahan"
@@ -114,7 +117,7 @@
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:paddingTop="40dp" >
+                        android:paddingTop="45dp" >
 
                         <EditText
                             android:id="@+id/langkah_resep_tambah"

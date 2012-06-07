@@ -54,6 +54,8 @@ public class MenuPilihBahan extends Activity {
         setContentView(R.layout.pilihbahan);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
         
+        findViewById(R.id.llpb).requestFocus();
+        
         // adapter untuk item dari daftar bahan
         final ArrayAdapter<Bahan> bahanAdapter = new PilihBahanAdapter(this, tempList);
         
@@ -195,7 +197,7 @@ public class MenuPilihBahan extends Activity {
 					for (int i = 0; i < count; i++) {
 						final Bahan value = values.get(i);
 						final String valueText = value.getNama().toLowerCase();
-						if (valueText.startsWith(prefixString)) {
+						if (valueText.contains(prefixString)) {
 							newValues.add(value);
 						}
 					}

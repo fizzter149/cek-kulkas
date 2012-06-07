@@ -154,7 +154,7 @@ public class MenuCekKulkas extends Activity {
 	     		    	        	   }
 	     		    	        	   cik.setSatuan(bahan.getNama(), tempSatuan);
 	     		    	        	   isiKulkasAdapter.updateSatuan(pos, tempSatuan);
-	     		    	        	   Toast.makeText(MenuCekKulkas.this, bahan.getNama() + " berhasil diubah jumlahnya", Toast.LENGTH_SHORT).show();
+	     		    	        	   Toast.makeText(MenuCekKulkas.this, bahan.getNama() + " berhasil diubah", Toast.LENGTH_SHORT).show();
 	     		    	           }
 	     		    	       });
         		    		alertUbah.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -267,8 +267,12 @@ public class MenuCekKulkas extends Activity {
 						if (status) {
 							isiKulkasAdapter.add(new Bahan(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), tempSatuan));
 							Toast.makeText(MenuCekKulkas.this, "bahan berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+						} else if((namaBahan.getText()+"").equals("")){
+							Toast.makeText(MenuCekKulkas.this, "anda belum mengisi nama bahan", Toast.LENGTH_SHORT).show();
+						} else if((jumlahBahan.getText()+"").equals("")){
+							Toast.makeText(MenuCekKulkas.this, "anda belum mengisi jumlah bahan", Toast.LENGTH_SHORT).show();
 						} else {
-							Toast.makeText(MenuCekKulkas.this, "nama bahan sudah ada", Toast.LENGTH_SHORT).show();
+							Toast.makeText(MenuCekKulkas.this, namaBahan.getText()+" sudah ada,\ngunakan fitur ubah jumlah bahan", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});

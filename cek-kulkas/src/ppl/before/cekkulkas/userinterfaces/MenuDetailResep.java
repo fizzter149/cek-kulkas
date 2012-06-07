@@ -349,6 +349,12 @@ public class MenuDetailResep extends Activity {
 
 		((TextView)findViewById(R.id.kategori_resep)).setText(resep.getKategori());
 		((TextView)findViewById(R.id.deskripsi_resep)).setText(resep.getDeskripsi());
+		
+		String foto = resep.getFoto();
+		if(foto == null || foto.equals("")){
+			foto = "r0";
+		}
+		((ImageView)findViewById(R.id.fotoResep)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/"+foto+".jpg"));
 
 		List<Bahan> listBahan = resep.getListBahan();
 		String bahanStr = "";

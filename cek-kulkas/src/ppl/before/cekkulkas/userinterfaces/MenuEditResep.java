@@ -1,5 +1,9 @@
 package ppl.before.cekkulkas.userinterfaces;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import ppl.before.cekkulkas.R;
@@ -8,6 +12,10 @@ import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -22,6 +30,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -56,6 +66,10 @@ public class MenuEditResep extends Activity {
 	private String tempSatuan;
 
 	private ArrayAdapter<String> adapterSatuan;
+	
+	private final int CAMERA_PIC_REQUEST = 149;
+	
+	private Bitmap fotoCamera;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -67,9 +81,18 @@ public class MenuEditResep extends Activity {
 		setContentView(R.layout.editresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
+		findViewById(R.id.tabdeskripsi_edit).requestFocus();
+		
 		// mengambil resep yang akan diedit dari extras
 		resep = (Resep)getIntent().getSerializableExtra("resep");
+		String foto = resep.getFoto();
 
+		// jika resep tidak memiliki foto, pakai foto default
+		if(foto == null || foto.equals("")){
+			foto = "r0";
+		}
+		((ImageView)findViewById(R.id.fotoresepedit)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/"+foto+".jpg"));
+		
 		// pada awalnya, bahan dari resep yang diedit adalah bahan yang lama
 		for(Bahan bahan: resep.getListBahan()){
 			listBahanBaru.add(bahan);
@@ -121,9 +144,23 @@ public class MenuEditResep extends Activity {
 				String kategori = ((TextView)findViewById(R.id.kategori_resep_edit)).getText()+"";
 				String deskripsi = ((TextView)findViewById(R.id.deskripsi_resep_edit)).getText()+"";
 				String langkah = ((TextView)findViewById(R.id.langkah_resep_edit)).getText()+"";
-
+				String foto = resep.getFoto();
+				
+				if(fotoCamera != null){
+					File f = new File("/data/data/ppl.before.cekkulkas/"+nama+".jpg");
+					try {
+					    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					    fotoCamera.compress(CompressFormat.JPEG, 100, baos);
+					    byte[] bitmapData = baos.toByteArray();
+					    
+					    FileOutputStream fos = new FileOutputStream(f);
+					    fos.write(bitmapData);
+				    } catch (IOException e) {
+				    }
+					foto = nama;
+				}
 				// membuat objek resep baru untuk menggantikan objek resep yang lama
-				Resep resepBaru = new Resep(nama,deskripsi,listBahanBaru,langkah,kategori,resep.getFlagFavorit(),resep.getFoto());
+				Resep resepBaru = new Resep(nama,deskripsi,listBahanBaru,langkah,kategori,resep.getFlagFavorit(),foto);
 
 				// memperbarui resep di database, tampilkan notifikasi
 				if(cdr.modifyResep(resep, resepBaru)){
@@ -145,6 +182,21 @@ public class MenuEditResep extends Activity {
 			}
 		});
 	}
+	
+	public void ambilGambar(View v){
+		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAMERA_PIC_REQUEST) {
+			if (resultCode == Activity.RESULT_OK) {
+				fotoCamera = (Bitmap) data.getExtras().get("data");
+				((ImageView)findViewById(R.id.fotoresepedit)).setImageBitmap(fotoCamera);
+			}
+		}
+	}
 
 	/**
 	 * menambah baris bahan pada tampilan table layout di tab bahan
@@ -157,15 +209,15 @@ public class MenuEditResep extends Activity {
 		final TableLayout tabelBahan = (TableLayout)findViewById(R.id.tabelbahan_edit);
 
 		final TableRow tr = new TableRow(this);
-		tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		final EditText namaBahan = new EditText(this);
-		namaBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
+		namaBahan.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 		namaBahan.setText(bahan.getNama());
 		namaBahan.setEnabled(false);
 
 		final EditText banyakBahan = new EditText(this);
-		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
+		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
 		banyakBahan.setText(""+bahan.getJumlah());
 		banyakBahan.setEnabled(false);
 
@@ -174,12 +226,12 @@ public class MenuEditResep extends Activity {
 		listSatuan.add(bahan.getSatuan());
 		adapterSatuan = new ArrayAdapter<String>(MenuEditResep.this, android.R.layout.simple_spinner_item, listSatuan);
 		adapterSatuan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerSatuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
+		spinnerSatuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
 		spinnerSatuan.setAdapter(adapterSatuan);
 		spinnerSatuan.setEnabled(false);
 
 		final ImageButton tambahHapus = new ImageButton(this);
-		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.MATCH_PARENT));
 		tambahHapus.setImageResource(R.drawable.ic_hapus);
 
 		tambahHapus.setOnClickListener(new OnClickListener() {
@@ -190,9 +242,21 @@ public class MenuEditResep extends Activity {
 			}
 		});
 
-		tr.addView(namaBahan);
-		tr.addView(banyakBahan);
-		tr.addView(spinnerSatuan);
+		LinearLayout leftContainer = new LinearLayout(this);
+		leftContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.8f));
+		leftContainer.setOrientation(LinearLayout.VERTICAL);
+		
+		LinearLayout leftBottomContainer = new LinearLayout(this);
+		leftBottomContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		leftBottomContainer.setOrientation(LinearLayout.HORIZONTAL);
+		
+		leftBottomContainer.addView(banyakBahan);
+		leftBottomContainer.addView(spinnerSatuan);
+		
+		leftContainer.addView(namaBahan);
+		leftContainer.addView(leftBottomContainer);
+		
+		tr.addView(leftContainer);
 		tr.addView(tambahHapus);
 
 		tabelBahan.addView(tr);
@@ -212,7 +276,7 @@ public class MenuEditResep extends Activity {
 
 		// field nama bahan berupa auto suggestion dari bahan yang ada di database
 		final AutoCompleteTextView namaBahan = new AutoCompleteTextView(this);
-		namaBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
+		namaBahan.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 		namaBahan.setHint("nama bahan");
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.autocomplete_namabahan, listAllNamaBahan);
 		namaBahan.setAdapter(adapter);
@@ -223,12 +287,13 @@ public class MenuEditResep extends Activity {
 		FilterArray[0] = new InputFilter.LengthFilter(maxLength);
 		// jumlah digit dibatasi hanya 9
 		banyakBahan.setFilters(FilterArray);
-		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
+		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
 		banyakBahan.setHint("jml");
 		// banyak bahan hanya menerima inputan angka desimal
 		banyakBahan.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
 		final Spinner spinnerSatuan = new Spinner(this);
+		spinnerSatuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
 
 		// pengecekan setiap user memasukkan informasi nama bahan
 		namaBahan.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -261,7 +326,7 @@ public class MenuEditResep extends Activity {
 		});
 
 		final ImageButton tambahHapus = new ImageButton(this);
-		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.MATCH_PARENT));
 		tambahHapus.setImageResource(R.drawable.ic_tambah);
 
 		// listener untuk tombol tambah row
@@ -304,9 +369,21 @@ public class MenuEditResep extends Activity {
 			}
 		});
 
-		tr.addView(namaBahan);
-		tr.addView(banyakBahan);
-		tr.addView(spinnerSatuan);
+		LinearLayout leftContainer = new LinearLayout(this);
+		leftContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.8f));
+		leftContainer.setOrientation(LinearLayout.VERTICAL);
+		
+		LinearLayout leftBottomContainer = new LinearLayout(this);
+		leftBottomContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		leftBottomContainer.setOrientation(LinearLayout.HORIZONTAL);
+		
+		leftBottomContainer.addView(banyakBahan);
+		leftBottomContainer.addView(spinnerSatuan);
+		
+		leftContainer.addView(namaBahan);
+		leftContainer.addView(leftBottomContainer);
+		
+		tr.addView(leftContainer);
 		tr.addView(tambahHapus);
 
 		tabelBahan.addView(tr);

@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -30,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -79,6 +81,7 @@ public class MenuBuatResepBaru extends Activity {
 		setContentView(R.layout.tambahresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
+		findViewById(R.id.tabdeskripsi_tambah).requestFocus();
 		((ImageView)findViewById(R.id.fotoreseptambah)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/r0.jpg"));
 		
 		// insialisasi tampilan tab (deskripsi, bahan, langkah)
@@ -205,11 +208,11 @@ public class MenuBuatResepBaru extends Activity {
 		final TableLayout tabelBahan = (TableLayout)findViewById(R.id.tabelbahan);
 
 		final TableRow tr = new TableRow(this);
-		tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1.0f));
+		tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 		// text field berupa autocomplete
 		final AutoCompleteTextView namaBahan = new AutoCompleteTextView(this);
-		namaBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
+		namaBahan.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
 		namaBahan.setHint("nama bahan");
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.autocomplete_namabahan, listAllNamaBahan);
 		namaBahan.setAdapter(adapter);
@@ -220,12 +223,13 @@ public class MenuBuatResepBaru extends Activity {
 		FilterArray[0] = new InputFilter.LengthFilter(maxLength);
 		// jumlah digit dibatasi hanya 9
 		banyakBahan.setFilters(FilterArray);
-		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.2f));
+		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
 		banyakBahan.setHint("jml");
 		// banyak bahan yang valid hanya angka desimal
 		banyakBahan.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
 		final Spinner spinnerSatuan = new Spinner(this);
+		spinnerSatuan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
 
 		// listener untuk event ganti fokus pada field nama bahan
 		// setelah user memasukkan nama bahan, informasi satuan diupdate sesuai nama bahan tersebut
@@ -261,7 +265,7 @@ public class MenuBuatResepBaru extends Activity {
 		});
 
 		final ImageButton tambahHapus = new ImageButton(this);
-		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));
+		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
 		tambahHapus.setImageResource(R.drawable.ic_tambah);
 
 		// listener untuk tombol tambah row baru
@@ -303,10 +307,22 @@ public class MenuBuatResepBaru extends Activity {
 				});
 			}
 		});
-
-		tr.addView(namaBahan);
-		tr.addView(banyakBahan);
-		tr.addView(spinnerSatuan);
+		
+		LinearLayout leftContainer = new LinearLayout(this);
+		leftContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.8f));
+		leftContainer.setOrientation(LinearLayout.VERTICAL);
+		
+		LinearLayout leftBottomContainer = new LinearLayout(this);
+		leftBottomContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		leftBottomContainer.setOrientation(LinearLayout.HORIZONTAL);
+		
+		leftBottomContainer.addView(banyakBahan);
+		leftBottomContainer.addView(spinnerSatuan);
+		
+		leftContainer.addView(namaBahan);
+		leftContainer.addView(leftBottomContainer);
+		
+		tr.addView(leftContainer);
 		tr.addView(tambahHapus);
 
 		tabelBahan.addView(tr);

@@ -11,7 +11,6 @@ import ppl.before.cekkulkas.controllers.ControllerIsiKulkas;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,7 +87,7 @@ public class MenuDaftarResep extends Activity {
 
 		
 		List<Bahan> temp = cik.getAll();
-		final List<String> namaBahan = new ArrayList();
+		final List<String> namaBahan = new ArrayList<String>();
 		for(Bahan b:temp){
 			namaBahan.add(b.getNama());
 		}
@@ -242,12 +241,15 @@ public class MenuDaftarResep extends Activity {
 			int jumlahKurang = rList.get(position).getJumlahKurangBahan();
 			String keterangan = "";
 			if (jumlahCocok > 0) {
-				keterangan = "<font color='#A4C639'>" + jumlahCocok + "</font> bahan cocok\t|";
+				keterangan = "<font color='#A4C639'>" + jumlahCocok + " bahan cocok</font>\t|";
 			}
 			if (jumlahKurang > 0) {
 				keterangan += "\t<font color='#FF6A6A'>kurang " + jumlahKurang +" bahan</font>";
 			} else {
 				keterangan += "\t<font color='#A4C639'>semua bahan lengkap</font>";
+			}
+			if(jumlahCocok == 0 && jumlahKurang==0){
+				keterangan = "\t<font color='#A4C639'>resep tidak memiliki bahan</font>";
 			}
 			holder.teksKeterangan.setText(Html.fromHtml(keterangan));
 			return view;
