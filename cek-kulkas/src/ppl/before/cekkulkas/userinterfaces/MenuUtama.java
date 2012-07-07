@@ -9,19 +9,28 @@ import java.io.OutputStream;
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.DatabaseHelper;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * class view untuk halaman menu utama
  * @author Team Before
  */
-public class MenuUtama extends Activity {
+public class MenuUtama extends Activity implements OnItemClickListener {
+	
+	private GridView gridview;
 	
     /** Called when the activity is first created. */
     @Override
@@ -30,51 +39,39 @@ public class MenuUtama extends Activity {
         
         // title bar aplikasi
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.menuutama);
+        setContentView(R.layout.gridmenuutama);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
+        
+        gridview = (GridView) findViewById(R.id.gridmenuutama);
+        gridview.setAdapter(new ImageAdapter(this.getApplicationContext()));
+        gridview.setOnItemClickListener(this);
         
         // membuat database saat aplikasi pertama kali dijalankan (baru install)
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         dbHelper.createDatabase();
         dbHelper.close();
         
-        copyPhoto();
-        
-        // listener untuk tombol cek kulkas
-        ((Button) findViewById(R.id.tombolCekKulkas)).setOnClickListener(new OnClickListener() {
-        	public void onClick(View v) {
-				Intent intentCekKulkas = new Intent(v.getContext(), MenuCekKulkas.class);
-				startActivity(intentCekKulkas);
-			}
-		});
-        
-        // listener untuk tombol pilih bahan
-        ((Button) findViewById(R.id.tombolPilihBahan)).setOnClickListener(new OnClickListener() {
-        	public void onClick(View v) {
-				Intent intentPilihBahan = new Intent(v.getContext(), MenuPilihBahan.class);
-				startActivity(intentPilihBahan);
-			}
-		});
-        
-
-        // listener untuk tombol daftar resep favorit
-        ((Button) findViewById(R.id.tombolDaftarResepFavorit)).setOnClickListener(new OnClickListener() {
-	        public void onClick(View v) {
-	        	Intent intentDaftarResepFavorit = new Intent(v.getContext(), MenuDaftarResepFavorit.class);
-	        	startActivity(intentDaftarResepFavorit);
-	        }
-        });
-
-        // listener untuk tombol buat resep baru
-        ((Button) findViewById(R.id.tombolBuatResepBaru)).setOnClickListener(new OnClickListener() {
-        	public void onClick(View v) {
-        		Intent intentBuatResepBaru = new Intent(v.getContext(), MenuBuatResepBaru.class);
-        		startActivity(intentBuatResepBaru);
-        	}
-        });
+        copyPhotoFromResource();   
     }
     
-    private void copyPhoto() {
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		switch (arg2) {
+		case 0:
+			startActivity(new Intent(this, MenuCekKulkas.class));
+			break;
+		case 1:
+			startActivity(new Intent(this, MenuPilihBahan.class));
+			break;
+		case 2:
+			startActivity(new Intent(this, MenuBuatResepBaru.class));
+			break;
+		case 3:
+			startActivity(new Intent(this, MenuDaftarResepFavorit.class));
+			break;
+		}
+	}
+    
+    private void copyPhotoFromResource() {
     	String path = "/data/data/ppl.before.cekkulkas/";
     	if (!(new File(path+"r0.jpg")).exists()) {
     		InputStream is = null;
@@ -97,5 +94,63 @@ public class MenuUtama extends Activity {
     		} catch (IOException e) {
     		}
     	}
+    }
+    
+    private class ImageAdapter extends BaseAdapter {
+    	
+    	
+    	public ImageAdapter(Context c) {
+		}
+
+		public int getCount() {
+			return 6;
+		}
+
+		public Object getItem(int position) {
+			return null;
+		}
+
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view;
+			if (convertView == null) {
+				LayoutInflater inflater = getLayoutInflater();
+				view = inflater.inflate(R.layout.iconmenuutama, null);
+			} else {
+				view = convertView;
+			}
+			TextView textview = (TextView) view.findViewById(R.id.icon_text);
+			ImageView imgview = (ImageView) view.findViewById(R.id.icon_image);
+			switch (position) {
+			case 0:
+				textview.setText("Cek Kulkas");
+				imgview.setImageResource(R.drawable.ic_menucekkulkas);
+				break;
+			case 1:
+				textview.setText("Pilih Bahan");
+				imgview.setImageResource(R.drawable.ic_menupilihbahan);
+				break;
+			case 2:
+				textview.setText("Buat Resep Baru");
+				imgview.setImageResource(R.drawable.ic_menubuatresep);
+				break;
+			case 3:
+				textview.setText("Resep Favorit");
+				imgview.setImageResource(R.drawable.ic_menudaftarfavorit);
+				break;
+			case 4:
+				textview.setText("Panduan");
+				imgview.setImageResource(R.drawable.ic_menubantuan);
+				break;
+			case 5:
+				textview.setText("Tentang Aplikasi");
+				imgview.setImageResource(R.drawable.ic_menuinfo);
+				break;
+			}
+			return view;
+		}
     }
 }
