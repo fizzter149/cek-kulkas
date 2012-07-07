@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridmenuutama"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:numColumns="2"
+    android:columnWidth="200dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:verticalSpacing="60dp"
+    android:gravity="center" >
+    
+
+</GridView>
