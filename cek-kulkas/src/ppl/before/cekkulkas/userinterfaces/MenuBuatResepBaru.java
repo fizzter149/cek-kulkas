@@ -13,9 +13,8 @@ import ppl.before.cekkulkas.models.Bahan;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.drawable.GradientDrawable.Orientation;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -54,13 +53,13 @@ public class MenuBuatResepBaru extends Activity {
 	private final ArrayList<Bahan> listBahan = new ArrayList<Bahan>();
 	
 	/** controller daftar resep untuk membantu akses database resep */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep(this);
+	private ControllerDaftarResep cdr = new ControllerDaftarResep();
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
 	
 	/** list semua bahan yang terdapat di database resep */
-	private final ArrayList<String> listAllNamaBahan = cdr.getAllNamaBahan();
+	private final ArrayList<String> listAllNamaBahan = cdr.ambilNamaBahan();
 	
 	private String tempSatuan;
 	
@@ -161,7 +160,7 @@ public class MenuBuatResepBaru extends Activity {
 				}
 
 				// tambahkan resep ke database, beri notifikasi
-				if(cdr.addResep(nama, deskripsi, listBahan, langkah, kategori, foto)){
+				if(cdr.tambahResep(nama, deskripsi, listBahan, langkah, kategori, foto)){
 					Toast.makeText(MenuBuatResepBaru.this, "resep berhasil dibuat", Toast.LENGTH_SHORT).show();
 					listBahan.clear();
 					MenuBuatResepBaru.this.finish();

@@ -4,13 +4,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Locale;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 	
@@ -25,25 +25,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
     private static DatabaseHelper dbHelper;
     
-    public SQLiteDatabase db;
+    private SQLiteDatabase db;
     
     private Context myContext;
     
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, SCHEMA_VERSION);
 		this.myContext = context;
+		createDatabase();
 	}
-	
-	/**
-     * membuat database, sebelumnya dicek dulu apakah sudah ada/belum
-     */
-    public void createDatabase() {
-    	boolean dbExist = isDBExists();
-    	if (!dbExist) {
-    		db = this.getReadableDatabase();
-    		copyDBFromResource();
-    	}
-    }
     
     public static synchronized DatabaseHelper getHelper(Context context) {
     	if (dbHelper == null) {
@@ -51,6 +41,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	}
     	return dbHelper;
     }
+    
+	@Override
+	public void onCreate(SQLiteDatabase arg0) {
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+	}
+	
+	public Cursor query(String sql) {
+		return db.rawQuery(sql, null);
+	}
+	
+	public boolean insert(String table, ContentValues values) {
+		long rowid = db.insert(table, null, values);
+		if (rowid >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean update(String table, ContentValues values, String whereClause) {
+		long rowid = db.update(table, values, whereClause, null);
+		if (rowid >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean delete(String table, String whereClause) {
+		db.delete(table, whereClause, null);
+		return true;
+	}
+	
+	/**
+     * membuat database, sebelumnya dicek dulu apakah sudah ada/belum
+     */
+    private void createDatabase() {
+    	boolean dbExist = isDBExists();
+    	if (!dbExist) {
+    		db = this.getReadableDatabase();
+    		copyDBFromResource();
+    	}
+    	openDatabase();
+    }
+    
+	private void openDatabase() {
+		db = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
+		db.rawQuery("PRAGMA foreign_keys = ON", null);
+	}
     
     /**
      * mengecek eksistensi database
@@ -61,13 +103,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	try {
     		String databasePath = DATABASE_PATH + DATABASE_NAME;
     		db = SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READWRITE);
-    		db.setLocale(Locale.getDefault());
-    		db.setLockingEnabled(true);
-    		db.setVersion(1);
     	} catch (SQLException e) {
-    		Log.e("SqlHelper", "database not found");
     	}
-    	
     	if (db != null) {
     		db.close();
     	}
@@ -82,10 +119,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     	OutputStream outStream = null;
     	String dbFilePath = DATABASE_PATH + DATABASE_NAME;
     	try {
-    		inputStream = myContext.getAssets().open(DATABASE_NAME);
-    		
+    		inputStream = myContext.getAssets().open(DATABASE_NAME);    		
     		outStream = new FileOutputStream(dbFilePath);
-    		
     		byte[] buffer = new byte[1024];
     		int length;
     		while ((length = inputStream.read(buffer)) > 0) {
@@ -95,16 +130,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     		outStream.close();
     		inputStream.close();
     	} catch (IOException e) {
-    		throw new Error("Problem copying database from resource file.");
     	}
     }
-
-	@Override
-	public void onCreate(SQLiteDatabase arg0) {
-	}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-	}
-
 }

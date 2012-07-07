@@ -31,7 +31,7 @@ import android.widget.TextView;
 public class MenuDaftarResepFavorit extends Activity {
 	
 	/** controller daftar resep untuk membantu akses database */
-	private ControllerDaftarResep cdf = new ControllerDaftarResep(this);
+	private ControllerDaftarResep cdf = new ControllerDaftarResep();
 	
 	/** daftar resep favorit */
 	private List<Resep> listResep;
@@ -62,7 +62,7 @@ public class MenuDaftarResepFavorit extends Activity {
 	 */
 	private void initView(){
 		// ambil resep favorit dari database
-		listResep = cdf.getFavorite(1);
+		listResep = cdf.getFavorit(1);
 		final ArrayList<Bahan> listBahanKosong = new ArrayList<Bahan>(0);
         ListView lv = (ListView) findViewById(R.id.listresepfavorit);
         lv.setAdapter(new DaftarResepFavoritAdapter(this, listResep));

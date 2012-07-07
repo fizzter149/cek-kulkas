@@ -52,13 +52,13 @@ public class MenuEditResep extends Activity {
 	private final ArrayList<Bahan> listBahanBaru = new ArrayList<Bahan>();
 
 	/** controller daftar resep untuk membantu akses ke database resep */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep(this);
+	private ControllerDaftarResep cdr = new ControllerDaftarResep();
 
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
 
 	/** list semua bahan yang terdapat di database resep, untuk membantu auto suggestion */
-	private final ArrayList<String> listAllNamaBahan = cdr.getAllNamaBahan();
+	private final ArrayList<String> listAllNamaBahan = cdr.ambilNamaBahan();
 
 	/** resep yang sedang diedit */
 	private Resep resep;
@@ -163,7 +163,7 @@ public class MenuEditResep extends Activity {
 				Resep resepBaru = new Resep(nama,deskripsi,listBahanBaru,langkah,kategori,resep.getFlagFavorit(),foto);
 
 				// memperbarui resep di database, tampilkan notifikasi
-				if(cdr.modifyResep(resep, resepBaru)){
+				if(cdr.ubahResep(resep, resepBaru)){
 					Toast.makeText(MenuEditResep.this, "resep berhasil diedit", Toast.LENGTH_SHORT).show();
 					listBahanBaru.clear();
 					MenuEditResep.this.finish();

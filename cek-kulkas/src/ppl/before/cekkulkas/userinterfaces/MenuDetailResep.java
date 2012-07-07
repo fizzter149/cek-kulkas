@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -41,10 +40,10 @@ import android.widget.Toast;
 public class MenuDetailResep extends Activity {
 
 	/** controller daftar resep untuk membantu akses ke database daftar resep */
-	private final ControllerDaftarResep cdr = new ControllerDaftarResep(this);
+	private final ControllerDaftarResep cdr = new ControllerDaftarResep();
 
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
 
 	/** resep yang akan ditampilkan detailnya */
 	private Resep resep;
@@ -118,7 +117,7 @@ public class MenuDetailResep extends Activity {
 			Bahan bahan = listBahan.get(i);
 			float jumlah = bahan.getJumlah();
 			if (jumlah % 1.0 == 0.0) {
-				if (cik.contains(bahan.getNama())) {
+				if (cik.adaDiKulkas(bahan.getNama())) {
 					boolean isSelected = false;
 					for (int j = 0; j < listBahanSelected.size(); j++) {
 						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
@@ -136,7 +135,7 @@ public class MenuDetailResep extends Activity {
 					bahanStr += "<font color='#FF6A6A'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
 				}
 			} else {
-				if (cik.contains(bahan.getNama())) {
+				if (cik.adaDiKulkas(bahan.getNama())) {
 					boolean isSelected = false;
 					for (int j = 0; j < listBahanSelected.size(); j++) {
 						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
@@ -166,11 +165,7 @@ public class MenuDetailResep extends Activity {
 	 * membuat menu
 	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		//		return super.onCreateOptionsMenu(menu);
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menudetailresep, menu);
+		getMenuInflater().inflate(R.menu.menudetailresep, menu);
 		return true;
 
 	}
@@ -208,7 +203,7 @@ public class MenuDetailResep extends Activity {
 				public void onClick(DialogInterface dialog, int which) {
 					switch (which){
 					case DialogInterface.BUTTON_POSITIVE:
-						cdr.removeResep(resep.getNama());
+						cdr.hapusResep(resep.getNama());
 						Toast.makeText(MenuDetailResep.this, "resep berhasil dihapus", Toast.LENGTH_SHORT).show();
 						MenuDetailResep.this.finish();
 						break;
@@ -232,7 +227,7 @@ public class MenuDetailResep extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which){
 						case DialogInterface.BUTTON_POSITIVE:
-							cdr.setFavorite(resep.getNama(), true);
+							cdr.setFavorit(resep.getNama(), true);
 							resep.setFlagFavorit(1);
 							Toast.makeText(MenuDetailResep.this, resep.getNama()+" berhasil ditambahkan ke daftar resep favorit", Toast.LENGTH_SHORT).show();
 							break;
@@ -252,7 +247,7 @@ public class MenuDetailResep extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case DialogInterface.BUTTON_POSITIVE:
-							cdr.setFavorite(resep.getNama(), false);
+							cdr.setFavorit(resep.getNama(), false);
 							resep.setFlagFavorit(0);
 							Toast.makeText(MenuDetailResep.this, resep.getNama()+" berhasil dihapus dari daftar resep favorit", Toast.LENGTH_SHORT).show();
 							break;
@@ -277,19 +272,19 @@ public class MenuDetailResep extends Activity {
 					case DialogInterface.BUTTON_POSITIVE:
 						for (int i = 0; i < listBahan.size(); i++) {
 							Bahan bahan = listBahan.get(i);
-							if (cik.contains(bahan.getNama())) {
-								Bahan bahanDiKulkas = cik.get(bahan.getNama());
+							if (cik.adaDiKulkas(bahan.getNama())) {
+								Bahan bahanDiKulkas = cik.ambilBahan(bahan.getNama());
 								// konversi jumlah bahan
 								String satuanDiKulkas = bahanDiKulkas.getSatuan();
 								String satuanDiResep = bahan.getSatuan();
 								float jumlahDiKulkas = bahanDiKulkas.getJumlah();
-								float jumlahDiResep = cik.convertSatuan(bahanDiKulkas.getNama(), satuanDiResep, satuanDiKulkas, bahan.getJumlah());
+								float jumlahDiResep = cik.konversiSatuan(bahanDiKulkas.getNama(), satuanDiResep, satuanDiKulkas, bahan.getJumlah());
 
 								// pengurangan jumlah bahan
 								float hasilKurang = jumlahDiKulkas - jumlahDiResep;
 								if (hasilKurang < 0) {
 									// bahan dihilangkan dari kulkas
-									cik.delete(bahan.getNama());
+									cik.hapusBahan(bahan.getNama());
 								} else {
 									// ubah jumlah bahan
 									cik.setJumlah(bahan.getNama(), hasilKurang);
@@ -345,7 +340,7 @@ public class MenuDetailResep extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		resep = cdr.getResep(resep.getNama());
+		resep = cdr.ambilResep(resep.getNama());
 
 		((TextView)findViewById(R.id.kategori_resep)).setText(resep.getKategori());
 		((TextView)findViewById(R.id.deskripsi_resep)).setText(resep.getDeskripsi());
@@ -363,7 +358,7 @@ public class MenuDetailResep extends Activity {
 			Bahan bahan = listBahan.get(i);
 			float jumlah = bahan.getJumlah();
 			if (jumlah % 1.0 == 0.0) {
-				if (cik.contains(bahan.getNama())) {
+				if (cik.adaDiKulkas(bahan.getNama())) {
 					boolean isSelected = false;
 					for (int j = 0; j < listBahanSelected.size(); j++) {
 						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {
@@ -381,7 +376,7 @@ public class MenuDetailResep extends Activity {
 					bahanStr += "<font color='#FF6A6A'>"+(int)bahan.getJumlah()+" "+bahan.getSatuan()+" "+bahan.getNama()+"</font><br />";
 				}
 			} else {
-				if (cik.contains(bahan.getNama())) {
+				if (cik.adaDiKulkas(bahan.getNama())) {
 					boolean isSelected = false;
 					for (int j = 0; j < listBahanSelected.size(); j++) {
 						if (listBahanSelected.get(j).getNama().equalsIgnoreCase(bahan.getNama())) {

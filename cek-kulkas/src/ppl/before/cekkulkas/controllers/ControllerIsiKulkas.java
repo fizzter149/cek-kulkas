@@ -5,10 +5,8 @@ import java.util.List;
 
 import ppl.before.cekkulkas.models.Bahan;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * <p>Controller untuk daftar isi kulkas yang berurusan dengan database dan menghubungkan
@@ -16,29 +14,10 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @author Team Before
  *
  */
-public class ControllerIsiKulkas extends SQLiteOpenHelper {
+public class ControllerIsiKulkas {
 	
-	/** Konstanta database path */
-	private static final String DATABASE_PATH = "/data/data/ppl.before.cekkulkas/databases/";
+    private static DatabaseHelper dbHelper = DatabaseHelper.getHelper(null);
 	
-	/** Konstanta database name */
-    private static final String DATABASE_NAME = "cekkulkas_db.db";
-    
-    /** Konstanta schema version */
-    private static final int SCHEMA_VERSION = 1;
-    
-    /** Database SQLite */
-    public SQLiteDatabase db;
-	
-	/**
-	 * Constructor controller isi kulkas
-	 * @param context Context
-	 */
-	public ControllerIsiKulkas(Context context) {
-		super(context, DATABASE_NAME, null, SCHEMA_VERSION);
-		// TODO Auto-generated constructor stub
-	}
-
 	/**
 	 * Menambah bahan
 	 * @param nama Nama bahan
@@ -46,20 +25,25 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 	 * @param satuan Satuan bahan
 	 * @return status
 	 */
-	public boolean add(String nama, float jumlah, String satuan) {
-		openDatabase(false);
+	public boolean tambahBahan(String nama, float jumlah, String satuan) {
 		ContentValues bValues = new ContentValues();
 		bValues.put("nama", nama);
 		bValues.put("jumlah", jumlah);
 		bValues.put("satuan", satuan);
-		long status = db.insert("isikulkas", null, bValues);
+		boolean status = dbHelper.insert("isikulkas", bValues);
 		bValues.clear();
-		db.close();
-		if (status >= 0) {
-			return true;
-		} else {
-			return false;
+		if (status == false) {
+			Cursor cursorBahan = dbHelper.query("SELECT * from isikulkas WHERE nama='" + nama + "'");
+			cursorBahan.moveToFirst();
+			float jumlahLama = cursorBahan.getFloat(2);
+			Log.i("jml", "" + jumlahLama);
+			String satuanSebelum = cursorBahan.getString(3);
+			cursorBahan.close();
+			float jumlahBaru = jumlahLama + konversiSatuan(nama, satuan, satuanSebelum, jumlah);
+			setJumlah(nama, jumlahBaru);
+			Log.i("jmlb", "" + jumlahBaru);
 		}
+		return status;
 	}
 	
 	/**
@@ -68,23 +52,19 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 	 * @param newJumlah Jumlah baru bahan
 	 * @return status
 	 */
-	public boolean setJumlah(String nama, float newJumlah){
-		openDatabase(false);
+	public boolean setJumlah(String nama, float newJumlah) {
 		ContentValues bValues = new ContentValues();
 		bValues.put("jumlah", newJumlah);
-		db.update("isikulkas", bValues, "nama='"+nama+"'", null);
+		dbHelper.update("isikulkas", bValues, "nama='" + nama + "'");
 		bValues.clear();
-		db.close();
 		return true;
 	}
 	
 	public boolean setSatuan(String nama, String newSatuan) {
-		openDatabase(false);
 		ContentValues bValues = new ContentValues();
 		bValues.put("satuan", newSatuan);
-		db.update("isikulkas", bValues, "nama='"+nama+"'", null);
+		dbHelper.update("isikulkas", bValues, "nama='" + nama + "'");
 		bValues.clear();
-		db.close();
 		return true;
 	}
 	
@@ -93,35 +73,29 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 	 * @param nama Nama Bahan
 	 * @return status
 	 */
-	public boolean delete(String nama) {
-		openDatabase(false);
-		db.delete("isikulkas", "nama='"+nama+"'", null);
-		db.close();
+	public boolean hapusBahan(String nama) {
+		dbHelper.delete("isikulkas", "nama='" + nama + "'");
 		return true;
 	}
 	
-	public boolean contains(String nama) {
-		openDatabase(true);
+	public boolean adaDiKulkas(String nama) {
 		boolean ada;
-		Cursor cek = db.rawQuery("SELECT * FROM isikulkas WHERE nama='" + nama + "'", null);
+		Cursor cek = dbHelper.query("SELECT * FROM isikulkas WHERE nama='" + nama + "'");
 		if (cek.getCount() > 0) {
 			ada = true;
 		} else {
 			ada = false;
 		}
 		cek.close();
-		db.close();
 		return ada;
 	}
 	
-	public Bahan get(String nama) {
-		openDatabase(true);
+	public Bahan ambilBahan(String nama) {
 		Bahan bahan;
-		Cursor cursorBahan = db.rawQuery("SELECT * FROM isikulkas WHERE nama='" + nama + "'", null);
+		Cursor cursorBahan = dbHelper.query("SELECT * FROM isikulkas WHERE nama='" + nama + "'");
 		cursorBahan.moveToFirst();
 		bahan = new Bahan(nama, cursorBahan.getFloat(2), cursorBahan.getString(3));
 		cursorBahan.close();
-		db.close();
 		return bahan;
 	}
 	
@@ -129,10 +103,9 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 	 * Menggambil semua bahan yang ada di kulkas
 	 * @return Daftar bahan
 	 */
-	public List<Bahan> getAll(){
-		openDatabase(true);
+	public List<Bahan> ambilSemuaBahan() {
 		List<Bahan> listBahan = new ArrayList<Bahan>();
-		Cursor cursorBahan = db.rawQuery("SELECT * FROM isikulkas", null);
+		Cursor cursorBahan = dbHelper.query("SELECT * FROM isikulkas");
 		cursorBahan.moveToFirst();
 		while (!cursorBahan.isAfterLast()) {
 			Bahan newBahan = new Bahan(cursorBahan.getString(1), cursorBahan.getFloat(2), cursorBahan.getString(3));
@@ -140,21 +113,18 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 			cursorBahan.moveToNext();
 		}
 		cursorBahan.close();
-		db.close();
-		
 		return listBahan;
 	}
 		
 	public List<String> getMultiSatuan(String nama) {
-		openDatabase(true);
 		List<String> listSatuan = new ArrayList<String>();
-		Cursor cekMultiSatuan = db.rawQuery("SELECT * FROM konversi WHERE nama='" + nama + "'", null);
+		Cursor cekMultiSatuan = dbHelper.query("SELECT * FROM konversi WHERE nama='" + nama + "'");
 		if (cekMultiSatuan.getCount() > 0) {
-			Cursor cursorSatuan1 = db.rawQuery("SELECT DISTINCT satuan1 FROM konversi WHERE nama='" + nama + "'", null);
+			Cursor cursorSatuan1 = dbHelper.query("SELECT DISTINCT satuan1 FROM konversi WHERE nama='" + nama + "'");
 			cursorSatuan1.moveToFirst();
 			listSatuan.add(cursorSatuan1.getString(0));
 			cursorSatuan1.close();
-			Cursor cursorSatuan2 = db.rawQuery("SELECT * FROM konversi WHERE nama='" + nama + "'", null);
+			Cursor cursorSatuan2 = dbHelper.query("SELECT * FROM konversi WHERE nama='" + nama + "'");
 			cursorSatuan2.moveToFirst();
 			while (!cursorSatuan2.isAfterLast()) {
 				String satuan = cursorSatuan2.getString(3);
@@ -163,71 +133,46 @@ public class ControllerIsiKulkas extends SQLiteOpenHelper {
 			}
 			cursorSatuan2.close();
 		} else {
-			Cursor cursorSatuan = db.rawQuery("SELECT satuan FROM bahan WHERE nama='" + nama + "'", null);
+			Cursor cursorSatuan = dbHelper.query("SELECT satuan FROM bahan WHERE nama='" + nama + "'");
 			cursorSatuan.moveToFirst();
 			listSatuan.add(cursorSatuan.getString(0));
 			cursorSatuan.close();
 		}
 		cekMultiSatuan.close();
-		db.close();
 		return listSatuan;
 	}
 	
-	public float convertSatuan(String nama, String satuanFrom, String satuanTo, float jumlahFrom) {
-		openDatabase(true);
+	public float konversiSatuan(String nama, String satuanSebelum, String satuanSesudah, float jumlah) {
 		float hasil = 0;
-		if (satuanFrom.equalsIgnoreCase(satuanTo)) {
-			hasil = jumlahFrom;
+		if (satuanSebelum.equalsIgnoreCase(satuanSesudah)) {
+			hasil = jumlah;
 		} else {
-			Cursor cursorSatuanDefault = db.rawQuery("SELECT DISTINCT satuan1 FROM konversi WHERE nama='" + nama + "'", null);
+			Cursor cursorSatuanDefault = dbHelper.query("SELECT DISTINCT satuan1 FROM konversi WHERE nama='" + nama + "'");
 			cursorSatuanDefault.moveToFirst();
 			String satuanDefault = cursorSatuanDefault.getString(0);
 			cursorSatuanDefault.close();
-			
 			float faktorDefault = 1;
-			if (satuanFrom.equalsIgnoreCase(satuanDefault)) {
+			if (satuanSebelum.equalsIgnoreCase(satuanDefault)) {
 				faktorDefault = 1;
 			} else {
-				Cursor cursorKonversiDefault = db.rawQuery("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanFrom + "' AND satuan1='" + satuanDefault + "'", null);
+				Cursor cursorKonversiDefault = dbHelper.query("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanSebelum + "' AND satuan1='" + satuanDefault + "'");
 				cursorKonversiDefault.moveToFirst();
 				faktorDefault = cursorKonversiDefault.getFloat(0);
 				cursorKonversiDefault.close();
 			}
-			hasil = faktorDefault * jumlahFrom;
+			hasil = faktorDefault * jumlah;
 			
 			float faktor = 1;
-			if (satuanTo.equalsIgnoreCase(satuanDefault)) {
+			if (satuanSesudah.equalsIgnoreCase(satuanDefault)) {
 				faktor = 1;
 			} else {
-				Cursor cursorKonversi = db.rawQuery("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanTo + "' AND satuan1='" + satuanDefault + "'", null);
+				Cursor cursorKonversi = dbHelper.query("SELECT faktor FROM konversi WHERE nama='" + nama + "' AND satuan2='" + satuanSesudah + "' AND satuan1='" + satuanDefault + "'");
 				cursorKonversi.moveToFirst();
 				faktor = cursorKonversi.getFloat(0);
 				cursorKonversi.close();
 			}
 			hasil = hasil / faktor;
 		}
-		db.close();
 		return hasil;
-		
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase arg0) {}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
-	
-	/**
-	 * Membuka database
-	 * @param isReadOnly Kalau buat get: true, kalau buat add/remove/modify: readwrite
-	 */
-	public void openDatabase(boolean isReadOnly) {
-    	String myPath = DATABASE_PATH + DATABASE_NAME;
-    	
-    	if(isReadOnly){
-    		db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-    	} else {
-    		db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-    	}
 	}
 }

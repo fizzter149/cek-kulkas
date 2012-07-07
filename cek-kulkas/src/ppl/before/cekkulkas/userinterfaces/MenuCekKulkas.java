@@ -43,7 +43,7 @@ import android.widget.Toast;
 public class MenuCekKulkas extends Activity {
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
 	
 	/** list bahan dari database isi kulkas */
 	private List<Bahan> listBahan;
@@ -52,10 +52,10 @@ public class MenuCekKulkas extends Activity {
 	private List<Bahan> tempList;
 	
 	/** controller daftar resep untuk membantu akses database resep */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep(this);
+	private ControllerDaftarResep cdr = new ControllerDaftarResep();
 	
 	/** list semua bahan yang terdapat di database resep */
-	private final ArrayList<String> listAllNamaBahan = cdr.getAllNamaBahan();
+	private final ArrayList<String> listAllNamaBahan = cdr.ambilNamaBahan();
 	
 	private String tempSatuan;
 	
@@ -86,7 +86,7 @@ public class MenuCekKulkas extends Activity {
 	 */
 	private void initView() {
 		// ambil bahan dari database isi kulkas
-		listBahan = cik.getAll();
+		listBahan = cik.ambilSemuaBahan();
 		tempList = listBahan;
         ListView lv = (ListView) findViewById(R.id.listbahan);
         final IsiKulkasAdapter isiKulkasAdapter = new IsiKulkasAdapter(this, tempList);
@@ -169,7 +169,7 @@ public class MenuCekKulkas extends Activity {
         					alertHapus.setMessage("Anda yakin menghapus " + bahan.getNama() + " dari kulkas?");
         		    		alertHapus.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	     		    	           public void onClick(DialogInterface dialog, int id) {
-	     		    	        	   cik.delete(bahan.getNama());
+	     		    	        	   cik.hapusBahan(bahan.getNama());
 	     		    	        	   isiKulkasAdapter.remove(bahan);
 	     		    	        	   Toast.makeText(MenuCekKulkas.this, bahan.getNama() + " berhasil dihapus dari kulkas", Toast.LENGTH_SHORT).show();
 	     		    	           }
@@ -262,7 +262,7 @@ public class MenuCekKulkas extends Activity {
 					public void onClick(DialogInterface dialog, int id) {
 						boolean status = false;
 						if (jumlahBahan.getText().toString().length() > 0) {
-							status = cik.add(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), tempSatuan);
+							status = cik.tambahBahan(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), tempSatuan);
 						}
 						if (status) {
 							isiKulkasAdapter.add(new Bahan(namaBahan.getText().toString(), Float.parseFloat(jumlahBahan.getText().toString()), tempSatuan));
@@ -272,7 +272,9 @@ public class MenuCekKulkas extends Activity {
 						} else if((jumlahBahan.getText()+"").equals("")){
 							Toast.makeText(MenuCekKulkas.this, "anda belum mengisi jumlah bahan", Toast.LENGTH_SHORT).show();
 						} else {
-							Toast.makeText(MenuCekKulkas.this, namaBahan.getText()+" sudah ada,\ngunakan fitur ubah jumlah bahan", Toast.LENGTH_SHORT).show();
+							Bahan bahan = cik.ambilBahan(namaBahan.getText().toString());
+							isiKulkasAdapter.updateJumlah(isiKulkasAdapter.getPosition(bahan.getNama()), bahan.getJumlah());
+							Toast.makeText(MenuCekKulkas.this, namaBahan.getText()+" sudah ada, jumlahnya bertambah", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
@@ -335,6 +337,17 @@ public class MenuCekKulkas extends Activity {
 		public void updateSatuan(int position, String satuan) {
 			getItem(position).setSatuan(satuan);
 			notifyDataSetChanged();
+		}
+		
+		public int getPosition(String nama) {
+			int position = 0;
+			for (int i = 0; i < bList.size(); i++) {
+				if (bList.get(i).getNama().equalsIgnoreCase(nama)) {
+					position = i;
+					break;
+				}
+			}
+			return position;
 		}
 	    
 		@Override

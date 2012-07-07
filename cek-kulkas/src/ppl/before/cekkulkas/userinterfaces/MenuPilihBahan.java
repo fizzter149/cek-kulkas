@@ -36,10 +36,10 @@ import android.widget.TextView;
 public class MenuPilihBahan extends Activity {
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(MenuPilihBahan.this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
 	
 	/** list bahan dari database isi kulkas */
-	private List<Bahan> listBahan = cik.getAll();
+	private List<Bahan> listBahan = cik.ambilSemuaBahan();
 	
 	/** list bahan setelah difilter */
 	private List<Bahan> tempList = listBahan;

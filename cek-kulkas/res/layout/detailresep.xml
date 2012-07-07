@@ -7,16 +7,11 @@
     android:orientation="vertical" >
 
     <TextView
-        style="@style/MenuTitle"
-        android:text="@string/menu_detail_resep" />
-
-    <TextView
         android:id="@+id/nama_resep"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingTop="10dp"
-        android:text="Nama Resep"
         android:textSize="22sp" />
 
     <TextView
@@ -24,8 +19,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingBottom="10dp"
-        android:text="kategori" />
+        android:paddingBottom="10dp" />
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -85,7 +79,7 @@
                         android:id="@+id/bahan_resep"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal" />
+                        android:gravity="fill_horizontal" />
                 </LinearLayout>
 
                 <LinearLayout

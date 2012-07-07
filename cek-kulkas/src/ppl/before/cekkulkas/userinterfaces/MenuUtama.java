@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -47,13 +49,22 @@ public class MenuUtama extends Activity implements OnItemClickListener {
         gridview.setOnItemClickListener(this);
         
         // membuat database saat aplikasi pertama kali dijalankan (baru install)
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        dbHelper.createDatabase();
-        dbHelper.close();
+        new DatabaseHelper(this);
         
         copyPhotoFromResource();   
     }
     
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menudimenutama, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return super.onOptionsItemSelected(item);
+	}
+
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		switch (arg2) {
 		case 0:
@@ -98,12 +109,11 @@ public class MenuUtama extends Activity implements OnItemClickListener {
     
     private class ImageAdapter extends BaseAdapter {
     	
-    	
     	public ImageAdapter(Context c) {
 		}
 
 		public int getCount() {
-			return 6;
+			return 4;
 		}
 
 		public Object getItem(int position) {
@@ -140,14 +150,6 @@ public class MenuUtama extends Activity implements OnItemClickListener {
 			case 3:
 				textview.setText("Resep Favorit");
 				imgview.setImageResource(R.drawable.ic_menudaftarfavorit);
-				break;
-			case 4:
-				textview.setText("Panduan");
-				imgview.setImageResource(R.drawable.ic_menubantuan);
-				break;
-			case 5:
-				textview.setText("Tentang Aplikasi");
-				imgview.setImageResource(R.drawable.ic_menuinfo);
 				break;
 			}
 			return view;

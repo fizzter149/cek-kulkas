@@ -37,10 +37,10 @@ import android.widget.TextView;
 public class MenuDaftarResep extends Activity {
 	
 	/** controller daftar resep untuk membantu akses database */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep(MenuDaftarResep.this);
+	private ControllerDaftarResep cdr = new ControllerDaftarResep();
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas(MenuDaftarResep.this);
+	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
 	
 	/** list resep hasil pencarian */
 	private ArrayList<Resep> listResep;
@@ -79,14 +79,14 @@ public class MenuDaftarResep extends Activity {
 	private void initView() {
 		// jika list bahannya kosong, tampilkan semua resep
 		if (listBahan.size() == 0) {
-			listResep = (ArrayList<Resep>)cdr.getFavorite(0);
+			listResep = (ArrayList<Resep>)cdr.getFavorit(0);
 		// jika tidak kosong, cari resep berdasarkan bahan yang diberikan
 		} else {
-			listResep = cdr.findResep(listBahan);
+			listResep = cdr.cariResep(listBahan);
 		}
 
 		
-		List<Bahan> temp = cik.getAll();
+		List<Bahan> temp = cik.ambilSemuaBahan();
 		final List<String> namaBahan = new ArrayList<String>();
 		for(Bahan b:temp){
 			namaBahan.add(b.getNama());
