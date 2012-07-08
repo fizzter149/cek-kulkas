@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	<item android:id="@+id/menuedit"
-      	android:icon="@drawable/ic_edit"
+      	android:icon="@android:drawable/ic_menu_edit"
        	android:title="Ubah resep" />
     <item android:id="@+id/menuhapus"
-      	android:icon="@drawable/ic_delete"
+      	android:icon="@android:drawable/ic_menu_delete"
       	android:title="Hapus resep" />
     <item android:id="@+id/menufavorite"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@android:drawable/btn_star"
         android:title="Toggle favorit" />
     <item android:id="@+id/menumasak"
-        android:icon="@drawable/ic_masak"
+        android:icon="@android:drawable/ic_menu_mylocation"
         android:title="Masak" />
     <item android:id="@+id/menushare"
-        android:icon="@drawable/ic_share"
+        android:icon="@android:drawable/ic_menu_share"
         android:title="Bagikan" />
 </menu>

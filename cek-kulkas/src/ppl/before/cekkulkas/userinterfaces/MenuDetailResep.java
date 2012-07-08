@@ -166,6 +166,9 @@ public class MenuDetailResep extends Activity {
 	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menudetailresep, menu);
+		if (resep.getFlagFavorit() == 1) {
+			menu.getItem(2).setIcon(android.R.drawable.btn_star_big_on);
+		}
 		return true;
 
 	}
@@ -230,6 +233,8 @@ public class MenuDetailResep extends Activity {
 							cdr.setFavorit(resep.getNama(), true);
 							resep.setFlagFavorit(1);
 							Toast.makeText(MenuDetailResep.this, resep.getNama()+" berhasil ditambahkan ke daftar resep favorit", Toast.LENGTH_SHORT).show();
+							finish();
+							startActivity(getIntent());
 							break;
 
 						case DialogInterface.BUTTON_NEGATIVE:
@@ -250,6 +255,8 @@ public class MenuDetailResep extends Activity {
 							cdr.setFavorit(resep.getNama(), false);
 							resep.setFlagFavorit(0);
 							Toast.makeText(MenuDetailResep.this, resep.getNama()+" berhasil dihapus dari daftar resep favorit", Toast.LENGTH_SHORT).show();
+							finish();
+							startActivity(getIntent());
 							break;
 
 						case DialogInterface.BUTTON_NEGATIVE:
