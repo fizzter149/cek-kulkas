@@ -265,7 +265,7 @@ public class MenuBuatResepBaru extends Activity {
 
 		final ImageButton tambahHapus = new ImageButton(this);
 		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
-		tambahHapus.setImageResource(R.drawable.ic_tambah);
+		tambahHapus.setImageResource(android.R.drawable.ic_input_add);
 
 		// listener untuk tombol tambah row baru
 		tambahHapus.setOnClickListener(new OnClickListener() {
@@ -284,14 +284,20 @@ public class MenuBuatResepBaru extends Activity {
 				
 				if(temp.equals("")) temp = "0";
 				jumlahBahan = Float.parseFloat(temp);
-				
+				String jmlStr = "";
+				if(jumlahBahan % 1.0 == 0.0){
+					jmlStr += (int) jumlahBahan;
+				} else {
+					jmlStr += jumlahBahan;
+				}
+				banyakBahan.setText(jmlStr);
 				final Bahan bahan = new Bahan(nama, jumlahBahan, tempSatuan);
 
 				// informasi bahan ditambahkan ke list bahan
 				listBahan.add(bahan);
 				
 				// tombol tambah pada row tersebut diubah behaviornya menjadi untuk menghapus row tersebut.
-				tambahHapus.setImageResource(R.drawable.ic_hapus);
+				tambahHapus.setImageResource(android.R.drawable.ic_delete);
 				namaBahan.setEnabled(false);
 				banyakBahan.setEnabled(false);
 				spinnerSatuan.setEnabled(false);

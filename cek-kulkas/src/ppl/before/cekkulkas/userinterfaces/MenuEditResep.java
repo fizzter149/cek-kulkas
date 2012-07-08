@@ -218,7 +218,14 @@ public class MenuEditResep extends Activity {
 
 		final EditText banyakBahan = new EditText(this);
 		banyakBahan.setLayoutParams(new LayoutParams(0,LayoutParams.WRAP_CONTENT,0.5f));
-		banyakBahan.setText(""+bahan.getJumlah());
+		float jumlah = bahan.getJumlah();
+		String jmlStr = "";
+		if(jumlah % 1.0 == 0.0){
+			jmlStr += (int) jumlah;
+		} else {
+			jmlStr += jumlah;
+		}
+		banyakBahan.setText("" + jmlStr);
 		banyakBahan.setEnabled(false);
 
 		final Spinner spinnerSatuan = new Spinner(this);
@@ -232,7 +239,7 @@ public class MenuEditResep extends Activity {
 
 		final ImageButton tambahHapus = new ImageButton(this);
 		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.MATCH_PARENT));
-		tambahHapus.setImageResource(R.drawable.ic_hapus);
+		tambahHapus.setImageResource(android.R.drawable.ic_delete);
 
 		tambahHapus.setOnClickListener(new OnClickListener() {
 
@@ -327,7 +334,7 @@ public class MenuEditResep extends Activity {
 
 		final ImageButton tambahHapus = new ImageButton(this);
 		tambahHapus.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.MATCH_PARENT));
-		tambahHapus.setImageResource(R.drawable.ic_tambah);
+		tambahHapus.setImageResource(android.R.drawable.ic_input_add);
 
 		// listener untuk tombol tambah row
 		tambahHapus.setOnClickListener(new OnClickListener() {
@@ -346,12 +353,18 @@ public class MenuEditResep extends Activity {
 
 				if(temp.equals("")) temp = "0";
 				jumlahBahan = Float.parseFloat(temp);
-
+				String jmlStr = "";
+				if(jumlahBahan % 1.0 == 0.0){
+					jmlStr += (int) jumlahBahan;
+				} else {
+					jmlStr += jumlahBahan;
+				}
+				banyakBahan.setText(jmlStr);
 				final Bahan bahan = new Bahan(nama,jumlahBahan,tempSatuan);
 
 				// tambahkan objek bahan baru ke list bahan
 				listBahanBaru.add(bahan);
-				tambahHapus.setImageResource(R.drawable.ic_hapus);
+				tambahHapus.setImageResource(android.R.drawable.ic_delete);
 				namaBahan.setEnabled(false);
 				banyakBahan.setEnabled(false);
 				spinnerSatuan.setEnabled(false);
