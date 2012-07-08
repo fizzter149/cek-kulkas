@@ -8,12 +8,13 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/llpb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:descendantFocusability="beforeDescendants"
 		android:focusableInTouchMode="true"
-		android:id="@+id/llpb" >
+		android:layout_marginBottom="60dp" >
 
         <TextView
             style="@style/MenuTitle"
