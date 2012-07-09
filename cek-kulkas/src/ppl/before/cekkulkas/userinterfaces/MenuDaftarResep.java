@@ -37,10 +37,10 @@ import android.widget.TextView;
 public class MenuDaftarResep extends Activity {
 	
 	/** controller daftar resep untuk membantu akses database */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep();
+	private ControllerDaftarResep cdr;
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
+	private ControllerIsiKulkas cik;
 	
 	/** list resep hasil pencarian */
 	private ArrayList<Resep> listResep;
@@ -60,14 +60,13 @@ public class MenuDaftarResep extends Activity {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.pilihbahan_2);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-        
+        cdr = new ControllerDaftarResep(getApplicationContext());
+        cik = new ControllerIsiKulkas(getApplicationContext());
         // mengambil informasi list bahan yang dijadikan dasar pencarian resep dari extras
         listBahan = (ArrayList<Bahan>) getIntent().getSerializableExtra("listBahan");
         
         // inisialisasi isi setiap elemen dari view
-
-        
-				initView();
+        initView();
 			
 			
     }
@@ -92,10 +91,6 @@ public class MenuDaftarResep extends Activity {
 			namaBahan.add(b.getNama());
 		}
 		
-//		final ProgressDialog pg;
-//		pg = ProgressDialog.show(MenuDaftarResep.this, "", "mencari resep...",true,false);
-//		new Thread(){
-//			public void run(){
 		// list nama bahan yang dipilih
 		List<String> listBahanCocok = new ArrayList<String>();
 		for (Bahan b: listBahan) {
@@ -155,7 +150,7 @@ public class MenuDaftarResep extends Activity {
         lv.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view,
         			int position, long id) {
-        			Intent intentDetailResep = new Intent(MenuDaftarResep.this, MenuDetailResep.class);
+        			Intent intentDetailResep = new Intent(getApplicationContext(), MenuDetailResep.class);
         			// sertakan resep yang dipilih sebagai extra
         			Bundle b = new Bundle();
         			b.putSerializable("resep", tempList.get(position));
@@ -330,7 +325,8 @@ public class MenuDaftarResep extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
-				initView();
+		cdr = new ControllerDaftarResep(getApplicationContext());
+        cik = new ControllerIsiKulkas(getApplicationContext());
+		initView();
 	}
 }

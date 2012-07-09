@@ -36,13 +36,13 @@ import android.widget.TextView;
 public class MenuPilihBahan extends Activity {
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
+	private ControllerIsiKulkas cik;
 	
 	/** list bahan dari database isi kulkas */
-	private List<Bahan> listBahan = cik.ambilSemuaBahan();
+	private List<Bahan> listBahan;
 	
 	/** list bahan setelah difilter */
-	private List<Bahan> tempList = listBahan;
+	private List<Bahan> tempList;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -54,6 +54,9 @@ public class MenuPilihBahan extends Activity {
         setContentView(R.layout.pilihbahan);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
         
+        cik = new ControllerIsiKulkas(getApplicationContext());
+        listBahan = cik.ambilSemuaBahan();
+        tempList = listBahan;
         findViewById(R.id.llpb).requestFocus();
         
         // adapter untuk item dari daftar bahan
@@ -108,7 +111,7 @@ public class MenuPilihBahan extends Activity {
 				}
 
 				// pergi ke halaman daftar resep, sertakan objek list bahan yang telah dipilih
-				Intent i = new Intent(MenuPilihBahan.this, MenuDaftarResep.class);
+				Intent i = new Intent(getApplicationContext(), MenuDaftarResep.class);
     			Bundle b = new Bundle();
     			b.putSerializable("listBahan", listBahanSelected);
     			i.putExtras(b);

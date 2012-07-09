@@ -52,13 +52,13 @@ public class MenuEditResep extends Activity {
 	private final ArrayList<Bahan> listBahanBaru = new ArrayList<Bahan>();
 
 	/** controller daftar resep untuk membantu akses ke database resep */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep();
+	private ControllerDaftarResep cdr;
 
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
+	private ControllerIsiKulkas cik;
 
 	/** list semua bahan yang terdapat di database resep, untuk membantu auto suggestion */
-	private final ArrayList<String> listAllNamaBahan = cdr.ambilNamaBahan();
+	private ArrayList<String> listAllNamaBahan;
 
 	/** resep yang sedang diedit */
 	private Resep resep;
@@ -82,7 +82,9 @@ public class MenuEditResep extends Activity {
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
 		findViewById(R.id.tabdeskripsi_edit).requestFocus();
-		
+		cdr = new ControllerDaftarResep(getApplicationContext());
+		cik = new ControllerIsiKulkas(getApplicationContext());
+		listAllNamaBahan = cdr.ambilNamaBahan();
 		// mengambil resep yang akan diedit dari extras
 		resep = (Resep)getIntent().getSerializableExtra("resep");
 		String foto = resep.getFoto();

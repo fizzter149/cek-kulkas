@@ -40,10 +40,10 @@ import android.widget.Toast;
 public class MenuDetailResep extends Activity {
 
 	/** controller daftar resep untuk membantu akses ke database daftar resep */
-	private final ControllerDaftarResep cdr = new ControllerDaftarResep();
+	private ControllerDaftarResep cdr;
 
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
+	private ControllerIsiKulkas cik;
 
 	/** resep yang akan ditampilkan detailnya */
 	private Resep resep;
@@ -65,6 +65,8 @@ public class MenuDetailResep extends Activity {
 		setContentView(R.layout.detailresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
+		cdr = new ControllerDaftarResep(getApplicationContext());
+		cik = new ControllerIsiKulkas(getApplicationContext());
 		// mengambil objek resep yang akan ditampilkan detailnya dari extra
 		resep = (Resep)getIntent().getSerializableExtra("resep");
 
@@ -174,7 +176,7 @@ public class MenuDetailResep extends Activity {
 	}
 
 	public void fullScreen(View v){
-		Intent i = new Intent(MenuDetailResep.this, MenuFotoFullScreen.class);
+		Intent i = new Intent(getApplicationContext(), MenuFotoFullScreen.class);
 		String foto = resep.getFoto();
 		if(foto == null || foto.equals("")){
 			foto = "r0";
@@ -194,7 +196,7 @@ public class MenuDetailResep extends Activity {
 		switch(item.getItemId()){
 		// menu edit, pergi ke view edit resep dengan menyertakan objek resep
 		case R.id.menuedit:
-			Intent i = new Intent(MenuDetailResep.this, MenuEditResep.class);
+			Intent i = new Intent(getApplicationContext(), MenuEditResep.class);
 			Bundle b = new Bundle();
 			b.putSerializable("resep", resep);
 			i.putExtras(b);
@@ -320,7 +322,7 @@ public class MenuDetailResep extends Activity {
 						ambilGambar();
 						break;
 					case DialogInterface.BUTTON_NEGATIVE:
-						Intent i2 = new Intent(MenuDetailResep.this, MenuPublikasiKeJejaringSosial.class);
+						Intent i2 = new Intent(getApplicationContext(), MenuPublikasiKeJejaringSosial.class);
 						Bundle b2 = new Bundle();
 						b2.putSerializable("resep", resep);
 						i2.putExtras(b2);
@@ -347,6 +349,8 @@ public class MenuDetailResep extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		cdr = new ControllerDaftarResep(getApplicationContext());
+		cik = new ControllerIsiKulkas(getApplicationContext());
 		resep = cdr.ambilResep(resep.getNama());
 
 		((TextView)findViewById(R.id.kategori_resep)).setText(resep.getKategori());
@@ -418,7 +422,7 @@ public class MenuDetailResep extends Activity {
 			if (resultCode == Activity.RESULT_OK) {
 				Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
 				if (thumbnail != null) {
-					Intent i2 = new Intent(MenuDetailResep.this, MenuPublikasiKeJejaringSosial.class);
+					Intent i2 = new Intent(getApplicationContext(), MenuPublikasiKeJejaringSosial.class);
 					Bundle b2 = new Bundle();
 					b2.putSerializable("resep", resep);
 

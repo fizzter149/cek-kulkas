@@ -43,7 +43,7 @@ import android.widget.Toast;
 public class MenuCekKulkas extends Activity {
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
+	private ControllerIsiKulkas cik;
 	
 	/** list bahan dari database isi kulkas */
 	private List<Bahan> listBahan;
@@ -52,10 +52,10 @@ public class MenuCekKulkas extends Activity {
 	private List<Bahan> tempList;
 	
 	/** controller daftar resep untuk membantu akses database resep */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep();
+	private ControllerDaftarResep cdr;
 	
 	/** list semua bahan yang terdapat di database resep */
-	private final ArrayList<String> listAllNamaBahan = cdr.ambilNamaBahan();
+	private ArrayList<String> listAllNamaBahan;
 	
 	private String tempSatuan;
 	
@@ -70,6 +70,9 @@ public class MenuCekKulkas extends Activity {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.cekkulkas);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
+        cik = new ControllerIsiKulkas(getApplicationContext());
+        cdr = new ControllerDaftarResep(getApplicationContext());
+        listAllNamaBahan = cdr.ambilNamaBahan();
         initView();
         
     }
@@ -78,6 +81,9 @@ public class MenuCekKulkas extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		cik = new ControllerIsiKulkas(getApplicationContext());
+        cdr = new ControllerDaftarResep(getApplicationContext());
+        listAllNamaBahan = cdr.ambilNamaBahan();
 		initView();
 	}
 	

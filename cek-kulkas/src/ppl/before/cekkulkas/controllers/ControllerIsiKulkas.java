@@ -5,6 +5,7 @@ import java.util.List;
 
 import ppl.before.cekkulkas.models.Bahan;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -16,8 +17,11 @@ import android.util.Log;
  */
 public class ControllerIsiKulkas {
 	
-    private static DatabaseHelper dbHelper = DatabaseHelper.getHelper(null);
+    private DatabaseHelper dbHelper;
 	
+    public ControllerIsiKulkas(Context context) {
+    	dbHelper = DatabaseHelper.getHelper(context);
+    }
 	/**
 	 * Menambah bahan
 	 * @param nama Nama bahan

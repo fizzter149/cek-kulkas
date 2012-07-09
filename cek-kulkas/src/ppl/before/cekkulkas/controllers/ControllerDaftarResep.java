@@ -6,6 +6,7 @@ import java.util.List;
 import ppl.before.cekkulkas.models.Bahan;
 import ppl.before.cekkulkas.models.Resep;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 
@@ -17,7 +18,11 @@ import android.database.Cursor;
  */
 public class ControllerDaftarResep {
 		
-    private static DatabaseHelper dbHelper = DatabaseHelper.getHelper(null);
+	private DatabaseHelper dbHelper;
+	
+	public ControllerDaftarResep(Context context) {
+		dbHelper = DatabaseHelper.getHelper(context);
+	}
 	
 	/**
 	 * Menambah atau membuat resep baru

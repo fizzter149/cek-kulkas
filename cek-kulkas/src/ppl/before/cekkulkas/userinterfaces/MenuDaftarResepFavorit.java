@@ -31,7 +31,7 @@ import android.widget.TextView;
 public class MenuDaftarResepFavorit extends Activity {
 	
 	/** controller daftar resep untuk membantu akses database */
-	private ControllerDaftarResep cdf = new ControllerDaftarResep();
+	private ControllerDaftarResep cdf;
 	
 	/** daftar resep favorit */
 	private List<Resep> listResep;
@@ -44,7 +44,7 @@ public class MenuDaftarResepFavorit extends Activity {
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.daftarresepfavorit);
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-        
+        cdf = new ControllerDaftarResep(getApplicationContext());
         // inisialisasi isi setiap elemen di view
         initView();
     }
@@ -53,6 +53,7 @@ public class MenuDaftarResepFavorit extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		cdf = new ControllerDaftarResep(getApplicationContext());
 		initView();
 	}
 	
@@ -71,7 +72,7 @@ public class MenuDaftarResepFavorit extends Activity {
         lv.setOnItemClickListener(new OnItemClickListener() {
         	public void onItemClick(AdapterView<?> parent, View view,
         			int position, long id) {
-        			Intent intentDetailResep = new Intent(MenuDaftarResepFavorit.this, MenuDetailResep.class);
+        			Intent intentDetailResep = new Intent(getApplicationContext(), MenuDetailResep.class);
         			// sertakan objek resep yang dipilih sebagai extra
         			Bundle b = new Bundle();
         			b.putSerializable("resep", listResep.get(position));

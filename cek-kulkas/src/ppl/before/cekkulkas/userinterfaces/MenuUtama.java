@@ -49,7 +49,7 @@ public class MenuUtama extends Activity implements OnItemClickListener {
         gridview.setOnItemClickListener(this);
         
         // membuat database saat aplikasi pertama kali dijalankan (baru install)
-        new DatabaseHelper(this);
+        DatabaseHelper.getHelper(getApplicationContext());
         
         copyPhotoFromResource();   
     }

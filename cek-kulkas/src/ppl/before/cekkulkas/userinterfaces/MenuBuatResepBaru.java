@@ -53,13 +53,13 @@ public class MenuBuatResepBaru extends Activity {
 	private final ArrayList<Bahan> listBahan = new ArrayList<Bahan>();
 	
 	/** controller daftar resep untuk membantu akses database resep */
-	private ControllerDaftarResep cdr = new ControllerDaftarResep();
+	private ControllerDaftarResep cdr;
 	
 	/** controller untuk membantu akses ke database isi kulkas */
-	private ControllerIsiKulkas cik = new ControllerIsiKulkas();
+	private ControllerIsiKulkas cik;
 	
 	/** list semua bahan yang terdapat di database resep */
-	private final ArrayList<String> listAllNamaBahan = cdr.ambilNamaBahan();
+	private ArrayList<String> listAllNamaBahan;
 	
 	private String tempSatuan;
 	
@@ -80,6 +80,9 @@ public class MenuBuatResepBaru extends Activity {
 		setContentView(R.layout.tambahresep);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
+		cdr = new ControllerDaftarResep(getApplicationContext());
+		cik = new ControllerIsiKulkas(getApplicationContext());
+		listAllNamaBahan = cdr.ambilNamaBahan();
 		findViewById(R.id.tabdeskripsi_tambah).requestFocus();
 		((ImageView)findViewById(R.id.fotoreseptambah)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/r0.jpg"));
 		
