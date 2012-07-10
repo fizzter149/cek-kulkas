@@ -91,7 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
 	private void openDatabase() {
 		db = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
-		db.rawQuery("PRAGMA foreign_keys = ON", null);
+		db.rawQuery("PRAGMA foreign_keys = ON", null).close();
 	}
     
     /**
