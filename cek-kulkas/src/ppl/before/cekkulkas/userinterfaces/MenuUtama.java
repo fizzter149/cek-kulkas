@@ -38,7 +38,6 @@ public class MenuUtama extends Activity implements OnItemClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         // title bar aplikasi
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.gridmenuutama);
@@ -144,7 +143,7 @@ public class MenuUtama extends Activity implements OnItemClickListener {
 				imgview.setImageResource(R.drawable.ic_menupilihbahan);
 				break;
 			case 2:
-				textview.setText("Buat Resep Baru");
+				textview.setText("Buat Resep");
 				imgview.setImageResource(R.drawable.ic_menubuatresep);
 				break;
 			case 3:

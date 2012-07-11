@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.PorterDuff.Mode;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -196,6 +197,7 @@ public class MenuCekKulkas extends Activity {
         });
         
         // listener untuk tombol tambah bahan
+        ((Button) findViewById(R.id.tambahBahan)).getBackground().setColorFilter(0xFF74BBFB, Mode.MULTIPLY);
         ((Button) findViewById(R.id.tambahBahan)).setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {

@@ -3,13 +3,14 @@
     android:id="@+id/gridmenuutama"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/default_background"
     android:numColumns="2"
     android:columnWidth="200dp"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:verticalSpacing="60dp"
+    android:verticalSpacing="50dp"
     android:gravity="center" >
     
 
