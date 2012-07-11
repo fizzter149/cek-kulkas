@@ -193,7 +193,6 @@ public class MenuCekKulkas extends Activity {
         		});
         		onClickDialog.show();
         		}
-		
         });
         
         // listener untuk tombol tambah bahan

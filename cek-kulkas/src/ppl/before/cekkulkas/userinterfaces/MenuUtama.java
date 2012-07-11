@@ -67,16 +67,16 @@ public class MenuUtama extends Activity implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		switch (arg2) {
 		case 0:
-			startActivity(new Intent(this, MenuCekKulkas.class));
+			startActivity(new Intent(getApplicationContext(), MenuCekKulkas.class));
 			break;
 		case 1:
-			startActivity(new Intent(this, MenuPilihBahan.class));
+			startActivity(new Intent(getApplicationContext(), MenuPilihBahan.class));
 			break;
 		case 2:
-			startActivity(new Intent(this, MenuBuatResepBaru.class));
+			startActivity(new Intent(getApplicationContext(), MenuBuatResepBaru.class));
 			break;
 		case 3:
-			startActivity(new Intent(this, MenuDaftarResepFavorit.class));
+			startActivity(new Intent(getApplicationContext(), MenuDaftarResepFavorit.class));
 			break;
 		}
 	}
