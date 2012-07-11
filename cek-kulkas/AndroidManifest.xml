@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ppl.before.cekkulkas"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.1" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
     <uses-permission android:name="android.permission.CAMERA" />
@@ -26,14 +26,12 @@
         
         <activity android:name=".userinterfaces.MenuCekKulkas"></activity>
 		<activity android:name=".userinterfaces.MenuPilihBahan"></activity>
-		<activity android:name=".userinterfaces.MenuPilihBahan"></activity>
 		<activity android:name=".userinterfaces.MenuDaftarResepFavorit"></activity>
 		<activity android:name=".userinterfaces.MenuDetailResep"></activity>
 		<activity android:name=".userinterfaces.MenuDaftarResep"></activity>
         <activity android:name=".userinterfaces.MenuBuatResepBaru"></activity>
 		<activity android:name=".userinterfaces.MenuEditResep"></activity>
 		<activity android:name=".userinterfaces.MenuFotoFullScreen"></activity>
-		<activity android:name=".userinterfaces.MenuEditResep"></activity>
 		<activity 
 		    android:name=".userinterfaces.MenuPublikasiKeJejaringSosial"
 		    android:launchMode="singleInstance">
