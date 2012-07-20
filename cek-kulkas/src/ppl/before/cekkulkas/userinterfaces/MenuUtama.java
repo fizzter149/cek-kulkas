@@ -9,7 +9,10 @@ import java.io.OutputStream;
 import ppl.before.cekkulkas.R;
 import ppl.before.cekkulkas.controllers.DatabaseHelper;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -51,6 +54,19 @@ public class MenuUtama extends Activity implements OnItemClickListener {
         DatabaseHelper.getHelper(getApplicationContext());
         
         copyPhotoFromResource();   
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	new AlertDialog.Builder(this)
+    		.setMessage("Anda ingin keluar dari aplikasi?")
+    		.setPositiveButton("Ya", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			})
+			.setNegativeButton("Tidak", null)
+			.create().show();
     }
     
 	@Override
