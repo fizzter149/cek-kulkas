@@ -8,9 +8,15 @@
         style="@style/MenuTitle"
         android:text="@string/menu_daftar_resep_favorit" />
     
-    <ListView
-        android:id="@+id/listresepfavorit"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    <GridView
+        android:id="@+id/daftarResepFavorit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="true"
+        android:gravity="center"
+        android:verticalSpacing="5dp"
+        android:layoutAnimation="@anim/fadein_controller"
+        android:numColumns="1">
+    </GridView>
     
 </LinearLayout>    

@@ -41,6 +41,9 @@ public class Resep implements Serializable {
 	
 	/** Jumlah kecocokan bahan */
 	private int jumlahBahanCocok;
+
+	public static int BUKAN_FAVORIT = 0;
+	public static int FAVORIT = 1;
 	
 	/**
 	 * Constructor Resep default

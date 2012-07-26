@@ -26,7 +26,6 @@ public class MenuFotoFullScreen extends Activity{
 		
 		ImageView img = (ImageView)findViewById(R.id.fotofullscreen);
 		img.setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/"+foto+".jpg"));
-		img.setScaleType(ScaleType.FIT_XY);
 		
 	}
 }

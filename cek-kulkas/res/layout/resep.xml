@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
-    
-	<TextView
-	    android:id="@+id/namaresep"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="20sp" />		
-	<TextView
-		android:id="@+id/kategoriresep"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-	<TextView
-	    android:id="@+id/keteranganresep"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+    android:layout_height="200dp" >
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/fotoresep"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_launcher_cekkulkas" />
+
+    <ImageView
+        android:id="@+id/favResep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_fav" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey1"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/namaresep"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Nama"
+            android:textStyle="bold" />
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/kategoriresep" -->
+        <!-- android:layout_width="fill_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:text="Kategori" -->
+        <!-- android:textSize="" /> -->
+
+        <TextView
+            android:id="@+id/keteranganresep"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Keterangan"
+            android:textStyle="italic" />
+    </LinearLayout>
+
+</RelativeLayout>

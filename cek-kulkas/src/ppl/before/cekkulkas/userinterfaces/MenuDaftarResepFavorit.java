@@ -10,6 +10,7 @@ import ppl.before.cekkulkas.models.Resep;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,8 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -63,9 +65,9 @@ public class MenuDaftarResepFavorit extends Activity {
 	 */
 	private void initView(){
 		// ambil resep favorit dari database
-		listResep = cdf.getFavorit(1);
+		listResep = cdf.getFavorit(Resep.FAVORIT);
 		final ArrayList<Bahan> listBahanKosong = new ArrayList<Bahan>(0);
-        ListView lv = (ListView) findViewById(R.id.listresepfavorit);
+        GridView lv = (GridView) findViewById(R.id.daftarResepFavorit);
         lv.setAdapter(new DaftarResepFavoritAdapter(this, listResep));
         
         // listener untuk item di list, pergi ke halaman detil resep tersebut
@@ -106,13 +108,27 @@ public class MenuDaftarResepFavorit extends Activity {
 				holder = new ViewHolderDaftarFavorit();
 				holder.teksNama = (TextView) view.findViewById(R.id.namaresepfavorit);
 				holder.teksKategori = (TextView) view.findViewById(R.id.kategoriresepfavorit);
+				holder.foto = (ImageView) view.findViewById(R.id.fotoresep);
 				view.setTag(holder);
 			} else {
 				view = convertView;
 				holder = (ViewHolderDaftarFavorit) view.getTag();
 			}
-			holder.teksNama.setText(listResep.get(position).getNama());
-			holder.teksKategori.setText(listResep.get(position).getKategori());
+			
+			Resep resep = listResep.get(position);
+			
+			holder.teksNama.setText(resep.getNama());
+			holder.teksKategori.setText(resep.getKategori());
+
+			String foto = resep.getFoto();
+			if (foto == null || foto.equals("")) {
+				foto = "r0";
+			}
+			holder.foto
+					.setImageBitmap(BitmapFactory
+							.decodeFile("/data/data/ppl.before.cekkulkas/" + foto
+									+ ".jpg"));
+			
 			return view;
 		}
 	}
@@ -120,6 +136,7 @@ public class MenuDaftarResepFavorit extends Activity {
 	static class ViewHolderDaftarFavorit {
 		TextView teksNama;
 		TextView teksKategori;
+		ImageView foto;
 	}
 	
 }

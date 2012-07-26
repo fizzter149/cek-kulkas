@@ -3,24 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-   
+
     <TextView
         style="@style/MenuTitle"
-        android:text="Hasil Pencarian"
-    />
+        android:text="Hasil Pencarian" />
 
     <Spinner
         android:id="@+id/spinnerKategori"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@string/prompt_kategori"/>
-    
-    <ListView
-	        android:id="@+id/daftarResep"
-	        android:layout_width="fill_parent"
-	        android:layout_weight="1"
-	        android:layout_height="wrap_content">
-	    </ListView>
-    
-    
+        android:prompt="@string/prompt_kategori" />
+
+    <GridView
+        android:id="@+id/daftarResep"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="true"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:layoutAnimation="@anim/fadein_controller"
+        android:numColumns="2"
+        android:padding="10dp"
+        android:verticalSpacing="10dp" >
+    </GridView>
+
 </LinearLayout>

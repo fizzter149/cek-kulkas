@@ -1,32 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/containerdetailresep"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/nama_resep"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:id="@+id/containerdetailresep"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="10dp"
-        android:textSize="22sp" />
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/kategori_resep"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="10dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal" >
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp" >
+
+                <ImageView
+                    android:id="@+id/fotoResep"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:onClick="fullScreen" />
+
+                <ImageView
+                    android:id="@+id/favResep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_fav" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey1"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layoutAnimation="@anim/pushrightin_controller" >
+
+                <TextView
+                    android:id="@+id/nama_resep"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingTop="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/kategori_resep"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:paddingBottom="10dp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TabHost
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/tabHost"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
@@ -54,16 +88,6 @@
                         android:id="@+id/deskripsi_resep"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:id="@+id/fotoResep"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:background="#C9C9C9"
-                        android:onClick="fullScreen"
-                        android:padding="5dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,6 +123,6 @@
                 </LinearLayout>
             </FrameLayout>
         </TabHost>
-    </ScrollView>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
