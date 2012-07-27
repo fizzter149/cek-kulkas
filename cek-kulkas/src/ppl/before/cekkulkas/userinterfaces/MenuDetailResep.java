@@ -78,9 +78,8 @@ public class MenuDetailResep extends Activity {
 
 	private void initView() {
 
-		((TextView) findViewById(R.id.nama_resep)).setText(resep
-				.getNama());
-		
+		((TextView) findViewById(R.id.nama_resep)).setText(resep.getNama());
+
 		((TextView) findViewById(R.id.kategori_resep)).setText(resep
 				.getKategori());
 		((TextView) findViewById(R.id.deskripsi_resep)).setText(resep
@@ -88,12 +87,14 @@ public class MenuDetailResep extends Activity {
 
 		String foto = resep.getFoto();
 		if (foto == null || foto.equals("")) {
-			foto = "r0";
+			((ImageView) findViewById(R.id.fotoResep))
+					.setImageResource(R.drawable.foto_resep_default);
+		} else {
+			((ImageView) findViewById(R.id.fotoResep))
+					.setImageBitmap(BitmapFactory
+							.decodeFile("/data/data/ppl.before.cekkulkas/"
+									+ foto + ".jpg"));
 		}
-		((ImageView) findViewById(R.id.fotoResep))
-				.setImageBitmap(BitmapFactory
-						.decodeFile("/data/data/ppl.before.cekkulkas/" + foto
-								+ ".jpg"));
 
 		List<Bahan> listBahan = resep.getListBahan();
 		String bahanStr = "";
@@ -235,9 +236,11 @@ public class MenuDetailResep extends Activity {
 		switch (item.getItemId()) {
 		// menu edit, pergi ke view edit resep dengan menyertakan objek resep
 		case R.id.menuedit:
-			Intent i = new Intent(getApplicationContext(), MenuEditResep.class);
+			Intent i = new Intent(getApplicationContext(),
+					MenuAddEditResep.class);
 			Bundle b = new Bundle();
 			b.putSerializable("resep", resep);
+			i.putExtra("mode", MenuAddEditResep.MODE_EDIT);
 			i.putExtras(b);
 			startActivity(i);
 			return true;

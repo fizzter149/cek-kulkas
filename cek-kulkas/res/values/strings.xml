@@ -9,7 +9,7 @@
     <string name="menu_cek_kulkas">Cek Bahan di Kulkas</string>
     <string name="menu_detail_resep">Detail Resep</string>
     <string name="prompt_kategori">Pilih Kategori</string>
-    <string name="menu_tambah_resep">Buat Resep</string>
+    <string name="menu_tambah_resep">Tulis Resep Sendiri</string>
     <string name="menu_ubah_resep">Ubah Resep</string>
 
 </resources>

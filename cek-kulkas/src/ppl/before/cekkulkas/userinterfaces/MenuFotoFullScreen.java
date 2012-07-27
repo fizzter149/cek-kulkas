@@ -24,8 +24,11 @@ public class MenuFotoFullScreen extends Activity{
 		
 		String foto = (String) getIntent().getExtras().get("foto");
 		
-		ImageView img = (ImageView)findViewById(R.id.fotofullscreen);
-		img.setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/"+foto+".jpg"));
+		if(foto == null || foto.equals("")){
+			((ImageView)findViewById(R.id.fotofullscreen)).setImageResource(R.drawable.foto_resep_default);
+		} else {
+			((ImageView)findViewById(R.id.fotofullscreen)).setImageBitmap(BitmapFactory.decodeFile("/data/data/ppl.before.cekkulkas/"+foto+".jpg"));
+		}
 		
 	}
 }

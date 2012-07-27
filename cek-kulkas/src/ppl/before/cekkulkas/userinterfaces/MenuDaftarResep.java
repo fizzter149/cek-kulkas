@@ -273,7 +273,7 @@ public class MenuDaftarResep extends Activity {
 
 			// jika resep tidak memiliki foto, pakai foto default
 			if (foto == null || foto.equals("")) {
-				foto = "r0";
+				holder.foto.setImageResource(R.drawable.foto_resep_default);
 			} else {
 				holder.foto.setImageBitmap(BitmapFactory
 						.decodeFile("/data/data/ppl.before.cekkulkas/" + foto

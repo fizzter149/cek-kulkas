@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-	android:id="@+id/lltr" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,9 +11,18 @@
         android:layout_marginBottom="60dp" >
 
         <TextView
+            android:id="@+id/titleaddedit"
             style="@style/MenuTitle"
-            android:text="@string/menu_tambah_resep" />
+            android:text="@string/menu_ubah_resep" />
 
+        <TextView
+            android:id="@+id/nama_resep_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:textSize="22sp" />
+        
         <EditText
             android:id="@+id/nama_resep_tambah"
             android:layout_width="match_parent"
@@ -32,7 +40,7 @@
 
             <TabHost
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/tabHost_tambah"
+                android:id="@+id/tabHost_addedit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
 
@@ -47,9 +55,9 @@
                     android:layout_height="fill_parent" >
 
                     <LinearLayout
-                        android:id="@+id/tabdeskripsi_tambah"
+                        android:id="@+id/tabdeskripsi_addedit"
                         android:layout_width="fill_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
@@ -58,23 +66,23 @@
 						android:focusableInTouchMode="true" >
 
                         <EditText
-                            android:id="@+id/kategori_resep_tambah"
+                            android:id="@+id/kategori_resep_addedit"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:hint="kategori"
                             android:singleLine="true" />
 
                         <EditText
-                            android:id="@+id/deskripsi_resep_tambah"
+                            android:id="@+id/deskripsi_resep_addedit"
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:gravity="top"
                             android:hint="deskripsi"
                             android:inputType="textMultiLine"
-                            android:lines="4" />
+                            android:minLines="4" />
                         
                         <ImageView 
-                            android:id="@+id/fotoreseptambah"
+                            android:id="@+id/foto_resep_addedit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"/>
@@ -88,16 +96,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tabbahan_tambah"
+                        android:id="@+id/tabbahan_addedit"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="45dp" >
 
                         <TableLayout
-                            android:id="@+id/tabelbahan"
+                            android:id="@+id/tabelbahan_addedit"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent" >
 
@@ -109,16 +117,16 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/tablangkah_tambah"
+                        android:id="@+id/tablangkah_addedit"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="45dp" >
 
                         <EditText
-                            android:id="@+id/langkah_resep_tambah"
+                            android:id="@+id/langkah_resep_addedit"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:gravity="top"
@@ -139,15 +147,14 @@
         style="@android:style/ButtonBar" >
 
         <Button
-            android:id="@+id/tombolsimpan_tambah"
+            android:id="@+id/tombolsimpan_addedit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:enabled="false"
             android:text="Simpan" />
 
         <Button
-            android:id="@+id/tombolbatal_tambah"
+            android:id="@+id/tombolbatal_addedit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

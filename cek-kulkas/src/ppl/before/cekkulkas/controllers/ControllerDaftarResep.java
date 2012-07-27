@@ -25,29 +25,24 @@ public class ControllerDaftarResep {
 	}
 	
 	/**
-	 * Menambah atau membuat resep baru
-	 * @param nama Nama resep
-	 * @param deskripsi Deskripsi resep
-	 * @param listBahan Bahan-bahan yang digunakan
-	 * @param langkah Langkah memasak
-	 * @param kategori Kategori resep
-	 * @param foto Foto resep
-	 * @return status
+	 * Menambahkan resep ke database
+	 * @param resep resep yang akan ditambahkan
+	 * @return berhasil/tidak
 	 */
-	public boolean tambahResep(String nama, String deskripsi, List<Bahan> listBahan, String langkah, String kategori, String foto){
+	public boolean tambahResep(Resep resep){
 		ContentValues rValues = new ContentValues();
-		rValues.put("nama", nama);
-		rValues.put("deskripsi", deskripsi);
-		rValues.put("langkah", langkah);
-		rValues.put("kategori", kategori);
-		rValues.put("foto", foto);
+		rValues.put("nama", resep.getNama());
+		rValues.put("deskripsi", resep.getDeskripsi());
+		rValues.put("langkah", resep.getLangkah());
+		rValues.put("kategori", resep.getKategori());
+		rValues.put("foto", resep.getFoto());
 		boolean status = dbHelper.insert("resep", rValues);
 		if (status == true) {
-			Cursor cursorAssignKodeResep = dbHelper.query("SELECT _id FROM resep WHERE nama='" + nama + "'");
+			Cursor cursorAssignKodeResep = dbHelper.query("SELECT _id FROM resep WHERE nama='" + resep.getNama() + "'");
 			cursorAssignKodeResep.moveToFirst();
 			int kodeResep = cursorAssignKodeResep.getInt(0);
 			ContentValues bValues = new ContentValues();
-			for (Bahan bahan : listBahan) {
+			for (Bahan bahan : resep.getListBahan()) {
 				bValues.put("koderesep", kodeResep);
 				bValues.put("nama", bahan.getNama());
 				bValues.put("jumlah", bahan.getJumlah());
@@ -152,6 +147,7 @@ public class ControllerDaftarResep {
 		newValues.put("deskripsi", newResep.getDeskripsi());
 		newValues.put("langkah", newResep.getLangkah());
 		newValues.put("kategori", newResep.getKategori());
+		newValues.put("foto", newResep.getFoto());
 		dbHelper.update("resep", newValues, "nama='" + oldResep.getNama() + "'");
 		Cursor cursor = dbHelper.query("SELECT _id FROM resep WHERE nama='" + oldResep.getNama() + "'");
 		cursor.moveToFirst();
@@ -237,5 +233,9 @@ public class ControllerDaftarResep {
 		}
 		cursor.close();
 		return listBahan;
+	}
+	
+	public boolean isBahanExist(String nama){
+		return dbHelper.query("SELECT * FROM bahan WHERE nama = '"+nama+"'").getCount() != 0 ? true : false; 
 	}
 }

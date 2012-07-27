@@ -92,8 +92,10 @@ public class MenuUtama extends Activity implements OnItemClickListener {
 					MenuPilihBahan.class));
 			break;
 		case 2:
-			startActivity(new Intent(getApplicationContext(),
-					MenuBuatResepBaru.class));
+			Intent i = new Intent(getApplicationContext(), MenuAddEditResep.class);
+			i.putExtra("mode", MenuAddEditResep.MODE_ADD);
+			
+			startActivity(i);
 			break;
 		case 3:
 			startActivity(new Intent(getApplicationContext(),
