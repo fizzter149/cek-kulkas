@@ -70,7 +70,7 @@ public class MenuCekKulkas extends Activity {
 
 		// title bar aplikasi
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.cekkulkas);
+		setContentView(R.layout.lihatisikulkas);
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.titlebar);
 		cik = new ControllerIsiKulkas(getApplicationContext());
