@@ -157,19 +157,19 @@ public class MenuUtama extends Activity implements OnItemClickListener {
 					.findViewById(R.id.icon_image);
 			switch (position) {
 			case 0:
-				textview.setText("Lihat Isi Kulkas");
+				textview.setText(MenuUtama.this.getString(R.string.menu_cek_kulkas));
 				imgview.setImageResource(R.drawable.ic_menucekkulkas);
 				break;
 			case 1:
-				textview.setText("Telusuri Resep");
+				textview.setText(MenuUtama.this.getString(R.string.menu_pilih_bahan));
 				imgview.setImageResource(R.drawable.ic_menupilihbahan);
 				break;
 			case 2:
-				textview.setText("Tulis Resep Sendiri");
+				textview.setText(MenuUtama.this.getString(R.string.menu_tambah_resep));
 				imgview.setImageResource(R.drawable.ic_menubuatresep);
 				break;
 			case 3:
-				textview.setText("Resep Favorit");
+				textview.setText(MenuUtama.this.getString(R.string.menu_daftar_resep_favorit));
 				imgview.setImageResource(R.drawable.ic_menudaftarfavorit);
 				break;
 			}

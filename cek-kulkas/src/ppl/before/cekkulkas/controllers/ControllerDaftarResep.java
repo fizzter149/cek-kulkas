@@ -236,6 +236,10 @@ public class ControllerDaftarResep {
 	}
 	
 	public boolean isBahanExist(String nama){
-		return dbHelper.query("SELECT * FROM bahan WHERE nama = '"+nama+"'").getCount() != 0 ? true : false; 
+		boolean ret = false;
+		Cursor c = dbHelper.query("SELECT * FROM bahan WHERE nama = '"+nama+"'");
+		if(c.getCount() != 0) ret = true;
+		c.close();
+		return ret; 
 	}
 }

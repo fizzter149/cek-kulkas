@@ -96,7 +96,7 @@ public class MenuDetailResep extends Activity {
 									+ foto + ".jpg"));
 		}
 
-		List<Bahan> listBahan = resep.getListBahan();
+		listBahan = resep.getListBahan();
 		String bahanStr = "";
 
 		for (int i = 0; i < listBahan.size(); i++) {

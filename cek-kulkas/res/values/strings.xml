@@ -4,9 +4,9 @@
     <string name="hello">Hello World, MenuUtama!</string>
     <string name="app_name">Cek Kulkas</string>
     <string name="menu_utama">Menu Utama</string>
-    <string name="menu_pilih_bahan">Pilih Bahan</string>
-    <string name="menu_daftar_resep_favorit">Daftar Resep Favorit</string>
-    <string name="menu_cek_kulkas">Cek Bahan di Kulkas</string>
+    <string name="menu_pilih_bahan">Telusuri Resep</string>
+    <string name="menu_daftar_resep_favorit">Resep Favorit</string>
+    <string name="menu_cek_kulkas">Kelola Isi Kulkas</string>
     <string name="menu_detail_resep">Detail Resep</string>
     <string name="prompt_kategori">Pilih Kategori</string>
     <string name="menu_tambah_resep">Tulis Resep Sendiri</string>
