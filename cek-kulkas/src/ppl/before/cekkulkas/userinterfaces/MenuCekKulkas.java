@@ -95,10 +95,21 @@ public class MenuCekKulkas extends Activity {
 	 * inisialisasi isi list daftar resep favorit
 	 */
 	private void initView() {
-		
+
 		// ambil bahan dari database isi kulkas
 		listBahan = cik.ambilSemuaBahan();
-		
+
+		if (listBahan.size() == 0) {
+			((TextView) findViewById(R.id.notiflistkosong))
+					.setVisibility(View.VISIBLE);
+			((ListView) findViewById(R.id.listbahan)).setVisibility(View.GONE);
+		} else {
+			((TextView) findViewById(R.id.notiflistkosong))
+					.setVisibility(View.GONE);
+			((ListView) findViewById(R.id.listbahan))
+					.setVisibility(View.VISIBLE);
+		}
+
 		tempList = listBahan;
 		ListView lv = (ListView) findViewById(R.id.listbahan);
 		final IsiKulkasAdapter isiKulkasAdapter = new IsiKulkasAdapter(this,
@@ -200,8 +211,8 @@ public class MenuCekKulkas extends Activity {
 											}
 											cik.setSatuan(bahan.getNama(),
 													tempSatuan);
-											isiKulkasAdapter.updateSatuan(position,
-													tempSatuan);
+											isiKulkasAdapter.updateSatuan(
+													position, tempSatuan);
 											Toast.makeText(
 													MenuCekKulkas.this,
 													bahan.getNama()
@@ -233,6 +244,13 @@ public class MenuCekKulkas extends Activity {
 													bahan.getNama()
 															+ " berhasil dihapus dari kulkas",
 													Toast.LENGTH_SHORT).show();
+											if (isiKulkasAdapter.getCount() == 0) {
+
+												((TextView) findViewById(R.id.notiflistkosong))
+														.setVisibility(View.VISIBLE);
+												((ListView) findViewById(R.id.listbahan))
+														.setVisibility(View.GONE);
+											}
 										}
 									});
 							alertHapus.setNegativeButton("Batal",
@@ -246,173 +264,174 @@ public class MenuCekKulkas extends Activity {
 						}
 					}
 				});
-				
+
 				qa.show(view);
 
-//				final CharSequence[] items = { "Ubah jumlah bahan", "Hapus" };
-//				AlertDialog.Builder onClickDialog = new AlertDialog.Builder(
-//						MenuCekKulkas.this);
-//				final Bahan bahan = tempList.get(position);
-//				final int pos = position;
-//				onClickDialog.setTitle("Bahan: " + bahan.getNama());
-//				onClickDialog.setItems(items,
-//						new DialogInterface.OnClickListener() {
-//							public void onClick(DialogInterface dialog, int item) {
-//								switch (item) {
-//								case 0:
-//									// Set an EditText view to get user input
-//									float jumlah = bahan.getJumlah();
-//									String jmlStr = "";
-//									if (jumlah % 1.0 == 0.0) {
-//										jmlStr += (int) bahan.getJumlah();
-//									} else {
-//										jmlStr += bahan.getJumlah();
-//									}
-//									final EditText inputJumlah = new EditText(
-//											MenuCekKulkas.this);
-//									int maxLength = 9;
-//									InputFilter[] FilterArray = new InputFilter[1];
-//									FilterArray[0] = new InputFilter.LengthFilter(
-//											maxLength);
-//									inputJumlah
-//											.setInputType(InputType.TYPE_CLASS_NUMBER
-//													| InputType.TYPE_NUMBER_FLAG_DECIMAL);
-//									inputJumlah.setFilters(FilterArray);
-//									inputJumlah.setMinWidth(40);
-//									inputJumlah.setHint(jmlStr);
-//
-//									final Spinner spinnerSatuan = new Spinner(
-//											MenuCekKulkas.this);
-//									adapterSatuan = new ArrayAdapter<String>(
-//											MenuCekKulkas.this,
-//											android.R.layout.simple_spinner_item,
-//											cik.getMultiSatuan(bahan.getNama()));
-//									adapterSatuan
-//											.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//									spinnerSatuan.setAdapter(adapterSatuan);
-//									spinnerSatuan
-//											.setOnItemSelectedListener(new OnItemSelectedListener() {
-//
-//												public void onItemSelected(
-//														AdapterView<?> parent,
-//														View view,
-//														int position,
-//														long duration) {
-//													// TODO Auto-generated
-//													// method stub
-//													tempSatuan = adapterSatuan
-//															.getItem(position);
-//												}
-//
-//												public void onNothingSelected(
-//														AdapterView<?> arg0) {
-//												}
-//											});
-//
-//									final LinearLayout layoutUbahBahan = new LinearLayout(
-//											MenuCekKulkas.this);
-//									layoutUbahBahan
-//											.setOrientation(LinearLayout.HORIZONTAL);
-//									layoutUbahBahan.setPadding(6, 0, 6, 0);
-//									layoutUbahBahan.addView(inputJumlah);
-//									layoutUbahBahan.addView(spinnerSatuan);
-//
-//									AlertDialog.Builder alertUbah = new AlertDialog.Builder(
-//											MenuCekKulkas.this);
-//									alertUbah.setTitle(bahan.getNama());
-//									alertUbah.setView(layoutUbahBahan);
-//									alertUbah
-//											.setPositiveButton(
-//													"OK",
-//													new DialogInterface.OnClickListener() {
-//														public void onClick(
-//																DialogInterface dialog,
-//																int id) {
-//															if (inputJumlah
-//																	.getText()
-//																	.toString()
-//																	.length() > 0) {
-//																cik.setJumlah(
-//																		bahan.getNama(),
-//																		Float.parseFloat(inputJumlah
-//																				.getText()
-//																				.toString()));
-//																isiKulkasAdapter
-//																		.updateJumlah(
-//																				pos,
-//																				Float.parseFloat(inputJumlah
-//																						.getText()
-//																						.toString()));
-//															}
-//															cik.setSatuan(bahan
-//																	.getNama(),
-//																	tempSatuan);
-//															isiKulkasAdapter
-//																	.updateSatuan(
-//																			pos,
-//																			tempSatuan);
-//															Toast.makeText(
-//																	MenuCekKulkas.this,
-//																	bahan.getNama()
-//																			+ " berhasil diubah",
-//																	Toast.LENGTH_SHORT)
-//																	.show();
-//														}
-//													});
-//									alertUbah
-//											.setNegativeButton(
-//													"Batal",
-//													new DialogInterface.OnClickListener() {
-//														public void onClick(
-//																DialogInterface dialog,
-//																int id) {
-//															dialog.cancel();
-//														}
-//													});
-//									alertUbah.show();
-//									break;
-//								case 1:
-//									AlertDialog.Builder alertHapus = new AlertDialog.Builder(
-//											MenuCekKulkas.this);
-//									alertHapus
-//											.setMessage("Anda yakin menghapus "
-//													+ bahan.getNama()
-//													+ " dari kulkas?");
-//									alertHapus
-//											.setPositiveButton(
-//													"OK",
-//													new DialogInterface.OnClickListener() {
-//														public void onClick(
-//																DialogInterface dialog,
-//																int id) {
-//															cik.hapusBahan(bahan
-//																	.getNama());
-//															isiKulkasAdapter
-//																	.remove(bahan);
-//															Toast.makeText(
-//																	MenuCekKulkas.this,
-//																	bahan.getNama()
-//																			+ " berhasil dihapus dari kulkas",
-//																	Toast.LENGTH_SHORT)
-//																	.show();
-//														}
-//													});
-//									alertHapus
-//											.setNegativeButton(
-//													"Batal",
-//													new DialogInterface.OnClickListener() {
-//														public void onClick(
-//																DialogInterface dialog,
-//																int id) {
-//															dialog.cancel();
-//														}
-//													});
-//									alertHapus.show();
-//									break;
-//								}
-//							}
-//						});
-//				onClickDialog.show();
+				// final CharSequence[] items = { "Ubah jumlah bahan", "Hapus"
+				// };
+				// AlertDialog.Builder onClickDialog = new AlertDialog.Builder(
+				// MenuCekKulkas.this);
+				// final Bahan bahan = tempList.get(position);
+				// final int pos = position;
+				// onClickDialog.setTitle("Bahan: " + bahan.getNama());
+				// onClickDialog.setItems(items,
+				// new DialogInterface.OnClickListener() {
+				// public void onClick(DialogInterface dialog, int item) {
+				// switch (item) {
+				// case 0:
+				// // Set an EditText view to get user input
+				// float jumlah = bahan.getJumlah();
+				// String jmlStr = "";
+				// if (jumlah % 1.0 == 0.0) {
+				// jmlStr += (int) bahan.getJumlah();
+				// } else {
+				// jmlStr += bahan.getJumlah();
+				// }
+				// final EditText inputJumlah = new EditText(
+				// MenuCekKulkas.this);
+				// int maxLength = 9;
+				// InputFilter[] FilterArray = new InputFilter[1];
+				// FilterArray[0] = new InputFilter.LengthFilter(
+				// maxLength);
+				// inputJumlah
+				// .setInputType(InputType.TYPE_CLASS_NUMBER
+				// | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+				// inputJumlah.setFilters(FilterArray);
+				// inputJumlah.setMinWidth(40);
+				// inputJumlah.setHint(jmlStr);
+				//
+				// final Spinner spinnerSatuan = new Spinner(
+				// MenuCekKulkas.this);
+				// adapterSatuan = new ArrayAdapter<String>(
+				// MenuCekKulkas.this,
+				// android.R.layout.simple_spinner_item,
+				// cik.getMultiSatuan(bahan.getNama()));
+				// adapterSatuan
+				// .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				// spinnerSatuan.setAdapter(adapterSatuan);
+				// spinnerSatuan
+				// .setOnItemSelectedListener(new OnItemSelectedListener() {
+				//
+				// public void onItemSelected(
+				// AdapterView<?> parent,
+				// View view,
+				// int position,
+				// long duration) {
+				// // TODO Auto-generated
+				// // method stub
+				// tempSatuan = adapterSatuan
+				// .getItem(position);
+				// }
+				//
+				// public void onNothingSelected(
+				// AdapterView<?> arg0) {
+				// }
+				// });
+				//
+				// final LinearLayout layoutUbahBahan = new LinearLayout(
+				// MenuCekKulkas.this);
+				// layoutUbahBahan
+				// .setOrientation(LinearLayout.HORIZONTAL);
+				// layoutUbahBahan.setPadding(6, 0, 6, 0);
+				// layoutUbahBahan.addView(inputJumlah);
+				// layoutUbahBahan.addView(spinnerSatuan);
+				//
+				// AlertDialog.Builder alertUbah = new AlertDialog.Builder(
+				// MenuCekKulkas.this);
+				// alertUbah.setTitle(bahan.getNama());
+				// alertUbah.setView(layoutUbahBahan);
+				// alertUbah
+				// .setPositiveButton(
+				// "OK",
+				// new DialogInterface.OnClickListener() {
+				// public void onClick(
+				// DialogInterface dialog,
+				// int id) {
+				// if (inputJumlah
+				// .getText()
+				// .toString()
+				// .length() > 0) {
+				// cik.setJumlah(
+				// bahan.getNama(),
+				// Float.parseFloat(inputJumlah
+				// .getText()
+				// .toString()));
+				// isiKulkasAdapter
+				// .updateJumlah(
+				// pos,
+				// Float.parseFloat(inputJumlah
+				// .getText()
+				// .toString()));
+				// }
+				// cik.setSatuan(bahan
+				// .getNama(),
+				// tempSatuan);
+				// isiKulkasAdapter
+				// .updateSatuan(
+				// pos,
+				// tempSatuan);
+				// Toast.makeText(
+				// MenuCekKulkas.this,
+				// bahan.getNama()
+				// + " berhasil diubah",
+				// Toast.LENGTH_SHORT)
+				// .show();
+				// }
+				// });
+				// alertUbah
+				// .setNegativeButton(
+				// "Batal",
+				// new DialogInterface.OnClickListener() {
+				// public void onClick(
+				// DialogInterface dialog,
+				// int id) {
+				// dialog.cancel();
+				// }
+				// });
+				// alertUbah.show();
+				// break;
+				// case 1:
+				// AlertDialog.Builder alertHapus = new AlertDialog.Builder(
+				// MenuCekKulkas.this);
+				// alertHapus
+				// .setMessage("Anda yakin menghapus "
+				// + bahan.getNama()
+				// + " dari kulkas?");
+				// alertHapus
+				// .setPositiveButton(
+				// "OK",
+				// new DialogInterface.OnClickListener() {
+				// public void onClick(
+				// DialogInterface dialog,
+				// int id) {
+				// cik.hapusBahan(bahan
+				// .getNama());
+				// isiKulkasAdapter
+				// .remove(bahan);
+				// Toast.makeText(
+				// MenuCekKulkas.this,
+				// bahan.getNama()
+				// + " berhasil dihapus dari kulkas",
+				// Toast.LENGTH_SHORT)
+				// .show();
+				// }
+				// });
+				// alertHapus
+				// .setNegativeButton(
+				// "Batal",
+				// new DialogInterface.OnClickListener() {
+				// public void onClick(
+				// DialogInterface dialog,
+				// int id) {
+				// dialog.cancel();
+				// }
+				// });
+				// alertHapus.show();
+				// break;
+				// }
+				// }
+				// });
+				// onClickDialog.show();
 			}
 		});
 
@@ -535,6 +554,9 @@ public class MenuCekKulkas extends Activity {
 													MenuCekKulkas.this,
 													"Bahan berhasil ditambahkan",
 													Toast.LENGTH_SHORT).show();
+
+											((TextView)findViewById(R.id.notiflistkosong)).setVisibility(View.GONE);
+											((ListView)findViewById(R.id.listbahan)).setVisibility(View.VISIBLE);
 										}
 									}
 								});

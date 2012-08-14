@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/green1" >
 
     <TextView
         style="@style/MenuTitle"
@@ -16,7 +17,16 @@
         android:gravity="center"
         android:verticalSpacing="5dp"
         android:layoutAnimation="@anim/fadein_controller"
-        android:numColumns="1">
+        android:numColumns="1"
+        android:visibility="gone">
     </GridView>
+    
+    <TextView 
+        android:id="@+id/notiflistkosong"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Daftar resep favorit Anda kosong"
+        />
     
 </LinearLayout>    

@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridmenuutama"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_gravity="center_vertical"
-    android:fastScrollEnabled="true"
-    android:gravity="center"
-    android:horizontalSpacing="10dp"
-    android:layoutAnimation="@anim/fadein_controller"
-    android:numColumns="2"
-    android:padding="10dp"
-    android:verticalSpacing="10dp" />
+    android:background="@color/green1" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/bgmenuutama" />
+
+    <GridView
+        android:id="@+id/gridmenuutama"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
+        android:fastScrollEnabled="true"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:layoutAnimation="@anim/fadein_controller"
+        android:numColumns="2"
+        android:padding="10dp"
+        android:verticalSpacing="10dp" />
+
+</RelativeLayout>

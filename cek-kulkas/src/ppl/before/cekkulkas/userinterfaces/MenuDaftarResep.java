@@ -255,17 +255,17 @@ public class MenuDaftarResep extends Activity {
 			int jumlahKurang = rList.get(position).getJumlahKurangBahan();
 			String keterangan = "";
 			if (jumlahCocok > 0) {
-				keterangan = "<font color='#A4C639'>" + jumlahCocok
+				keterangan = "<font color='#0000ff'>" + jumlahCocok
 						+ " bahan cocok</font><br/>";
 			}
 			if (jumlahKurang > 0) {
-				keterangan += "<font color='#FF6A6A'>kurang " + jumlahKurang
+				keterangan += "<font color='#ff0000'>kurang " + jumlahKurang
 						+ " bahan</font>";
 			} else {
-				keterangan += "<font color='#A4C639'>semua bahan lengkap</font>";
+				keterangan += "<font color='#ffffff'>semua bahan lengkap</font>";
 			}
 			if (jumlahCocok == 0 && jumlahKurang == 0) {
-				keterangan = "<font color='#A4C639'>resep tidak memiliki bahan</font>";
+				keterangan = "<font color='#ffffff'>resep tidak memiliki bahan</font>";
 			}
 			holder.teksKeterangan.setText(Html.fromHtml(keterangan));
 

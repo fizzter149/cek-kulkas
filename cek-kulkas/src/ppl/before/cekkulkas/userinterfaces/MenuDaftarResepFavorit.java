@@ -66,6 +66,16 @@ public class MenuDaftarResepFavorit extends Activity {
 	private void initView(){
 		// ambil resep favorit dari database
 		listResep = cdf.getFavorit(Resep.FAVORIT);
+		
+		if(listResep.size() == 0) {
+			((TextView)findViewById(R.id.notiflistkosong)).setVisibility(View.VISIBLE);
+			((GridView)findViewById(R.id.daftarResepFavorit)).setVisibility(View.GONE);
+			return;
+		} else {
+			((TextView)findViewById(R.id.notiflistkosong)).setVisibility(View.GONE);
+			((GridView)findViewById(R.id.daftarResepFavorit)).setVisibility(View.VISIBLE);
+		}
+		
 		final ArrayList<Bahan> listBahanKosong = new ArrayList<Bahan>(0);
         GridView lv = (GridView) findViewById(R.id.daftarResepFavorit);
         lv.setAdapter(new DaftarResepFavoritAdapter(this, listResep));

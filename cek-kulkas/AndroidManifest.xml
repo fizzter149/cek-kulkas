@@ -4,7 +4,10 @@
     android:versionCode="1"
     android:versionName="1.1" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10"/>
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="10" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,30 +21,42 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        
-        
-        <activity android:name=".userinterfaces.MenuCekKulkas"></activity>
-		<activity android:name=".userinterfaces.MenuPilihBahan"></activity>
-		<activity android:name=".userinterfaces.MenuDaftarResepFavorit"></activity>
-		<activity android:name=".userinterfaces.MenuDetailResep"></activity>
-		<activity android:name=".userinterfaces.MenuDaftarResep"></activity>
-        <activity android:name=".userinterfaces.MenuBuatResepBaru"></activity>
-		<activity android:name=".userinterfaces.MenuAddEditResep"></activity>
-		<activity android:name=".userinterfaces.MenuFotoFullScreen"></activity>
-		<activity 
-		    android:name=".userinterfaces.MenuPublikasiKeJejaringSosial"
-		    android:launchMode="singleInstance">
-            <intent-filter >
-                <action android:name="android.intent.action.VIEW"/>
+        <activity android:name=".userinterfaces.MenuCekKulkas" >
+        </activity>
+        <activity
+            android:name=".userinterfaces.MenuPilihBahan"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity android:name=".userinterfaces.MenuDaftarResepFavorit" >
+        </activity>
+        <activity android:name=".userinterfaces.MenuDetailResep" >
+        </activity>
+        <activity android:name=".userinterfaces.MenuDaftarResep" >
+        </activity>
+        <activity android:name=".userinterfaces.MenuBuatResepBaru" >
+        </activity>
+        <activity
+            android:name=".userinterfaces.MenuAddEditResep"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity android:name=".userinterfaces.MenuFotoFullScreen" >
+        </activity>
+        <activity
+            android:name=".userinterfaces.MenuPublikasiKeJejaringSosial"
+            android:launchMode="singleInstance" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="cekkulkas"/>
+
+                <data android:scheme="cekkulkas" />
             </intent-filter>
-		</activity>
+        </activity>
     </application>
 
 </manifest>

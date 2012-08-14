@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llpb"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/green1"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/llpb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:descendantFocusability="beforeDescendants"
-		android:focusableInTouchMode="true"
-		android:layout_marginBottom="60dp" >
+    <TextView
+        style="@style/MenuTitle"
+        android:text="@string/menu_pilih_bahan" />
 
-        <TextView
-            style="@style/MenuTitle"
-            android:text="@string/menu_pilih_bahan" />
-
-        <EditText
+    <EditText
         android:id="@+id/filterpilihbahan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
         android:hint="Ketikkan nama bahan di sini"
-        android:ems="10" >
+        android:layout_margin="5dp" />
 
+    <ListView
+        android:id="@+id/listpilihbahan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:descendantFocusability="beforeDescendants"
+        android:padding="5dp" />
 
-<!--         <requestFocus /> -->
-        </EditText>
-
-        <ListView
-            android:id="@+id/listpilihbahan"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-			android:clickable="true"
-			android:descendantFocusability="beforeDescendants" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/notiflistkosong"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="tekan cari resep tanpa memilih bahan untuk menampilkan semua resep" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@android:style/ButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        style="@android:style/ButtonBar" >
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/cariResep"
@@ -52,4 +52,4 @@
             android:text="Cari Resep" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

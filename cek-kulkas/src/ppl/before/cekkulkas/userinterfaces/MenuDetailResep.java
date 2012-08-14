@@ -116,7 +116,7 @@ public class MenuDetailResep extends Activity {
 							"listBahanSelected.contains(" + bahan.getNama()
 									+ "): " + isSelected);
 					if (isSelected) {
-						bahanStr += "<font color='#A4C639'>"
+						bahanStr += "<font color='#0000ff'>"
 								+ (int) bahan.getJumlah() + " "
 								+ bahan.getSatuan() + " " + bahan.getNama()
 								+ "</font><br />";
@@ -126,7 +126,7 @@ public class MenuDetailResep extends Activity {
 								+ "<br />";
 					}
 				} else {
-					bahanStr += "<font color='#FF6A6A'>"
+					bahanStr += "<font color='#ff0000'>"
 							+ (int) bahan.getJumlah() + " " + bahan.getSatuan()
 							+ " " + bahan.getNama() + "</font><br />";
 				}
@@ -144,7 +144,7 @@ public class MenuDetailResep extends Activity {
 							"listBahanSelected.contains(" + bahan.getNama()
 									+ "): " + isSelected);
 					if (isSelected) {
-						bahanStr += "<font color='#A4C639'>"
+						bahanStr += "<font color='#0000ff'>"
 								+ bahan.getJumlah() + " " + bahan.getSatuan()
 								+ " " + bahan.getNama() + "</font><br />";
 					} else {
@@ -152,7 +152,7 @@ public class MenuDetailResep extends Activity {
 								+ " " + bahan.getNama() + "<br />";
 					}
 				} else {
-					bahanStr += "<font color='#FF6A6A'>" + bahan.getJumlah()
+					bahanStr += "<font color='#ff0000'>" + bahan.getJumlah()
 							+ " " + bahan.getSatuan() + " " + bahan.getNama()
 							+ "</font><br />";
 				}
