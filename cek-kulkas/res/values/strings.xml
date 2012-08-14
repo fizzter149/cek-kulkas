@@ -5,7 +5,7 @@
     <string name="app_name">Cek Kulkas</string>
     <string name="menu_utama">Menu Utama</string>
     <string name="menu_pilih_bahan">Telusuri Resep</string>
-    <string name="menu_daftar_resep_favorit">Resep Favorit</string>
+    <string name="menu_daftar_resep_favorit">Daftar Resep Favorit</string>
     <string name="menu_cek_kulkas">Kelola Isi Kulkas</string>
     <string name="menu_detail_resep">Detail Resep</string>
     <string name="prompt_kategori">Pilih Kategori</string>
