@@ -63,11 +63,14 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
     private static final String prefAccessTokenSecretTwitter = "accessTokenSecret";
 	
 	/** Consumer Key generated when you registered your app at https://dev.twitter.com/apps/ */
-    private static final String CONSUMER_KEY_TWITTER = "pxrH07GZxEyZ02Na269MZA";
+    private static final String CONSUMER_KEY_TWITTER = "wtRcqk4Jtavl4YvaQ78A";
     /** Consumer Secret generated when you registered your app at https://dev.twitter.com/apps/  */
-    private static final String CONSUMER_SECRET_TWITTER = "ITY5gC9DPDwOiPs9qkltHJPPAYZqJfz2KnvCMWHNY"; // XXX Encode in your app
+    private static final String CONSUMER_SECRET_TWITTER = "3pCEVeDOZfSircWMBw0Sxq5Y3wpOG0o5JSXwv41k"; // XXX Encode in your app
     /** The url that Twitter will redirect to after a user log's in - this will be picked up by your app manifest and redirected into this activity */
     private static final String CALLBACK_URL = "cekkulkas:///";
+    
+    private static final String ACCESS_TOKEN_TWITTER = "114659135-1Q0X7nbceAFdGqhfT3cNhQcFY81EHBXG3ixpGPT4";
+    private static final String ACCESS_TOKEN_SECRET_TWITTER = "NVbmSIpIhB1DmlQD7O3TrzqSLYq463fZpCGkOZCA5s";
     
     /** Twitter4j object */
     private Twitter twitter;
@@ -176,6 +179,8 @@ public class MenuPublikasiKeJejaringSosial extends Activity{
             });
             setContentView(twitterSite);
 		} catch (TwitterException e){
+			Toast.makeText(getApplicationContext(), "login twitter gagal", Toast.LENGTH_SHORT).show();
+		} catch (IllegalStateException e){
 			Toast.makeText(getApplicationContext(), "login twitter gagal", Toast.LENGTH_SHORT).show();
 		}
 	}
