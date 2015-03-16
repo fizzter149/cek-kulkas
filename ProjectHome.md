@@ -1,0 +1,3 @@
+Aplikasi **Cek Kulkas** pada dasarnya adalah semacam aplikasi resep makanan untuk membantu orang melakukan aktivitas masak-memasak. Namun, aplikasi ini menggunakan sudut pandang yang berbeda dari biasanya. Alih-alih user memilih resep yang diinginkan, user "mengecek kulkas" dan melihat bahan-bahan apa saja yang tersedia di "kulkas" user. Dengan bahan-bahan yang user miliki tersebut, aplikasi ini akan mencoba menghasilkan daftar masakan yang dapat dibuat dengan bahan-bahan yang tersedia tersebut beserta cara pembuatan masakan-masakan tersebut.
+
+Cek Kulkas merupakan salah satu proyek dalam mata kuliah Proyek Perangkat Lunak tahun 2011/2012 Fakultas Ilmu Komputer Universitas Indonesia.
